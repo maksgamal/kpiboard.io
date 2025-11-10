@@ -1,0 +1,13 @@
+{
+  "name": "kpiboard",
+  "version": "1.0.0",
+  "description": "KPI Board Business Intelligence Team Website",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "stripe": "^14.0.0"
+  },
+  "devDependencies": {}
+}
+

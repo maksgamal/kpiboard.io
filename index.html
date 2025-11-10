@@ -3729,4 +3729,15 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 </script>
+
+<!-- Stripe.js -->
+<script src="https://js.stripe.com/v3/"></script>
+<!-- Stripe Publishable Key - Replace with your key from Vercel environment variables -->
+<script>
+  // This will be set from Vercel environment variable during build
+  // For now, you can set it manually or use Vercel's environment variable injection
+  window.STRIPE_PUBLISHABLE_KEY = 'pk_live_51SRstvIjrSulcnnC6b9JAPyxUiE8dWPJTjgYbBOwhok9yTl5SQQKdXXMKoX7EGVEMsMyFEAHfGTVsm0CBTgDjjd700V0vcujQP'; // Replace with your publishable key
+</script>
+<!-- Stripe Checkout Integration -->
+<script src="js/stripe-checkout.js"></script>
 </body></html>
