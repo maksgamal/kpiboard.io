@@ -1,0 +1,5207 @@
+"use strict";
+(self.webpackChunk_N_E = self.webpackChunk_N_E || []).push([
+  [75573],
+  {
+    4869: (e, t, r) => {
+      r.d(t, { Ht: () => o, jE: () => s });
+      var n = r(7620),
+        i = n.createContext(void 0),
+        s = (e) => {
+          let t = n.useContext(i);
+          if (e) return e;
+          if (!t)
+            throw Error(
+              "No QueryClient set, use QueryClientProvider to set one"
+            );
+          return t;
+        },
+        o = (e) => {
+          let { client: t, children: r } = e;
+          return (
+            n.useEffect(
+              () => (
+                t.mount(),
+                () => {
+                  t.unmount();
+                }
+              ),
+              [t]
+            ),
+            n.createElement(i.Provider, { value: t }, r)
+          );
+        };
+    },
+    6542: (e, t, r) => {
+      r.d(t, { wy: () => n.w, np: () => i.np, r0: () => s.r, SX: () => a });
+      var n = r(79751),
+        i = r(35240);
+      r(50692);
+      var s = r(64991),
+        o = r(35433);
+      let a = (e) => e.queryClient ?? new o.E(e.queryClientConfig);
+      r(76702);
+    },
+    8134: (e, t, r) => {
+      r.d(t, { w: () => s });
+      var n = r(7620),
+        i = n.createContext(!1),
+        s = () => n.useContext(i);
+      i.Provider;
+    },
+    10995: (e, t, r) => {
+      r.d(t, { O: () => s });
+      var n = r(28902),
+        i = r(83861);
+      function s(e) {
+        let { client: t, queryClient: r } = e,
+          s = t instanceof n.Ke ? t : (0, n.n2)(t);
+        return {
+          fetchQuery: (e, t) =>
+            r.fetchQuery({
+              ...t,
+              queryKey: e,
+              queryFn: () => s.query(...(0, i.P)(e, t)),
+            }),
+          fetchInfiniteQuery: (e, t) =>
+            r.fetchInfiniteQuery({
+              ...t,
+              queryKey: e,
+              queryFn: ({ pageParam: r }) => s.query(...(0, i.P)(e, t, r)),
+              initialPageParam: t?.initialCursor ?? null,
+            }),
+          prefetchQuery: (e, t) =>
+            r.prefetchQuery({
+              ...t,
+              queryKey: e,
+              queryFn: () => s.query(...(0, i.P)(e, t)),
+            }),
+          prefetchInfiniteQuery: (e, t) =>
+            r.prefetchInfiniteQuery({
+              ...t,
+              queryKey: e,
+              queryFn: ({ pageParam: r }) => s.query(...(0, i.P)(e, t, r)),
+              initialPageParam: t?.initialCursor ?? null,
+            }),
+          ensureQueryData: (e, t) =>
+            r.ensureQueryData({
+              ...t,
+              queryKey: e,
+              queryFn: () => s.query(...(0, i.P)(e, t)),
+            }),
+          invalidateQueries: (e, t, n) =>
+            r.invalidateQueries({ ...t, queryKey: e }, n),
+          resetQueries: (e, t, n) => r.resetQueries({ ...t, queryKey: e }, n),
+          refetchQueries: (e, t, n) =>
+            r.refetchQueries({ ...t, queryKey: e }, n),
+          cancelQuery: (e, t) => r.cancelQueries({ queryKey: e }, t),
+          setQueryData: (e, t, n) => r.setQueryData(e, t, n),
+          getQueryData: (e) => r.getQueryData(e),
+          setInfiniteQueryData: (e, t, n) => r.setQueryData(e, t, n),
+          getInfiniteQueryData: (e) => r.getQueryData(e),
+        };
+      }
+    },
+    22844: (e, t, r) => {
+      r.d(t, { Q: () => n });
+      var n = class {
+        constructor() {
+          (this.listeners = new Set()),
+            (this.subscribe = this.subscribe.bind(this));
+        }
+        subscribe(e) {
+          return (
+            this.listeners.add(e),
+            this.onSubscribe(),
+            () => {
+              this.listeners.delete(e), this.onUnsubscribe();
+            }
+          );
+        }
+        hasListeners() {
+          return this.listeners.size > 0;
+        }
+        onSubscribe() {}
+        onUnsubscribe() {}
+      };
+    },
+    25383: (e, t, r) => {
+      r.d(t, { t: () => l });
+      var n = r(7620),
+        i = r(95635),
+        s = r(32944),
+        o = r(4869),
+        a = r(8134),
+        u = r(86336),
+        c = r(93257);
+      function l(e, t, r) {
+        let l = (0, o.jE)(r),
+          h = (0, a.w)(),
+          f = (0, s.h)(),
+          d = l.defaultQueryOptions(e);
+        (d._optimisticResults = h ? "isRestoring" : "optimistic"),
+          (0, c.tu)(d),
+          (0, u.LJ)(d, f),
+          (0, u.wZ)(f);
+        let [p] = n.useState(() => new t(l, d)),
+          y = p.getOptimisticResult(d);
+        if (
+          (n.useSyncExternalStore(
+            n.useCallback(
+              (e) => {
+                let t = h ? () => void 0 : p.subscribe(i.j.batchCalls(e));
+                return p.updateResult(), t;
+              },
+              [p, h]
+            ),
+            () => p.getCurrentResult(),
+            () => p.getCurrentResult()
+          ),
+          n.useEffect(() => {
+            p.setOptions(d, { listeners: !1 });
+          }, [d, p]),
+          (0, c.EU)(d, y))
+        )
+          throw (0, c.iL)(d, p, f);
+        if (
+          (0, u.$1)({
+            result: y,
+            errorResetBoundary: f,
+            throwOnError: d.throwOnError,
+            query: l.getQueryCache().get(d.queryHash),
+          })
+        )
+          throw y.error;
+        return d.notifyOnChangeProps ? y : p.trackResult(y);
+      }
+    },
+    27736: (e, t, r) => {
+      r.d(t, { I: () => s });
+      var n = r(69549),
+        i = r(25383);
+      function s(e, t) {
+        return (0, i.t)(e, n.$, t);
+      }
+    },
+    28306: (e, t, r) => {
+      r.d(t, { II: () => l, v_: () => a, wm: () => c });
+      var n = r(79382),
+        i = r(54189),
+        s = r(69950);
+      function o(e) {
+        return Math.min(1e3 * 2 ** e, 3e4);
+      }
+      function a(e) {
+        return (e ?? "online") !== "online" || i.t.isOnline();
+      }
+      var u = class {
+        constructor(e) {
+          (this.revert = e?.revert), (this.silent = e?.silent);
+        }
+      };
+      function c(e) {
+        return e instanceof u;
+      }
+      function l(e) {
+        let t,
+          r,
+          c,
+          l = !1,
+          h = 0,
+          f = !1,
+          d = new Promise((e, t) => {
+            (r = e), (c = t);
+          }),
+          p = () =>
+            !n.m.isFocused() || ("always" !== e.networkMode && !i.t.isOnline()),
+          y = (n) => {
+            f || ((f = !0), e.onSuccess?.(n), t?.(), r(n));
+          },
+          m = (r) => {
+            f || ((f = !0), e.onError?.(r), t?.(), c(r));
+          },
+          b = () =>
+            new Promise((r) => {
+              (t = (e) => {
+                let t = f || !p();
+                return t && r(e), t;
+              }),
+                e.onPause?.();
+            }).then(() => {
+              (t = void 0), f || e.onContinue?.();
+            }),
+          v = () => {
+            let t;
+            if (!f) {
+              try {
+                t = e.fn();
+              } catch (e) {
+                t = Promise.reject(e);
+              }
+              Promise.resolve(t)
+                .then(y)
+                .catch((t) => {
+                  if (f) return;
+                  let r = e.retry ?? 3 * !s.S$,
+                    n = e.retryDelay ?? o,
+                    i = "function" == typeof n ? n(h, t) : n,
+                    a =
+                      !0 === r ||
+                      ("number" == typeof r && h < r) ||
+                      ("function" == typeof r && r(h, t));
+                  if (l || !a) return void m(t);
+                  h++,
+                    e.onFail?.(h, t),
+                    (0, s.yy)(i)
+                      .then(() => {
+                        if (p()) return b();
+                      })
+                      .then(() => {
+                        l ? m(t) : v();
+                      });
+                });
+            }
+          };
+        return (
+          a(e.networkMode) ? v() : b().then(v),
+          {
+            promise: d,
+            cancel: (t) => {
+              f || (m(new u(t)), e.abort?.());
+            },
+            continue: () => (t?.() ? d : Promise.resolve()),
+            cancelRetry: () => {
+              l = !0;
+            },
+            continueRetry: () => {
+              l = !1;
+            },
+          }
+        );
+      }
+    },
+    28902: (e, t, r) => {
+      function n(e) {
+        return e;
+      }
+      function i(e) {
+        let t = {
+          subscribe(t) {
+            let r = null,
+              n = !1,
+              i = !1,
+              s = !1;
+            function o() {
+              if (null === r) {
+                s = !0;
+                return;
+              }
+              !i &&
+                ((i = !0), "function" == typeof r ? r() : r && r.unsubscribe());
+            }
+            return (
+              (r = e({
+                next(e) {
+                  n || t.next?.(e);
+                },
+                error(e) {
+                  n || ((n = !0), t.error?.(e), o());
+                },
+                complete() {
+                  n || ((n = !0), t.complete?.(), o());
+                },
+              })),
+              s && o(),
+              { unsubscribe: o }
+            );
+          },
+          pipe: (...e) => {
+            var r;
+            return (
+              0 === (r = e).length
+                ? n
+                : 1 === r.length
+                ? r[0]
+                : function (e) {
+                    return r.reduce((e, t) => t(e), e);
+                  }
+            )(t);
+          },
+        };
+        return t;
+      }
+      r.d(t, {
+        HN: () => u,
+        Ke: () => c,
+        Xq: () => f,
+        u4: () => l,
+        n2: () => d,
+        fu: () => S,
+        Lb: () => D,
+        $H: () => j,
+        hf: () => A,
+      });
+      class s extends Error {
+        constructor(e) {
+          super(e),
+            (this.name = "ObservableAbortError"),
+            Object.setPrototypeOf(this, s.prototype);
+        }
+      }
+      var o = r(33827);
+      function a(e) {
+        return i((t) =>
+          (function t(r = 0, n = e.op) {
+            let i = e.links[r];
+            if (!i)
+              throw Error(
+                "No more links to execute - did you forget to add an ending link?"
+              );
+            return i({ op: n, next: (e) => t(r + 1, e) });
+          })().subscribe(t)
+        );
+      }
+      class u extends Error {
+        static from(e, t = {}) {
+          return e instanceof u ||
+            (e instanceof Error && "TRPCClientError" === e.name)
+            ? (t.meta && (e.meta = { ...e.meta, ...t.meta }), e)
+            : (0, o.Gv)(e) &&
+              (0, o.Gv)(e.error) &&
+              "number" == typeof e.error.code &&
+              "string" == typeof e.error.message
+            ? new u(e.error.message, { ...t, result: e })
+            : e instanceof Error
+            ? new u(e.message, { ...t, cause: (0, o.e2)(e) })
+            : new u("Unknown error", { ...t, cause: e });
+        }
+        constructor(e, t) {
+          let r = t?.cause;
+          super(e, { cause: r }),
+            (this.meta = t?.meta),
+            (this.cause = r),
+            (this.shape = t?.result?.error),
+            (this.data = t?.result?.error.data),
+            (this.name = "TRPCClientError"),
+            Object.setPrototypeOf(this, u.prototype);
+        }
+      }
+      class c {
+        $request({ type: e, input: t, path: r, context: n = {} }) {
+          return a({
+            links: this.links,
+            op: {
+              id: ++this.requestId,
+              type: e,
+              path: r,
+              input: t,
+              context: n,
+            },
+          }).pipe((e) => {
+            let t = 0,
+              r = null,
+              n = [];
+            return {
+              subscribe: (i) => (
+                t++,
+                n.push(i),
+                r ||
+                  (r = e.subscribe({
+                    next(e) {
+                      for (let t of n) t.next?.(e);
+                    },
+                    error(e) {
+                      for (let t of n) t.error?.(e);
+                    },
+                    complete() {
+                      for (let e of n) e.complete?.();
+                    },
+                  })),
+                {
+                  unsubscribe() {
+                    if (0 == --t && r) {
+                      let e = r;
+                      (r = null), e.unsubscribe();
+                    }
+                    let e = n.findIndex((e) => e === i);
+                    e > -1 && n.splice(e, 1);
+                  },
+                }
+              ),
+            };
+          });
+        }
+        requestAsPromise(e) {
+          var t;
+          let r,
+            { promise: n, abort: i } =
+              ((t = this.$request(e)),
+              {
+                promise: new Promise((e, n) => {
+                  let i = !1;
+                  function o() {
+                    i ||
+                      ((i = !0),
+                      n(new s("This operation was aborted.")),
+                      a.unsubscribe());
+                  }
+                  let a = t.subscribe({
+                    next(t) {
+                      (i = !0), e(t), o();
+                    },
+                    error(e) {
+                      (i = !0), n(e), o();
+                    },
+                    complete() {
+                      (i = !0), o();
+                    },
+                  });
+                  r = o;
+                }),
+                abort: r,
+              });
+          return new Promise((t, r) => {
+            e.signal?.addEventListener("abort", i),
+              n
+                .then((e) => {
+                  t(e.result.data);
+                })
+                .catch((e) => {
+                  r(u.from(e));
+                });
+          });
+        }
+        query(e, t, r) {
+          return this.requestAsPromise({
+            type: "query",
+            path: e,
+            input: t,
+            context: r?.context,
+            signal: r?.signal,
+          });
+        }
+        mutation(e, t, r) {
+          return this.requestAsPromise({
+            type: "mutation",
+            path: e,
+            input: t,
+            context: r?.context,
+            signal: r?.signal,
+          });
+        }
+        subscription(e, t, r) {
+          return this.$request({
+            type: "subscription",
+            path: e,
+            input: t,
+            context: r?.context,
+          }).subscribe({
+            next(e) {
+              "started" === e.result.type
+                ? r.onStarted?.()
+                : "stopped" === e.result.type
+                ? r.onStopped?.()
+                : r.onData?.(e.result.data);
+            },
+            error(e) {
+              r.onError?.(e);
+            },
+            complete() {
+              r.onComplete?.();
+            },
+          });
+        }
+        constructor(e) {
+          this.requestId = 0;
+          let t = (() => {
+            let t = e.transformer;
+            return t
+              ? "input" in t
+                ? e.transformer
+                : { input: t, output: t }
+              : {
+                  input: { serialize: (e) => e, deserialize: (e) => e },
+                  output: { serialize: (e) => e, deserialize: (e) => e },
+                };
+          })();
+          (this.runtime = {
+            transformer: {
+              serialize: (e) => t.input.serialize(e),
+              deserialize: (e) => t.output.deserialize(e),
+            },
+            combinedTransformer: t,
+          }),
+            (this.links = e.links.map((e) => e(this.runtime)));
+        }
+      }
+      function l(e) {
+        return new c(e);
+      }
+      let h = { query: "query", mutate: "mutation", subscribe: "subscription" };
+      function f(e) {
+        return (0, o.U6)((t) =>
+          e.hasOwnProperty(t)
+            ? e[t]
+            : "__untypedClient" === t
+            ? e
+            : (0, o.vX)(({ path: r, args: n }) => {
+                let i = [t, ...r],
+                  s = h[i.pop()],
+                  o = i.join(".");
+                return e[s](o, ...n);
+              })
+        );
+      }
+      function d(e) {
+        return e.__untypedClient;
+      }
+      let p = () => {
+        throw Error(
+          "Something went wrong. Please submit an issue at https://github.com/trpc/trpc/issues/new"
+        );
+      };
+      function y(e) {
+        let t = null,
+          r = null;
+        function n() {
+          let n = (function (t) {
+            let r = [[]],
+              n = 0;
+            for (;;) {
+              let i = t[n];
+              if (!i) break;
+              let s = r[r.length - 1];
+              if (i.aborted) {
+                i.reject?.(Error("Aborted")), n++;
+                continue;
+              }
+              if (e.validate(s.concat(i).map((e) => e.key))) {
+                s.push(i), n++;
+                continue;
+              }
+              if (0 === s.length) {
+                i.reject?.(Error("Input is too big for a single dispatch")),
+                  n++;
+                continue;
+              }
+              r.push([]);
+            }
+            return r;
+          })(t);
+          for (let i of (clearTimeout(r), (r = null), (t = null), n)) {
+            if (!i.length) continue;
+            let t = { items: i, cancel: p };
+            for (let e of i) e.batch = t;
+            let r = (e, r) => {
+                let n = t.items[e];
+                n.resolve?.(r),
+                  (n.batch = null),
+                  (n.reject = null),
+                  (n.resolve = null);
+              },
+              { promise: n, cancel: s } = e.fetch(
+                t.items.map((e) => e.key),
+                r
+              );
+            (t.cancel = s),
+              n
+                .then((e) => {
+                  for (let t = 0; t < e.length; t++) {
+                    let n = e[t];
+                    r(t, n);
+                  }
+                  for (let e of t.items)
+                    e.reject?.(Error("Missing result")), (e.batch = null);
+                })
+                .catch((e) => {
+                  for (let r of t.items) r.reject?.(e), (r.batch = null);
+                });
+          }
+        }
+        return {
+          load: function (e) {
+            let i = { aborted: !1, key: e, batch: null, resolve: p, reject: p },
+              s = new Promise((e, r) => {
+                (i.reject = r), (i.resolve = e), t || (t = []), t.push(i);
+              });
+            return (
+              r || (r = setTimeout(n)),
+              {
+                promise: s,
+                cancel: () => {
+                  (i.aborted = !0),
+                    i.batch?.items.every((e) => e.aborted) &&
+                      (i.batch.cancel(), (i.batch = null));
+                },
+              }
+            );
+          },
+        };
+      }
+      function m(e) {
+        var t;
+        return {
+          url: e.url.toString().replace(/\/$/, ""),
+          fetch: e.fetch,
+          AbortController: (t = e.AbortController)
+            ? t
+            : "undefined" != typeof window && window.AbortController
+            ? window.AbortController
+            : "undefined" != typeof globalThis && globalThis.AbortController
+            ? globalThis.AbortController
+            : null,
+        };
+      }
+      let b = { query: "GET", mutation: "POST" };
+      function v(e) {
+        return "input" in e
+          ? e.runtime.transformer.serialize(e.input)
+          : (function (e) {
+              let t = {};
+              for (let r = 0; r < e.length; r++) {
+                let n = e[r];
+                t[r] = n;
+              }
+              return t;
+            })(e.inputs.map((t) => e.runtime.transformer.serialize(t)));
+      }
+      let g = (e) => {
+          let t = e.url + "/" + e.path,
+            r = [];
+          if (("inputs" in e && r.push("batch=1"), "query" === e.type)) {
+            let t = v(e);
+            void 0 !== t &&
+              r.push(`input=${encodeURIComponent(JSON.stringify(t))}`);
+          }
+          return r.length && (t += "?" + r.join("&")), t;
+        },
+        w = (e) => {
+          if ("query" === e.type) return;
+          let t = v(e);
+          return void 0 !== t ? JSON.stringify(t) : void 0;
+        },
+        O = (e) =>
+          R({
+            ...e,
+            contentTypeHeader: "application/json",
+            getUrl: g,
+            getBody: w,
+          });
+      async function E(e, t) {
+        let r = e.getUrl(e),
+          n = e.getBody(e),
+          { type: i } = e,
+          s = await (async () => {
+            let t = await e.headers();
+            return Symbol.iterator in t ? Object.fromEntries(t) : t;
+          })();
+        if ("subscription" === i)
+          throw Error("Subscriptions should use wsLink");
+        let o = {
+          ...(e.contentTypeHeader
+            ? { "content-type": e.contentTypeHeader }
+            : {}),
+          ...(e.batchModeHeader
+            ? { "trpc-batch-mode": e.batchModeHeader }
+            : {}),
+          ...s,
+        };
+        return (function (e) {
+          if (e) return e;
+          if ("undefined" != typeof window && "function" == typeof window.fetch)
+            return window.fetch;
+          if (
+            "undefined" != typeof globalThis &&
+            "function" == typeof globalThis.fetch
+          )
+            return globalThis.fetch;
+          throw Error("No fetch implementation found");
+        })(e.fetch)(r, {
+          method: b[i],
+          signal: t?.signal,
+          body: n,
+          headers: o,
+        });
+      }
+      function R(e) {
+        let t = e.AbortController ? new e.AbortController() : null,
+          r = {},
+          n = !1;
+        return {
+          promise: new Promise((i, s) => {
+            E(e, t)
+              .then((e) => ((r.response = e), (n = !0), e.json()))
+              .then((e) => {
+                (r.responseJSON = e), i({ json: e, meta: r });
+              })
+              .catch((e) => {
+                (n = !0), s(u.from(e, { meta: r }));
+              });
+          }),
+          cancel: () => {
+            n || t?.abort();
+          },
+        };
+      }
+      function C(e) {
+        return function (t) {
+          let r = m(t),
+            n = t.maxURLLength ?? 1 / 0;
+          return (s) => {
+            let a = (i) => ({
+                validate: (e) => {
+                  if (n === 1 / 0) return !0;
+                  let t = e.map((e) => e.path).join(","),
+                    o = e.map((e) => e.input);
+                  return (
+                    g({ ...r, runtime: s, type: i, path: t, inputs: o })
+                      .length <= n
+                  );
+                },
+                fetch: e({ ...r, runtime: s, type: i, opts: t }),
+              }),
+              c = y(a("query")),
+              l = y(a("mutation")),
+              h = { query: c, subscription: y(a("subscription")), mutation: l };
+            return ({ op: e }) =>
+              i((t) => {
+                let r,
+                  { promise: n, cancel: i } = h[e.type].load(e);
+                return (
+                  n
+                    .then((e) => {
+                      r = e;
+                      let n = (0, o.u7)(e.json, s.transformer);
+                      if (!n.ok)
+                        return void t.error(u.from(n.error, { meta: e.meta }));
+                      t.next({ context: e.meta, result: n.result }),
+                        t.complete();
+                    })
+                    .catch((e) => {
+                      t.error(u.from(e, { meta: r?.meta }));
+                    }),
+                  () => {
+                    i();
+                  }
+                );
+              });
+          };
+        };
+      }
+      let S = C((e) => (t) => {
+        let r = t.map((e) => e.path).join(","),
+          n = t.map((e) => e.input),
+          { promise: i, cancel: s } = O({
+            ...e,
+            path: r,
+            inputs: n,
+            headers: () =>
+              e.opts.headers
+                ? "function" == typeof e.opts.headers
+                  ? e.opts.headers({ opList: t })
+                  : e.opts.headers
+                : {},
+          });
+        return {
+          promise: i.then((e) =>
+            (Array.isArray(e.json) ? e.json : t.map(() => e.json)).map((t) => ({
+              meta: e.meta,
+              json: t,
+            }))
+          ),
+          cancel: s,
+        };
+      });
+      async function Q(e) {
+        let t = e.parse ?? JSON.parse;
+        await q(
+          e.readableStream,
+          (r) => {
+            if (e.signal?.aborted || !r || "}" === r) return;
+            let n = r.indexOf(":"),
+              i = r.substring(2, n - 1),
+              s = r.substring(n + 1);
+            e.onSingle(Number(i), t(s));
+          },
+          e.textDecoder
+        );
+      }
+      async function q(e, t, r) {
+        var n, i;
+        let s = "",
+          o = (e) => {
+            let n = r.decode(e).split("\n");
+            if (1 === n.length) s += n[0];
+            else if (n.length > 1) {
+              t(s + n[0]);
+              for (let e = 1; e < n.length - 1; e++) t(n[e]);
+              s = n[n.length - 1];
+            }
+          };
+        "getReader" in e
+          ? await P(e, o)
+          : await ((n = e),
+            (i = o),
+            new Promise((e) => {
+              n.on("data", i), n.on("end", e);
+            })),
+          t(s);
+      }
+      async function P(e, t) {
+        let r = e.getReader(),
+          n = await r.read();
+        for (; !n.done; ) t(n.value), (n = await r.read());
+      }
+      function x(e) {
+        return (t) => {
+          let r = m(t);
+          return (n) =>
+            ({ op: s }) =>
+              i((i) => {
+                let a,
+                  { path: c, input: l, type: h } = s,
+                  { promise: f, cancel: d } = e.requester({
+                    ...r,
+                    runtime: n,
+                    type: h,
+                    path: c,
+                    input: l,
+                    headers: () =>
+                      t.headers
+                        ? "function" == typeof t.headers
+                          ? t.headers({ op: s })
+                          : t.headers
+                        : {},
+                  });
+                return (
+                  f
+                    .then((e) => {
+                      a = e.meta;
+                      let t = (0, o.u7)(e.json, n.transformer);
+                      if (!t.ok)
+                        return void i.error(u.from(t.error, { meta: a }));
+                      i.next({ context: e.meta, result: t.result }),
+                        i.complete();
+                    })
+                    .catch((e) => {
+                      i.error(u.from(e, { meta: a }));
+                    }),
+                  () => {
+                    d();
+                  }
+                );
+              });
+        };
+      }
+      C((e) => {
+        let t = (function (e) {
+          if (e) return e;
+          if ("undefined" != typeof window && window.TextDecoder)
+            return new window.TextDecoder();
+          if ("undefined" != typeof globalThis && globalThis.TextDecoder)
+            return new globalThis.TextDecoder();
+          throw Error("No TextDecoder implementation found");
+        })(e.opts.textDecoder);
+        return (r, n) => {
+          let i = r.map((e) => e.path).join(","),
+            s = r.map((e) => e.input),
+            { cancel: o, promise: a } = ((e, t) => {
+              let r = e.AbortController ? new e.AbortController() : null;
+              return {
+                cancel: () => r?.abort(),
+                promise: E(
+                  {
+                    ...e,
+                    contentTypeHeader: "application/json",
+                    batchModeHeader: "stream",
+                    getUrl: g,
+                    getBody: w,
+                  },
+                  r
+                ).then(async (n) => {
+                  if (!n.body) throw Error("Received response without body");
+                  let i = { response: n };
+                  return Q({
+                    readableStream: n.body,
+                    onSingle: t,
+                    parse: (e) => ({ json: JSON.parse(e), meta: i }),
+                    signal: r?.signal,
+                    textDecoder: e.textDecoder,
+                  });
+                }),
+              };
+            })(
+              {
+                ...e,
+                textDecoder: t,
+                path: i,
+                inputs: s,
+                headers: () =>
+                  e.opts.headers
+                    ? "function" == typeof e.opts.headers
+                      ? e.opts.headers({ opList: r })
+                      : e.opts.headers
+                    : {},
+              },
+              (e, t) => {
+                n(e, t);
+              }
+            );
+          return { promise: a.then(() => []), cancel: o };
+        };
+      });
+      let D = x({ requester: O }),
+        I = {
+          css: {
+            query: ["72e3ff", "3fb0d8"],
+            mutation: ["c5a3fc", "904dfc"],
+            subscription: ["ff49e1", "d83fbe"],
+          },
+          ansi: {
+            regular: {
+              query: ["\x1b[30;46m", "\x1b[97;46m"],
+              mutation: ["\x1b[30;45m", "\x1b[97;45m"],
+              subscription: ["\x1b[30;42m", "\x1b[97;42m"],
+            },
+            bold: {
+              query: ["\x1b[1;30;46m", "\x1b[1;97;46m"],
+              mutation: ["\x1b[1;30;45m", "\x1b[1;97;45m"],
+              subscription: ["\x1b[1;30;42m", "\x1b[1;97;42m"],
+            },
+          },
+        };
+      function j(e = {}) {
+        let { enabled: t = () => !0 } = e,
+          r = e.colorMode ?? ("undefined" == typeof window ? "ansi" : "css"),
+          {
+            logger: n = (
+              ({ c: e = console, colorMode: t = "css" }) =>
+              (r) => {
+                let n = r.input,
+                  i =
+                    "undefined" != typeof FormData && n instanceof FormData
+                      ? Object.fromEntries(n)
+                      : n,
+                  { parts: s, args: o } = (function (e) {
+                    let { direction: t, type: r, path: n, id: i, input: s } = e,
+                      o = [],
+                      a = [];
+                    if ("ansi" === e.colorMode) {
+                      let [s, u] = I.ansi.regular[r],
+                        [c, l] = I.ansi.bold[r];
+                      return (
+                        o.push(
+                          "up" === t ? s : u,
+                          "up" === t ? ">>" : "<<",
+                          r,
+                          "up" === t ? c : l,
+                          `#${i}`,
+                          n,
+                          "\x1b[0m"
+                        ),
+                        "up" === t
+                          ? a.push({ input: e.input })
+                          : a.push({
+                              input: e.input,
+                              result:
+                                "result" in e.result
+                                  ? e.result.result
+                                  : e.result,
+                              elapsedMs: e.elapsedMs,
+                            }),
+                        { parts: o, args: a }
+                      );
+                    }
+                    let [u, c] = I.css[r],
+                      l = `
+    background-color: #${"up" === t ? u : c};
+    color: ${"up" === t ? "black" : "white"};
+    padding: 2px;
+  `;
+                    return (
+                      o.push(
+                        "%c",
+                        "up" === t ? ">>" : "<<",
+                        r,
+                        `#${i}`,
+                        `%c${n}%c`,
+                        "%O"
+                      ),
+                      a.push(
+                        l,
+                        `${l}; font-weight: bold;`,
+                        `${l}; font-weight: normal;`
+                      ),
+                      "up" === t
+                        ? a.push({ input: s, context: e.context })
+                        : a.push({
+                            input: s,
+                            result: e.result,
+                            elapsedMs: e.elapsedMs,
+                            context: e.context,
+                          }),
+                      { parts: o, args: a }
+                    );
+                  })({ ...r, colorMode: t, input: i });
+                e[
+                  "down" === r.direction &&
+                  r.result &&
+                  (r.result instanceof Error || "error" in r.result.result)
+                    ? "error"
+                    : "log"
+                ].apply(null, [s.join(" ")].concat(o));
+              }
+            )({ c: e.console, colorMode: r }),
+          } = e;
+        return () =>
+          ({ op: e, next: r }) =>
+            i((i) => {
+              var s;
+              t({ ...e, direction: "up" }) && n({ ...e, direction: "up" });
+              let o = Date.now();
+              function a(r) {
+                let i = Date.now() - o;
+                t({ ...e, direction: "down", result: r }) &&
+                  n({ ...e, direction: "down", elapsedMs: i, result: r });
+              }
+              return r(e)
+                .pipe(
+                  ((s = {
+                    next(e) {
+                      a(e);
+                    },
+                    error(e) {
+                      a(e);
+                    },
+                  }),
+                  (e) => ({
+                    subscribe: (t) =>
+                      e.subscribe({
+                        next(e) {
+                          s.next?.(e), t.next?.(e);
+                        },
+                        error(e) {
+                          s.error?.(e), t.error?.(e);
+                        },
+                        complete() {
+                          s.complete?.(), t.complete?.();
+                        },
+                      }),
+                  }))
+                )
+                .subscribe(i);
+            });
+      }
+      function T(e) {
+        return Array.isArray(e) ? e : [e];
+      }
+      function A(e) {
+        return (t) => {
+          let r = T(e.true).map((e) => e(t)),
+            n = T(e.false).map((e) => e(t));
+          return (t) =>
+            i((i) => {
+              let s = e.condition(t.op) ? r : n;
+              return a({ op: t.op, links: s }).subscribe(i);
+            });
+        };
+      }
+      x({
+        requester: (e) => {
+          if ("mutation" !== e.type)
+            throw Error("We only handle mutations with formdata");
+          return R({
+            ...e,
+            getUrl: () => `${e.url}/${e.path}`,
+            getBody(e) {
+              if ("input" in e) {
+                if (!(e.input instanceof FormData))
+                  throw Error("Input is not FormData");
+                return e.input;
+              }
+            },
+          });
+        },
+      });
+    },
+    32290: (e, t, r) => {
+      r.d(t, { G: () => n });
+      function n(e, t) {
+        return "function" == typeof e ? e(...t) : !!e;
+      }
+    },
+    32944: (e, t, r) => {
+      r.d(t, { h: () => s });
+      var n = r(7620),
+        i = n.createContext(
+          (function () {
+            let e = !1;
+            return {
+              clearReset: () => {
+                e = !1;
+              },
+              reset: () => {
+                e = !0;
+              },
+              isReset: () => e,
+            };
+          })()
+        ),
+        s = () => n.useContext(i);
+    },
+    33827: (e, t, r) => {
+      function n(e, ...t) {
+        let r = Object.assign(Object.create(null), e);
+        for (let e of t)
+          for (let t in e) {
+            if (t in r && r[t] !== e[t]) throw Error(`Duplicate key ${t}`);
+            r[t] = e[t];
+          }
+        return r;
+      }
+      function i(e) {
+        return !!e && !Array.isArray(e) && "object" == typeof e;
+      }
+      r.d(t, {
+        U6: () => l,
+        vX: () => c,
+        e2: () => o,
+        Gv: () => i,
+        u7: () => O,
+      });
+      class s extends Error {}
+      function o(e) {
+        if (e instanceof Error) return e;
+        let t = typeof e;
+        if ("undefined" !== t && "function" !== t && null !== e) {
+          if ("object" !== t) return Error(String(e));
+          if (i(e)) {
+            let t = new s();
+            for (let r in e) t[r] = e[r];
+            return t;
+          }
+        }
+      }
+      class a extends Error {
+        constructor(e) {
+          let t = o(e.cause);
+          super(e.message ?? t?.message ?? e.code, { cause: t }),
+            (this.code = e.code),
+            (this.name = "TRPCError"),
+            this.cause || (this.cause = t);
+        }
+      }
+      !(function (e) {
+        let t = Object.create(null);
+        for (let r in e) t[e[r]] = r;
+      })({
+        PARSE_ERROR: -32700,
+        BAD_REQUEST: -32600,
+        INTERNAL_SERVER_ERROR: -32603,
+        NOT_IMPLEMENTED: -32603,
+        UNAUTHORIZED: -32001,
+        FORBIDDEN: -32003,
+        NOT_FOUND: -32004,
+        METHOD_NOT_SUPPORTED: -32005,
+        TIMEOUT: -32008,
+        CONFLICT: -32009,
+        PRECONDITION_FAILED: -32012,
+        PAYLOAD_TOO_LARGE: -32013,
+        UNPROCESSABLE_CONTENT: -32022,
+        TOO_MANY_REQUESTS: -32029,
+        CLIENT_CLOSED_REQUEST: -32099,
+      });
+      let u = () => {},
+        c = (e) =>
+          (function e(t, r) {
+            return new Proxy(u, {
+              get(n, i) {
+                if ("string" == typeof i && "then" !== i)
+                  return e(t, [...r, i]);
+              },
+              apply(e, n, i) {
+                let s = "apply" === r[r.length - 1];
+                return t({
+                  args: s ? (i.length >= 2 ? i[1] : []) : i,
+                  path: s ? r.slice(0, -1) : r,
+                });
+              },
+            });
+          })(e, []),
+        l = (e) =>
+          new Proxy(u, {
+            get(t, r) {
+              if ("string" == typeof r && "then" !== r) return e(r);
+            },
+          }),
+        h = ({ shape: e }) => e,
+        f = "middlewareMarker";
+      function d(e) {
+        if ("function" == typeof e) return e;
+        if ("function" == typeof e.parseAsync) return e.parseAsync.bind(e);
+        if ("function" == typeof e.parse) return e.parse.bind(e);
+        if ("function" == typeof e.validateSync) return e.validateSync.bind(e);
+        if ("function" == typeof e.create) return e.create.bind(e);
+        if ("function" == typeof e.assert) return (t) => (e.assert(t), t);
+        throw Error("Could not find a validator fn");
+      }
+      function p(e, t) {
+        let { middlewares: r = [], inputs: i, meta: s, ...o } = t;
+        return y({
+          ...n(e, o),
+          inputs: [...e.inputs, ...(i ?? [])],
+          middlewares: [...e.middlewares, ...r],
+          meta: e.meta && s ? { ...e.meta, ...s } : s ?? e.meta,
+        });
+      }
+      function y(e = {}) {
+        let t = { procedure: !0, inputs: [], middlewares: [], ...e };
+        return {
+          _def: t,
+          input(e) {
+            let r = d(e);
+            return p(t, {
+              inputs: [e],
+              middlewares: [
+                (function (e) {
+                  let t = async function (t) {
+                    let r,
+                      n = await t.getRawInput();
+                    try {
+                      r = await e(n);
+                    } catch (e) {
+                      throw new a({ code: "BAD_REQUEST", cause: e });
+                    }
+                    let s = i(t.input) && i(r) ? { ...t.input, ...r } : r;
+                    return t.next({ input: s });
+                  };
+                  return (t._type = "input"), t;
+                })(r),
+              ],
+            });
+          },
+          output(e) {
+            let r = d(e);
+            return p(t, {
+              output: e,
+              middlewares: [
+                (function (e) {
+                  let t = async function ({ next: t }) {
+                    let r = await t();
+                    if (!r.ok) return r;
+                    try {
+                      let t = await e(r.data);
+                      return { ...r, data: t };
+                    } catch (e) {
+                      throw new a({
+                        message: "Output validation failed",
+                        code: "INTERNAL_SERVER_ERROR",
+                        cause: e,
+                      });
+                    }
+                  };
+                  return (t._type = "output"), t;
+                })(r),
+              ],
+            });
+          },
+          meta: (e) => p(t, { meta: e }),
+          use: (e) =>
+            p(t, { middlewares: "_middlewares" in e ? e._middlewares : [e] }),
+          query: (e) => m({ ...t, type: "query" }, e),
+          mutation: (e) => m({ ...t, type: "mutation" }, e),
+          subscription: (e) => m({ ...t, type: "subscription" }, e),
+        };
+      }
+      function m(e, t) {
+        var r = p(e, {
+          resolver: t,
+          middlewares: [
+            async function (e) {
+              return { marker: f, ok: !0, data: await t(e), ctx: e.ctx };
+            },
+          ],
+        })._def;
+        async function n(e) {
+          if (!e || !("getRawInput" in e)) throw Error(b);
+          async function t(n = { index: 0, ctx: e.ctx }) {
+            try {
+              let i = r.middlewares[n.index];
+              return await i({
+                ctx: n.ctx,
+                type: e.type,
+                path: e.path,
+                getRawInput: n.getRawInput ?? e.getRawInput,
+                meta: r.meta,
+                input: n.input,
+                next: (e) =>
+                  t({
+                    index: n.index + 1,
+                    ctx: e && "ctx" in e ? { ...n.ctx, ...e.ctx } : n.ctx,
+                    input: e && "input" in e ? e.input : n.input,
+                    getRawInput:
+                      e && "getRawInput" in e ? e.getRawInput : n.getRawInput,
+                  }),
+              });
+            } catch (e) {
+              return {
+                ok: !1,
+                error: (function (e) {
+                  if (
+                    e instanceof a ||
+                    (e instanceof Error && "TRPCError" === e.name)
+                  )
+                    return e;
+                  let t = new a({ code: "INTERNAL_SERVER_ERROR", cause: e });
+                  return (
+                    e instanceof Error && e.stack && (t.stack = e.stack), t
+                  );
+                })(e),
+                marker: f,
+              };
+            }
+          }
+          let n = await t();
+          if (!n)
+            throw new a({
+              code: "INTERNAL_SERVER_ERROR",
+              message:
+                "No result from middlewares - did you forget to `return next()`?",
+            });
+          if (!n.ok) throw n.error;
+          return n.data;
+        }
+        return (n._def = r), n;
+      }
+      Symbol("unsetMarker");
+      let b = `
+This is a client-only function.
+If you want to call this function on the server, see https://trpc.io/docs/v11/server/server-side-calls
+`.trim(),
+        v =
+          "undefined" == typeof window ||
+          "Deno" in window ||
+          globalThis.process?.env?.NODE_ENV === "test" ||
+          !!globalThis.process?.env?.JEST_WORKER_ID ||
+          !!globalThis.process?.env?.VITEST_WORKER_ID,
+        g = {
+          _default: !0,
+          input: { serialize: (e) => e, deserialize: (e) => e },
+          output: { serialize: (e) => e, deserialize: (e) => e },
+        };
+      class w extends Error {
+        constructor() {
+          super("Unable to transform response from server");
+        }
+      }
+      function O(e, t) {
+        let r;
+        try {
+          r = (function (e, t) {
+            if ("error" in e) {
+              let r = t.deserialize(e.error);
+              return { ok: !1, error: { ...e, error: r } };
+            }
+            return {
+              ok: !0,
+              result: {
+                ...e.result,
+                ...((!e.result.type || "data" === e.result.type) && {
+                  type: "data",
+                  data: t.deserialize(e.result.data),
+                }),
+              },
+            };
+          })(e, t);
+        } catch (e) {
+          throw new w();
+        }
+        if (
+          (!r.ok &&
+            (!i(r.error.error) || "number" != typeof r.error.error.code)) ||
+          (r.ok && !i(r.result))
+        )
+          throw new w();
+        return r;
+      }
+      let E = {
+          _ctx: null,
+          _errorShape: null,
+          _meta: null,
+          queries: {},
+          mutations: {},
+          subscriptions: {},
+          errorFormatter: h,
+          transformer: g,
+        },
+        R = ["then"];
+      function C(e) {
+        return function (t) {
+          var r;
+          let n = new Set(Object.keys(t).filter((e) => R.includes(e)));
+          if (n.size > 0)
+            throw Error(
+              "Reserved words used in `router({})` call: " +
+                Array.from(n).join(", ")
+            );
+          let i = ((r = {}), Object.assign(Object.create(null), r));
+          !(function e(t, r = "") {
+            for (let [n, s] of Object.entries(t ?? {})) {
+              let t = `${r}${n}`;
+              if ("router" in s._def) {
+                e(s._def.procedures, `${t}.`);
+                continue;
+              }
+              if (i[t]) throw Error(`Duplicate key: ${t}`);
+              i[t] = s;
+            }
+          })(t);
+          let s = { _config: e, router: !0, procedures: i, ...E, record: t };
+          return {
+            ...t,
+            _def: s,
+            createCaller: (e) =>
+              c(({ path: t, args: r }) => {
+                let n = t.join("."),
+                  i = s.procedures[n];
+                return i({
+                  path: n,
+                  getRawInput: async () => r[0],
+                  ctx: e,
+                  type: i._def.type,
+                });
+              }),
+          };
+        };
+      }
+      function S(...e) {
+        let t = n({}, ...e.map((e) => e._def.record));
+        return C({
+          errorFormatter: e.reduce((e, t) => {
+            if (
+              t._def._config.errorFormatter &&
+              t._def._config.errorFormatter !== h
+            ) {
+              if (e !== h && e !== t._def._config.errorFormatter)
+                throw Error("You seem to have several error formatters");
+              return t._def._config.errorFormatter;
+            }
+            return e;
+          }, h),
+          transformer: e.reduce((e, t) => {
+            if (
+              t._def._config.transformer &&
+              t._def._config.transformer !== g
+            ) {
+              if (e !== g && e !== t._def._config.transformer)
+                throw Error("You seem to have several transformers");
+              return t._def._config.transformer;
+            }
+            return e;
+          }, g),
+          isDev: e.some((e) => e._def._config.isDev),
+          allowOutsideOfServer: e.some(
+            (e) => e._def._config.allowOutsideOfServer
+          ),
+          isServer: e.some((e) => e._def._config.isServer),
+          $types: e[0]?._def._config.$types,
+        })(t);
+      }
+      class Q {
+        context() {
+          return new Q();
+        }
+        meta() {
+          return new Q();
+        }
+        create(e) {
+          var t,
+            r = e;
+          let n = r?.errorFormatter ?? h,
+            i = {
+              transformer:
+                "input" in (t = r?.transformer ?? g)
+                  ? t
+                  : { input: t, output: t },
+              isDev:
+                r?.isDev ?? globalThis.process?.env?.NODE_ENV !== "production",
+              allowOutsideOfServer: r?.allowOutsideOfServer ?? !1,
+              errorFormatter: n,
+              isServer: r?.isServer ?? v,
+              $types: l((e) => {
+                throw Error(
+                  `Tried to access "$types.${e}" which is not available at runtime`
+                );
+              }),
+            };
+          if (!(r?.isServer ?? v) && r?.allowOutsideOfServer !== !0)
+            throw Error(
+              "You're trying to use @trpc/server in a non-server environment. This is not supported by default."
+            );
+          return {
+            _config: i,
+            procedure: y({ meta: r?.defaultMeta }),
+            middleware: function (e) {
+              return (function e(t) {
+                return {
+                  _middlewares: t,
+                  unstable_pipe: (r) =>
+                    e([...t, ...("_middlewares" in r ? r._middlewares : [r])]),
+                };
+              })([e]);
+            },
+            router: C(i),
+            mergeRouters: S,
+            createCallerFactory: function (e) {
+              let t = e._def;
+              return function (e) {
+                return c(({ path: r, args: n }) => {
+                  let i = r.join("."),
+                    s = t.procedures[i],
+                    o = (e) =>
+                      s({
+                        path: i,
+                        getRawInput: async () => n[0],
+                        ctx: e,
+                        type: s._def.type,
+                      });
+                  if ("function" == typeof e) {
+                    let t = e();
+                    return t instanceof Promise ? t.then(o) : o(t);
+                  }
+                  return o(e);
+                });
+              };
+            },
+          };
+        }
+      }
+      new Q();
+    },
+    35240: (e, t, r) => {
+      r.d(t, { np: () => a });
+      var n = r(28902),
+        i = r(33827),
+        s = r(76702),
+        o = r(79954);
+      function a(e) {
+        return (0, i.U6)((t) =>
+          "client" === t
+            ? (0, n.Xq)(e.client)
+            : s.E.includes(t)
+            ? e[t]
+            : (0, i.vX)((r) => {
+                let n = [t, ...r.path],
+                  i = n.pop(),
+                  s = [...r.args],
+                  a = s.shift(),
+                  u = ((e) => {
+                    switch (e) {
+                      case "fetch":
+                      case "ensureData":
+                      case "prefetch":
+                      case "getData":
+                      case "setData":
+                        return "query";
+                      case "fetchInfinite":
+                      case "prefetchInfinite":
+                      case "getInfiniteData":
+                      case "setInfiniteData":
+                        return "infinite";
+                      case "cancel":
+                      case "invalidate":
+                      case "refetch":
+                      case "reset":
+                        return "any";
+                    }
+                  })(i),
+                  c = (0, o.H)(n, a, u);
+                return {
+                  fetch: () => e.fetchQuery(c, ...s),
+                  fetchInfinite: () => e.fetchInfiniteQuery(c, s[0]),
+                  prefetch: () => e.prefetchQuery(c, ...s),
+                  prefetchInfinite: () => e.prefetchInfiniteQuery(c, s[0]),
+                  ensureData: () => e.ensureQueryData(c, ...s),
+                  invalidate: () => e.invalidateQueries(c, ...s),
+                  reset: () => e.resetQueries(c, ...s),
+                  refetch: () => e.refetchQueries(c, ...s),
+                  cancel: () => e.cancelQuery(c, ...s),
+                  setData: () => {
+                    e.setQueryData(c, s[0], s[1]);
+                  },
+                  setInfiniteData: () => {
+                    e.setInfiniteQueryData(c, s[0], s[1]);
+                  },
+                  getData: () => e.getQueryData(c),
+                  getInfiniteData: () => e.getInfiniteQueryData(c),
+                }[i]();
+              })
+        );
+      }
+    },
+    35433: (e, t, r) => {
+      r.d(t, { E: () => y });
+      var n = r(69950),
+        i = r(95635),
+        s = r(28306),
+        o = r(68458),
+        a = class extends o.k {
+          constructor(e) {
+            super(),
+              (this.#e = !1),
+              (this.#t = e.defaultOptions),
+              this.#r(e.options),
+              (this.#n = []),
+              (this.#i = e.cache),
+              (this.queryKey = e.queryKey),
+              (this.queryHash = e.queryHash),
+              (this.#s =
+                e.state ||
+                (function (e) {
+                  let t =
+                      "function" == typeof e.initialData
+                        ? e.initialData()
+                        : e.initialData,
+                    r = void 0 !== t,
+                    n = r
+                      ? "function" == typeof e.initialDataUpdatedAt
+                        ? e.initialDataUpdatedAt()
+                        : e.initialDataUpdatedAt
+                      : 0;
+                  return {
+                    data: t,
+                    dataUpdateCount: 0,
+                    dataUpdatedAt: r ? n ?? Date.now() : 0,
+                    error: null,
+                    errorUpdateCount: 0,
+                    errorUpdatedAt: 0,
+                    fetchFailureCount: 0,
+                    fetchFailureReason: null,
+                    fetchMeta: null,
+                    isInvalidated: !1,
+                    status: r ? "success" : "pending",
+                    fetchStatus: "idle",
+                  };
+                })(this.options)),
+              (this.state = this.#s),
+              this.scheduleGc();
+          }
+          #s;
+          #o;
+          #i;
+          #a;
+          #u;
+          #n;
+          #t;
+          #e;
+          get meta() {
+            return this.options.meta;
+          }
+          #r(e) {
+            (this.options = { ...this.#t, ...e }),
+              this.updateGcTime(this.options.gcTime);
+          }
+          optionalRemove() {
+            this.#n.length ||
+              "idle" !== this.state.fetchStatus ||
+              this.#i.remove(this);
+          }
+          setData(e, t) {
+            let r = (0, n.pl)(this.state.data, e, this.options);
+            return (
+              this.#c({
+                data: r,
+                type: "success",
+                dataUpdatedAt: t?.updatedAt,
+                manual: t?.manual,
+              }),
+              r
+            );
+          }
+          setState(e, t) {
+            this.#c({ type: "setState", state: e, setStateOptions: t });
+          }
+          cancel(e) {
+            let t = this.#a;
+            return (
+              this.#u?.cancel(e),
+              t ? t.then(n.lQ).catch(n.lQ) : Promise.resolve()
+            );
+          }
+          destroy() {
+            super.destroy(), this.cancel({ silent: !0 });
+          }
+          reset() {
+            this.destroy(), this.setState(this.#s);
+          }
+          isActive() {
+            return this.#n.some((e) => !1 !== e.options.enabled);
+          }
+          isDisabled() {
+            return this.getObserversCount() > 0 && !this.isActive();
+          }
+          isStale() {
+            return (
+              this.state.isInvalidated ||
+              !this.state.dataUpdatedAt ||
+              this.#n.some((e) => e.getCurrentResult().isStale)
+            );
+          }
+          isStaleByTime(e = 0) {
+            return (
+              this.state.isInvalidated ||
+              !this.state.dataUpdatedAt ||
+              !(0, n.j3)(this.state.dataUpdatedAt, e)
+            );
+          }
+          onFocus() {
+            let e = this.#n.find((e) => e.shouldFetchOnWindowFocus());
+            e?.refetch({ cancelRefetch: !1 }), this.#u?.continue();
+          }
+          onOnline() {
+            let e = this.#n.find((e) => e.shouldFetchOnReconnect());
+            e?.refetch({ cancelRefetch: !1 }), this.#u?.continue();
+          }
+          addObserver(e) {
+            this.#n.includes(e) ||
+              (this.#n.push(e),
+              this.clearGcTimeout(),
+              this.#i.notify({
+                type: "observerAdded",
+                query: this,
+                observer: e,
+              }));
+          }
+          removeObserver(e) {
+            this.#n.includes(e) &&
+              ((this.#n = this.#n.filter((t) => t !== e)),
+              this.#n.length ||
+                (this.#u &&
+                  (this.#e
+                    ? this.#u.cancel({ revert: !0 })
+                    : this.#u.cancelRetry()),
+                this.scheduleGc()),
+              this.#i.notify({
+                type: "observerRemoved",
+                query: this,
+                observer: e,
+              }));
+          }
+          getObserversCount() {
+            return this.#n.length;
+          }
+          invalidate() {
+            this.state.isInvalidated || this.#c({ type: "invalidate" });
+          }
+          fetch(e, t) {
+            if ("idle" !== this.state.fetchStatus) {
+              if (this.state.dataUpdatedAt && t?.cancelRefetch)
+                this.cancel({ silent: !0 });
+              else if (this.#a) return this.#u?.continueRetry(), this.#a;
+            }
+            if ((e && this.#r(e), !this.options.queryFn)) {
+              let e = this.#n.find((e) => e.options.queryFn);
+              e && this.#r(e.options);
+            }
+            let r = new AbortController(),
+              n = { queryKey: this.queryKey, meta: this.meta },
+              i = (e) => {
+                Object.defineProperty(e, "signal", {
+                  enumerable: !0,
+                  get: () => ((this.#e = !0), r.signal),
+                });
+              };
+            i(n);
+            let o = () =>
+                this.options.queryFn
+                  ? ((this.#e = !1), this.options.persister)
+                    ? this.options.persister(this.options.queryFn, n, this)
+                    : this.options.queryFn(n)
+                  : Promise.reject(
+                      Error(`Missing queryFn: '${this.options.queryHash}'`)
+                    ),
+              a = {
+                fetchOptions: t,
+                options: this.options,
+                queryKey: this.queryKey,
+                state: this.state,
+                fetchFn: o,
+              };
+            i(a),
+              this.options.behavior?.onFetch(a, this),
+              (this.#o = this.state),
+              ("idle" === this.state.fetchStatus ||
+                this.state.fetchMeta !== a.fetchOptions?.meta) &&
+                this.#c({ type: "fetch", meta: a.fetchOptions?.meta });
+            let u = (e) => {
+              ((0, s.wm)(e) && e.silent) ||
+                this.#c({ type: "error", error: e }),
+                (0, s.wm)(e) ||
+                  (this.#i.config.onError?.(e, this),
+                  this.#i.config.onSettled?.(this.state.data, e, this)),
+                this.isFetchingOptimistic || this.scheduleGc(),
+                (this.isFetchingOptimistic = !1);
+            };
+            return (
+              (this.#u = (0, s.II)({
+                fn: a.fetchFn,
+                abort: r.abort.bind(r),
+                onSuccess: (e) => {
+                  if (void 0 === e)
+                    return void u(Error(`${this.queryHash} data is undefined`));
+                  this.setData(e),
+                    this.#i.config.onSuccess?.(e, this),
+                    this.#i.config.onSettled?.(e, this.state.error, this),
+                    this.isFetchingOptimistic || this.scheduleGc(),
+                    (this.isFetchingOptimistic = !1);
+                },
+                onError: u,
+                onFail: (e, t) => {
+                  this.#c({ type: "failed", failureCount: e, error: t });
+                },
+                onPause: () => {
+                  this.#c({ type: "pause" });
+                },
+                onContinue: () => {
+                  this.#c({ type: "continue" });
+                },
+                retry: a.options.retry,
+                retryDelay: a.options.retryDelay,
+                networkMode: a.options.networkMode,
+              })),
+              (this.#a = this.#u.promise),
+              this.#a
+            );
+          }
+          #c(e) {
+            let t = (t) => {
+              switch (e.type) {
+                case "failed":
+                  return {
+                    ...t,
+                    fetchFailureCount: e.failureCount,
+                    fetchFailureReason: e.error,
+                  };
+                case "pause":
+                  return { ...t, fetchStatus: "paused" };
+                case "continue":
+                  return { ...t, fetchStatus: "fetching" };
+                case "fetch":
+                  return {
+                    ...t,
+                    fetchFailureCount: 0,
+                    fetchFailureReason: null,
+                    fetchMeta: e.meta ?? null,
+                    fetchStatus: (0, s.v_)(this.options.networkMode)
+                      ? "fetching"
+                      : "paused",
+                    ...(!t.dataUpdatedAt && { error: null, status: "pending" }),
+                  };
+                case "success":
+                  return {
+                    ...t,
+                    data: e.data,
+                    dataUpdateCount: t.dataUpdateCount + 1,
+                    dataUpdatedAt: e.dataUpdatedAt ?? Date.now(),
+                    error: null,
+                    isInvalidated: !1,
+                    status: "success",
+                    ...(!e.manual && {
+                      fetchStatus: "idle",
+                      fetchFailureCount: 0,
+                      fetchFailureReason: null,
+                    }),
+                  };
+                case "error":
+                  let r = e.error;
+                  if ((0, s.wm)(r) && r.revert && this.#o)
+                    return { ...this.#o, fetchStatus: "idle" };
+                  return {
+                    ...t,
+                    error: r,
+                    errorUpdateCount: t.errorUpdateCount + 1,
+                    errorUpdatedAt: Date.now(),
+                    fetchFailureCount: t.fetchFailureCount + 1,
+                    fetchFailureReason: r,
+                    fetchStatus: "idle",
+                    status: "error",
+                  };
+                case "invalidate":
+                  return { ...t, isInvalidated: !0 };
+                case "setState":
+                  return { ...t, ...e.state };
+              }
+            };
+            (this.state = t(this.state)),
+              i.j.batch(() => {
+                this.#n.forEach((e) => {
+                  e.onQueryUpdate();
+                }),
+                  this.#i.notify({ query: this, type: "updated", action: e });
+              });
+          }
+        },
+        u = r(22844),
+        c = class extends u.Q {
+          constructor(e = {}) {
+            super(), (this.config = e), (this.#l = new Map());
+          }
+          #l;
+          build(e, t, r) {
+            let i = t.queryKey,
+              s = t.queryHash ?? (0, n.F$)(i, t),
+              o = this.get(s);
+            return (
+              o ||
+                ((o = new a({
+                  cache: this,
+                  queryKey: i,
+                  queryHash: s,
+                  options: e.defaultQueryOptions(t),
+                  state: r,
+                  defaultOptions: e.getQueryDefaults(i),
+                })),
+                this.add(o)),
+              o
+            );
+          }
+          add(e) {
+            this.#l.has(e.queryHash) ||
+              (this.#l.set(e.queryHash, e),
+              this.notify({ type: "added", query: e }));
+          }
+          remove(e) {
+            let t = this.#l.get(e.queryHash);
+            t &&
+              (e.destroy(),
+              t === e && this.#l.delete(e.queryHash),
+              this.notify({ type: "removed", query: e }));
+          }
+          clear() {
+            i.j.batch(() => {
+              this.getAll().forEach((e) => {
+                this.remove(e);
+              });
+            });
+          }
+          get(e) {
+            return this.#l.get(e);
+          }
+          getAll() {
+            return [...this.#l.values()];
+          }
+          find(e) {
+            let t = { exact: !0, ...e };
+            return this.getAll().find((e) => (0, n.MK)(t, e));
+          }
+          findAll(e = {}) {
+            let t = this.getAll();
+            return Object.keys(e).length > 0
+              ? t.filter((t) => (0, n.MK)(e, t))
+              : t;
+          }
+          notify(e) {
+            i.j.batch(() => {
+              this.listeners.forEach((t) => {
+                t(e);
+              });
+            });
+          }
+          onFocus() {
+            i.j.batch(() => {
+              this.getAll().forEach((e) => {
+                e.onFocus();
+              });
+            });
+          }
+          onOnline() {
+            i.j.batch(() => {
+              this.getAll().forEach((e) => {
+                e.onOnline();
+              });
+            });
+          }
+        },
+        l = r(40730),
+        h = class extends u.Q {
+          constructor(e = {}) {
+            super(), (this.config = e), (this.#h = []), (this.#f = 0);
+          }
+          #h;
+          #f;
+          #d;
+          build(e, t, r) {
+            let n = new l.s({
+              mutationCache: this,
+              mutationId: ++this.#f,
+              options: e.defaultMutationOptions(t),
+              state: r,
+            });
+            return this.add(n), n;
+          }
+          add(e) {
+            this.#h.push(e), this.notify({ type: "added", mutation: e });
+          }
+          remove(e) {
+            (this.#h = this.#h.filter((t) => t !== e)),
+              this.notify({ type: "removed", mutation: e });
+          }
+          clear() {
+            i.j.batch(() => {
+              this.#h.forEach((e) => {
+                this.remove(e);
+              });
+            });
+          }
+          getAll() {
+            return this.#h;
+          }
+          find(e) {
+            let t = { exact: !0, ...e };
+            return this.#h.find((e) => (0, n.nJ)(t, e));
+          }
+          findAll(e = {}) {
+            return this.#h.filter((t) => (0, n.nJ)(e, t));
+          }
+          notify(e) {
+            i.j.batch(() => {
+              this.listeners.forEach((t) => {
+                t(e);
+              });
+            });
+          }
+          resumePausedMutations() {
+            return (
+              (this.#d = (this.#d ?? Promise.resolve())
+                .then(() => {
+                  let e = this.#h.filter((e) => e.state.isPaused);
+                  return i.j.batch(() =>
+                    e.reduce(
+                      (e, t) => e.then(() => t.continue().catch(n.lQ)),
+                      Promise.resolve()
+                    )
+                  );
+                })
+                .then(() => {
+                  this.#d = void 0;
+                })),
+              this.#d
+            );
+          }
+        },
+        f = r(79382),
+        d = r(54189),
+        p = r(92993),
+        y = class {
+          #p;
+          #y;
+          #t;
+          #m;
+          #b;
+          #v;
+          #g;
+          #w;
+          constructor(e = {}) {
+            (this.#p = e.queryCache || new c()),
+              (this.#y = e.mutationCache || new h()),
+              (this.#t = e.defaultOptions || {}),
+              (this.#m = new Map()),
+              (this.#b = new Map()),
+              (this.#v = 0);
+          }
+          mount() {
+            this.#v++,
+              1 === this.#v &&
+                ((this.#g = f.m.subscribe(() => {
+                  f.m.isFocused() &&
+                    (this.resumePausedMutations(), this.#p.onFocus());
+                })),
+                (this.#w = d.t.subscribe(() => {
+                  d.t.isOnline() &&
+                    (this.resumePausedMutations(), this.#p.onOnline());
+                })));
+          }
+          unmount() {
+            this.#v--,
+              0 === this.#v &&
+                (this.#g?.(),
+                (this.#g = void 0),
+                this.#w?.(),
+                (this.#w = void 0));
+          }
+          isFetching(e) {
+            return this.#p.findAll({ ...e, fetchStatus: "fetching" }).length;
+          }
+          isMutating(e) {
+            return this.#y.findAll({ ...e, status: "pending" }).length;
+          }
+          getQueryData(e) {
+            return this.#p.find({ queryKey: e })?.state.data;
+          }
+          ensureQueryData(e) {
+            let t = this.getQueryData(e.queryKey);
+            return void 0 !== t ? Promise.resolve(t) : this.fetchQuery(e);
+          }
+          getQueriesData(e) {
+            return this.getQueryCache()
+              .findAll(e)
+              .map(({ queryKey: e, state: t }) => [e, t.data]);
+          }
+          setQueryData(e, t, r) {
+            let i = this.#p.find({ queryKey: e }),
+              s = i?.state.data,
+              o = (0, n.Zw)(t, s);
+            if (void 0 === o) return;
+            let a = this.defaultQueryOptions({ queryKey: e });
+            return this.#p.build(this, a).setData(o, { ...r, manual: !0 });
+          }
+          setQueriesData(e, t, r) {
+            return i.j.batch(() =>
+              this.getQueryCache()
+                .findAll(e)
+                .map(({ queryKey: e }) => [e, this.setQueryData(e, t, r)])
+            );
+          }
+          getQueryState(e) {
+            return this.#p.find({ queryKey: e })?.state;
+          }
+          removeQueries(e) {
+            let t = this.#p;
+            i.j.batch(() => {
+              t.findAll(e).forEach((e) => {
+                t.remove(e);
+              });
+            });
+          }
+          resetQueries(e, t) {
+            let r = this.#p,
+              n = { type: "active", ...e };
+            return i.j.batch(
+              () => (
+                r.findAll(e).forEach((e) => {
+                  e.reset();
+                }),
+                this.refetchQueries(n, t)
+              )
+            );
+          }
+          cancelQueries(e = {}, t = {}) {
+            let r = { revert: !0, ...t };
+            return Promise.all(
+              i.j.batch(() => this.#p.findAll(e).map((e) => e.cancel(r)))
+            )
+              .then(n.lQ)
+              .catch(n.lQ);
+          }
+          invalidateQueries(e = {}, t = {}) {
+            return i.j.batch(() => {
+              if (
+                (this.#p.findAll(e).forEach((e) => {
+                  e.invalidate();
+                }),
+                "none" === e.refetchType)
+              )
+                return Promise.resolve();
+              let r = { ...e, type: e.refetchType ?? e.type ?? "active" };
+              return this.refetchQueries(r, t);
+            });
+          }
+          refetchQueries(e = {}, t) {
+            let r = { ...t, cancelRefetch: t?.cancelRefetch ?? !0 };
+            return Promise.all(
+              i.j.batch(() =>
+                this.#p
+                  .findAll(e)
+                  .filter((e) => !e.isDisabled())
+                  .map((e) => {
+                    let t = e.fetch(void 0, r);
+                    return (
+                      r.throwOnError || (t = t.catch(n.lQ)),
+                      "paused" === e.state.fetchStatus ? Promise.resolve() : t
+                    );
+                  })
+              )
+            ).then(n.lQ);
+          }
+          fetchQuery(e) {
+            let t = this.defaultQueryOptions(e);
+            void 0 === t.retry && (t.retry = !1);
+            let r = this.#p.build(this, t);
+            return r.isStaleByTime(t.staleTime)
+              ? r.fetch(t)
+              : Promise.resolve(r.state.data);
+          }
+          prefetchQuery(e) {
+            return this.fetchQuery(e).then(n.lQ).catch(n.lQ);
+          }
+          fetchInfiniteQuery(e) {
+            return (e.behavior = (0, p.PL)(e.pages)), this.fetchQuery(e);
+          }
+          prefetchInfiniteQuery(e) {
+            return this.fetchInfiniteQuery(e).then(n.lQ).catch(n.lQ);
+          }
+          resumePausedMutations() {
+            return this.#y.resumePausedMutations();
+          }
+          getQueryCache() {
+            return this.#p;
+          }
+          getMutationCache() {
+            return this.#y;
+          }
+          getDefaultOptions() {
+            return this.#t;
+          }
+          setDefaultOptions(e) {
+            this.#t = e;
+          }
+          setQueryDefaults(e, t) {
+            this.#m.set((0, n.EN)(e), { queryKey: e, defaultOptions: t });
+          }
+          getQueryDefaults(e) {
+            let t = [...this.#m.values()],
+              r = {};
+            return (
+              t.forEach((t) => {
+                (0, n.Cp)(e, t.queryKey) && (r = { ...r, ...t.defaultOptions });
+              }),
+              r
+            );
+          }
+          setMutationDefaults(e, t) {
+            this.#b.set((0, n.EN)(e), { mutationKey: e, defaultOptions: t });
+          }
+          getMutationDefaults(e) {
+            let t = [...this.#b.values()],
+              r = {};
+            return (
+              t.forEach((t) => {
+                (0, n.Cp)(e, t.mutationKey) &&
+                  (r = { ...r, ...t.defaultOptions });
+              }),
+              r
+            );
+          }
+          defaultQueryOptions(e) {
+            if (e?._defaulted) return e;
+            let t = {
+              ...this.#t.queries,
+              ...(e?.queryKey && this.getQueryDefaults(e.queryKey)),
+              ...e,
+              _defaulted: !0,
+            };
+            return (
+              t.queryHash || (t.queryHash = (0, n.F$)(t.queryKey, t)),
+              void 0 === t.refetchOnReconnect &&
+                (t.refetchOnReconnect = "always" !== t.networkMode),
+              void 0 === t.throwOnError && (t.throwOnError = !!t.suspense),
+              void 0 === t.networkMode &&
+                t.persister &&
+                (t.networkMode = "offlineFirst"),
+              t
+            );
+          }
+          defaultMutationOptions(e) {
+            return e?._defaulted
+              ? e
+              : {
+                  ...this.#t.mutations,
+                  ...(e?.mutationKey &&
+                    this.getMutationDefaults(e.mutationKey)),
+                  ...e,
+                  _defaulted: !0,
+                };
+          }
+          clear() {
+            this.#p.clear(), this.#y.clear();
+          }
+        };
+    },
+    40730: (e, t, r) => {
+      r.d(t, { $: () => a, s: () => o });
+      var n = r(95635),
+        i = r(68458),
+        s = r(28306),
+        o = class extends i.k {
+          constructor(e) {
+            super(),
+              (this.mutationId = e.mutationId),
+              (this.#t = e.defaultOptions),
+              (this.#y = e.mutationCache),
+              (this.#n = []),
+              (this.state = e.state || a()),
+              this.setOptions(e.options),
+              this.scheduleGc();
+          }
+          #n;
+          #t;
+          #y;
+          #u;
+          setOptions(e) {
+            (this.options = { ...this.#t, ...e }),
+              this.updateGcTime(this.options.gcTime);
+          }
+          get meta() {
+            return this.options.meta;
+          }
+          addObserver(e) {
+            this.#n.includes(e) ||
+              (this.#n.push(e),
+              this.clearGcTimeout(),
+              this.#y.notify({
+                type: "observerAdded",
+                mutation: this,
+                observer: e,
+              }));
+          }
+          removeObserver(e) {
+            (this.#n = this.#n.filter((t) => t !== e)),
+              this.scheduleGc(),
+              this.#y.notify({
+                type: "observerRemoved",
+                mutation: this,
+                observer: e,
+              });
+          }
+          optionalRemove() {
+            this.#n.length ||
+              ("pending" === this.state.status
+                ? this.scheduleGc()
+                : this.#y.remove(this));
+          }
+          continue() {
+            return this.#u?.continue() ?? this.execute(this.state.variables);
+          }
+          async execute(e) {
+            let t = () => (
+                (this.#u = (0, s.II)({
+                  fn: () =>
+                    this.options.mutationFn
+                      ? this.options.mutationFn(e)
+                      : Promise.reject(Error("No mutationFn found")),
+                  onFail: (e, t) => {
+                    this.#c({ type: "failed", failureCount: e, error: t });
+                  },
+                  onPause: () => {
+                    this.#c({ type: "pause" });
+                  },
+                  onContinue: () => {
+                    this.#c({ type: "continue" });
+                  },
+                  retry: this.options.retry ?? 0,
+                  retryDelay: this.options.retryDelay,
+                  networkMode: this.options.networkMode,
+                })),
+                this.#u.promise
+              ),
+              r = "pending" === this.state.status;
+            try {
+              if (!r) {
+                this.#c({ type: "pending", variables: e }),
+                  await this.#y.config.onMutate?.(e, this);
+                let t = await this.options.onMutate?.(e);
+                t !== this.state.context &&
+                  this.#c({ type: "pending", context: t, variables: e });
+              }
+              let n = await t();
+              return (
+                await this.#y.config.onSuccess?.(
+                  n,
+                  e,
+                  this.state.context,
+                  this
+                ),
+                await this.options.onSuccess?.(n, e, this.state.context),
+                await this.#y.config.onSettled?.(
+                  n,
+                  null,
+                  this.state.variables,
+                  this.state.context,
+                  this
+                ),
+                await this.options.onSettled?.(n, null, e, this.state.context),
+                this.#c({ type: "success", data: n }),
+                n
+              );
+            } catch (t) {
+              try {
+                throw (
+                  (await this.#y.config.onError?.(
+                    t,
+                    e,
+                    this.state.context,
+                    this
+                  ),
+                  await this.options.onError?.(t, e, this.state.context),
+                  await this.#y.config.onSettled?.(
+                    void 0,
+                    t,
+                    this.state.variables,
+                    this.state.context,
+                    this
+                  ),
+                  await this.options.onSettled?.(
+                    void 0,
+                    t,
+                    e,
+                    this.state.context
+                  ),
+                  t)
+                );
+              } finally {
+                this.#c({ type: "error", error: t });
+              }
+            }
+          }
+          #c(e) {
+            let t = (t) => {
+              switch (e.type) {
+                case "failed":
+                  return {
+                    ...t,
+                    failureCount: e.failureCount,
+                    failureReason: e.error,
+                  };
+                case "pause":
+                  return { ...t, isPaused: !0 };
+                case "continue":
+                  return { ...t, isPaused: !1 };
+                case "pending":
+                  return {
+                    ...t,
+                    context: e.context,
+                    data: void 0,
+                    failureCount: 0,
+                    failureReason: null,
+                    error: null,
+                    isPaused: !(0, s.v_)(this.options.networkMode),
+                    status: "pending",
+                    variables: e.variables,
+                    submittedAt: Date.now(),
+                  };
+                case "success":
+                  return {
+                    ...t,
+                    data: e.data,
+                    failureCount: 0,
+                    failureReason: null,
+                    error: null,
+                    status: "success",
+                    isPaused: !1,
+                  };
+                case "error":
+                  return {
+                    ...t,
+                    data: void 0,
+                    error: e.error,
+                    failureCount: t.failureCount + 1,
+                    failureReason: e.error,
+                    isPaused: !1,
+                    status: "error",
+                  };
+              }
+            };
+            (this.state = t(this.state)),
+              n.j.batch(() => {
+                this.#n.forEach((t) => {
+                  t.onMutationUpdate(e);
+                }),
+                  this.#y.notify({
+                    mutation: this,
+                    type: "updated",
+                    action: e,
+                  });
+              });
+          }
+        };
+      function a() {
+        return {
+          context: void 0,
+          data: void 0,
+          error: null,
+          failureCount: 0,
+          failureReason: null,
+          isPaused: !1,
+          status: "idle",
+          variables: void 0,
+          submittedAt: 0,
+        };
+      }
+    },
+    50692: (e, t, r) => {
+      r.d(t, { Y: () => s });
+      var n = r(33827),
+        i = r(79954);
+      function s(e) {
+        return (0, n.vX)((t) => {
+          let r = t.path,
+            n = r.join("."),
+            [s, o] = t.args;
+          return {
+            queryKey: (0, i.H)(r, s, "query"),
+            queryFn: () => e.query(n, s, o?.trpc),
+            ...o,
+          };
+        });
+      }
+    },
+    54189: (e, t, r) => {
+      r.d(t, { t: () => s });
+      var n = r(22844),
+        i = r(69950),
+        s = new (class extends n.Q {
+          #O = !0;
+          #E;
+          #R;
+          constructor() {
+            super(),
+              (this.#R = (e) => {
+                if (!i.S$ && window.addEventListener) {
+                  let t = () => e(!0),
+                    r = () => e(!1);
+                  return (
+                    window.addEventListener("online", t, !1),
+                    window.addEventListener("offline", r, !1),
+                    () => {
+                      window.removeEventListener("online", t),
+                        window.removeEventListener("offline", r);
+                    }
+                  );
+                }
+              });
+          }
+          onSubscribe() {
+            this.#E || this.setEventListener(this.#R);
+          }
+          onUnsubscribe() {
+            this.hasListeners() || (this.#E?.(), (this.#E = void 0));
+          }
+          setEventListener(e) {
+            (this.#R = e),
+              this.#E?.(),
+              (this.#E = e(this.setOnline.bind(this)));
+          }
+          setOnline(e) {
+            this.#O !== e &&
+              ((this.#O = e),
+              this.listeners.forEach((t) => {
+                t(e);
+              }));
+          }
+          isOnline() {
+            return this.#O;
+          }
+        })();
+    },
+    64991: (e, t, r) => {
+      r.d(t, { r: () => P });
+      var n = r(27736),
+        i = r(69549),
+        s = r(25383),
+        o = r(93257),
+        a = r(4869),
+        u = r(81562),
+        c = r(69950),
+        l = r(92993),
+        h = class extends i.$ {
+          constructor(e, t) {
+            super(e, t);
+          }
+          bindMethods() {
+            super.bindMethods(),
+              (this.fetchNextPage = this.fetchNextPage.bind(this)),
+              (this.fetchPreviousPage = this.fetchPreviousPage.bind(this));
+          }
+          setOptions(e, t) {
+            super.setOptions({ ...e, behavior: (0, l.PL)() }, t);
+          }
+          getOptimisticResult(e) {
+            return (e.behavior = (0, l.PL)()), super.getOptimisticResult(e);
+          }
+          fetchNextPage(e) {
+            return this.fetch({
+              ...e,
+              meta: { fetchMore: { direction: "forward" } },
+            });
+          }
+          fetchPreviousPage(e) {
+            return this.fetch({
+              ...e,
+              meta: { fetchMore: { direction: "backward" } },
+            });
+          }
+          createResult(e, t) {
+            let { state: r } = e,
+              n = super.createResult(e, t),
+              { isFetching: i, isRefetching: s } = n,
+              o = i && r.fetchMeta?.fetchMore?.direction === "forward",
+              a = i && r.fetchMeta?.fetchMore?.direction === "backward";
+            return {
+              ...n,
+              fetchNextPage: this.fetchNextPage,
+              fetchPreviousPage: this.fetchPreviousPage,
+              hasNextPage: (0, l.rB)(t, r.data),
+              hasPreviousPage: (0, l.RQ)(t, r.data),
+              isFetchingNextPage: o,
+              isFetchingPreviousPage: a,
+              isRefetching: s && !o && !a,
+            };
+          }
+        },
+        f = r(7620),
+        d = r(95635),
+        p = r(22844);
+      function y(e, t) {
+        return e.filter((e) => !t.includes(e));
+      }
+      var m = class extends p.Q {
+          #C;
+          #S;
+          #l;
+          #n;
+          #Q;
+          #q;
+          constructor(e, t, r) {
+            super(),
+              (this.#C = e),
+              (this.#l = []),
+              (this.#n = []),
+              this.#P([]),
+              this.setQueries(t, r);
+          }
+          #P(e) {
+            (this.#S = e), (this.#q = this.#x(e, this.#Q?.combine));
+          }
+          onSubscribe() {
+            1 === this.listeners.size &&
+              this.#n.forEach((e) => {
+                e.subscribe((t) => {
+                  this.#D(e, t);
+                });
+              });
+          }
+          onUnsubscribe() {
+            this.listeners.size || this.destroy();
+          }
+          destroy() {
+            (this.listeners = new Set()),
+              this.#n.forEach((e) => {
+                e.destroy();
+              });
+          }
+          setQueries(e, t, r) {
+            (this.#l = e),
+              (this.#Q = t),
+              d.j.batch(() => {
+                let e = this.#n,
+                  t = this.#I(this.#l);
+                t.forEach((e) =>
+                  e.observer.setOptions(e.defaultedQueryOptions, r)
+                );
+                let n = t.map((e) => e.observer),
+                  i = n.map((e) => e.getCurrentResult()),
+                  s = n.some((t, r) => t !== e[r]);
+                (e.length !== n.length || s) &&
+                  ((this.#n = n),
+                  this.#P(i),
+                  this.hasListeners() &&
+                    (y(e, n).forEach((e) => {
+                      e.destroy();
+                    }),
+                    y(n, e).forEach((e) => {
+                      e.subscribe((t) => {
+                        this.#D(e, t);
+                      });
+                    }),
+                    this.#j()));
+              });
+          }
+          getCurrentResult() {
+            return this.#q;
+          }
+          getQueries() {
+            return this.#n.map((e) => e.getCurrentQuery());
+          }
+          getObservers() {
+            return this.#n;
+          }
+          getOptimisticResult(e, t) {
+            let r = this.#I(e),
+              n = r.map((e) =>
+                e.observer.getOptimisticResult(e.defaultedQueryOptions)
+              );
+            return [
+              n,
+              (e) => this.#x(e ?? n, t),
+              () =>
+                r.map((e, t) => {
+                  let r = n[t];
+                  return e.defaultedQueryOptions.notifyOnChangeProps
+                    ? r
+                    : e.observer.trackResult(r);
+                }),
+            ];
+          }
+          #x(e, t) {
+            return t ? (0, c.BH)(this.#q, t(e)) : e;
+          }
+          #I(e) {
+            let t = new Map(this.#n.map((e) => [e.options.queryHash, e])),
+              r = e.map((e) => this.#C.defaultQueryOptions(e)),
+              n = r.flatMap((e) => {
+                let r = t.get(e.queryHash);
+                return null != r
+                  ? [{ defaultedQueryOptions: e, observer: r }]
+                  : [];
+              }),
+              s = new Set(n.map((e) => e.defaultedQueryOptions.queryHash)),
+              o = r.filter((e) => !s.has(e.queryHash)),
+              a = (e) => {
+                let t = this.#C.defaultQueryOptions(e);
+                return (
+                  this.#n.find((e) => e.options.queryHash === t.queryHash) ??
+                  new i.$(this.#C, t)
+                );
+              },
+              u = o.map((e) => ({ defaultedQueryOptions: e, observer: a(e) }));
+            return n
+              .concat(u)
+              .sort(
+                (e, t) =>
+                  r.indexOf(e.defaultedQueryOptions) -
+                  r.indexOf(t.defaultedQueryOptions)
+              );
+          }
+          #D(e, t) {
+            let r = this.#n.indexOf(e);
+            -1 !== r &&
+              (this.#P(
+                (function (e, t, r) {
+                  let n = e.slice(0);
+                  return (n[t] = r), n;
+                })(this.#S, r, t)
+              ),
+              this.#j());
+          }
+          #j() {
+            d.j.batch(() => {
+              this.listeners.forEach((e) => {
+                e(this.#S);
+              });
+            });
+          }
+        },
+        b = r(8134),
+        v = r(32944),
+        g = r(86336);
+      function w(e, t) {
+        let { queries: r, ...n } = e,
+          s = (0, a.jE)(t),
+          u = (0, b.w)(),
+          c = (0, v.h)(),
+          l = f.useMemo(
+            () =>
+              r.map((e) => {
+                let t = s.defaultQueryOptions(e);
+                return (
+                  (t._optimisticResults = u ? "isRestoring" : "optimistic"), t
+                );
+              }),
+            [r, s, u]
+          );
+        l.forEach((e) => {
+          (0, o.tu)(e), (0, g.LJ)(e, c);
+        }),
+          (0, g.wZ)(c);
+        let [h] = f.useState(() => new m(s, l, n)),
+          [p, y, w] = h.getOptimisticResult(l, n.combine);
+        f.useSyncExternalStore(
+          f.useCallback(
+            (e) => (u ? () => void 0 : h.subscribe(d.j.batchCalls(e))),
+            [h, u]
+          ),
+          () => h.getCurrentResult(),
+          () => h.getCurrentResult()
+        ),
+          f.useEffect(() => {
+            h.setQueries(l, n, { listeners: !1 });
+          }, [l, n, h]);
+        let O = p.some((e, t) => (0, o.EU)(l[t], e))
+          ? p.flatMap((e, t) => {
+              let r = l[t];
+              if (r) {
+                let t = new i.$(s, r);
+                if ((0, o.EU)(r, e)) return (0, o.iL)(r, t, c);
+                (0, o.nE)(e, u) && (0, o.iL)(r, t, c);
+              }
+              return [];
+            })
+          : [];
+        if (O.length > 0) throw Promise.all(O);
+        let E = p.find((e, t) => {
+          let r = l[t];
+          return (
+            r &&
+            (0, g.$1)({
+              result: e,
+              errorResetBoundary: c,
+              throwOnError: r.throwOnError,
+              query: s.getQueryCache().get(r.queryHash),
+            })
+          );
+        });
+        if (null == E ? void 0 : E.error) throw E.error;
+        return y(w());
+      }
+      var O = r(28902),
+        E = r(76702),
+        R = r(83861),
+        C = r(79954);
+      function S(e) {
+        let t = f.useRef(e);
+        return (t.current.path = e.path), t.current;
+      }
+      var Q = r(10995),
+        q = r(50692);
+      function P(e) {
+        let t = e?.overrides?.useMutation?.onSuccess ?? ((e) => e.originalFn()),
+          r = e?.context ?? E.R;
+        function l() {
+          let e = f.useContext(r);
+          if (!e)
+            throw Error(
+              "Unable to find tRPC Context. Did you forget to wrap your App inside `withTRPC` HoC?"
+            );
+          return e;
+        }
+        function d(e, t) {
+          let { queryClient: r, ssrState: n } = l();
+          return n &&
+            "mounted" !== n &&
+            r.getQueryCache().find({ queryKey: e })?.state.status === "error"
+            ? { retryOnMount: !1, ...t }
+            : t;
+        }
+        return {
+          Provider: (e) => {
+            let {
+                abortOnUnmount: t = !1,
+                client: n,
+                queryClient: i,
+                ssrContext: s,
+              } = e,
+              [o, a] = f.useState(e.ssrState ?? !1),
+              u = f.useMemo(
+                () => (0, Q.O)({ client: n, queryClient: i }),
+                [n, i]
+              ),
+              c = f.useMemo(
+                () => ({
+                  abortOnUnmount: t,
+                  queryClient: i,
+                  client: n,
+                  ssrContext: s ?? null,
+                  ssrState: o,
+                  ...u,
+                }),
+                [t, n, u, i, s, o]
+              );
+            return (
+              f.useEffect(() => {
+                a((e) => !!e && "mounted");
+              }, []),
+              f.createElement(r.Provider, { value: c }, e.children)
+            );
+          },
+          createClient: (e) => (0, O.u4)(e),
+          useContext: l,
+          useUtils: l,
+          useQuery: function (t, r, i) {
+            let {
+                abortOnUnmount: s,
+                client: o,
+                ssrState: a,
+                queryClient: u,
+                prefetchQuery: c,
+              } = l(),
+              h = (0, C.H)(t, r, "query"),
+              f = u.getQueryDefaults(h);
+            "undefined" != typeof window ||
+              "prepass" !== a ||
+              i?.trpc?.ssr === !1 ||
+              (i?.enabled ?? f?.enabled) === !1 ||
+              u.getQueryCache().find({ queryKey: h }) ||
+              c(h, i);
+            let p = d(h, { ...f, ...i }),
+              y = i?.trpc?.abortOnUnmount ?? e?.abortOnUnmount ?? s,
+              m = (0, n.I)(
+                {
+                  ...p,
+                  queryKey: h,
+                  queryFn: (e) => {
+                    let t = {
+                      ...p,
+                      trpc: { ...p?.trpc, ...(y ? { signal: e.signal } : {}) },
+                    };
+                    return o.query(...(0, R.P)(h, t));
+                  },
+                },
+                u
+              );
+            return (m.trpc = S({ path: t.join(".") })), m;
+          },
+          useSuspenseQuery: function (t, r, n) {
+            var a, u;
+            let c = l(),
+              h = (0, C.H)(t, r, "query"),
+              f =
+                n?.trpc?.abortOnUnmount ??
+                e?.abortOnUnmount ??
+                c.abortOnUnmount,
+              d =
+                ((a = {
+                  ...n,
+                  queryKey: h,
+                  queryFn: (e) => {
+                    let t = { trpc: { ...(f ? { signal: e.signal } : {}) } };
+                    return c.client.query(...(0, R.P)(h, t));
+                  },
+                }),
+                (u = c.queryClient),
+                (0, s.t)(
+                  { ...a, enabled: !0, suspense: !0, throwOnError: o.R3 },
+                  i.$,
+                  u
+                ));
+            return (d.trpc = S({ path: t.join(".") })), [d.data, d];
+          },
+          useQueries: (e) => {
+            let {
+                ssrState: t,
+                queryClient: r,
+                prefetchQuery: n,
+                client: i,
+              } = l(),
+              s = e((0, q.Y)(i));
+            if ("undefined" == typeof window && "prepass" === t)
+              for (let e of s)
+                e.trpc?.ssr === !1 ||
+                  r.getQueryCache().find({ queryKey: e.queryKey }) ||
+                  n(e.queryKey, e);
+            return w(
+              { queries: s.map((e) => ({ ...e, queryKey: e.queryKey })) },
+              r
+            );
+          },
+          useSuspenseQueries: (e) => {
+            var t;
+            let { queryClient: r, client: n } = l(),
+              i =
+                ((t = {
+                  queries: e((0, q.Y)(n)).map((e) => ({
+                    ...e,
+                    queryKey: e.queryKey,
+                  })),
+                }),
+                w(
+                  {
+                    ...t,
+                    queries: t.queries.map((e) => ({
+                      ...e,
+                      suspense: !0,
+                      throwOnError: o.R3,
+                      enabled: !0,
+                    })),
+                  },
+                  r
+                ));
+            return [i.map((e) => e.data), i];
+          },
+          useMutation: function (e, r) {
+            let { client: n } = l(),
+              i = (0, a.jE)(),
+              s = [e],
+              o = i.getMutationDefaults(s),
+              c = (0, u.n)(
+                {
+                  ...r,
+                  mutationKey: s,
+                  mutationFn: (t) =>
+                    n.mutation(...(0, R.P)([e, { input: t }], r)),
+                  onSuccess: (...e) =>
+                    t({
+                      originalFn: () =>
+                        r?.onSuccess?.(...e) ?? o?.onSuccess?.(...e),
+                      queryClient: i,
+                      meta: r?.meta ?? o?.meta ?? {},
+                    }),
+                },
+                i
+              );
+            return (c.trpc = S({ path: e.join(".") })), c;
+          },
+          useSubscription: function (e, t, r) {
+            let n = r?.enabled ?? !0,
+              i = (0, c.EN)((0, C.H)(e, t, "any")),
+              { client: s } = l(),
+              o = f.useRef(r);
+            (o.current = r),
+              f.useEffect(() => {
+                if (!n) return;
+                let i = !1,
+                  a = s.subscription(e.join("."), t ?? void 0, {
+                    onStarted: () => {
+                      i || o.current.onStarted?.();
+                    },
+                    onData: (e) => {
+                      i || r.onData(e);
+                    },
+                    onError: (e) => {
+                      i || o.current.onError?.(e);
+                    },
+                  });
+                return () => {
+                  (i = !0), a.unsubscribe();
+                };
+              }, [i, n]);
+          },
+          useDehydratedState: (e, t) =>
+            f.useMemo(
+              () => (t ? e.runtime.transformer.deserialize(t) : t),
+              [t, e]
+            ),
+          useInfiniteQuery: function (e, t, r) {
+            var n;
+            let {
+                client: i,
+                ssrState: o,
+                prefetchInfiniteQuery: a,
+                queryClient: u,
+                abortOnUnmount: c,
+              } = l(),
+              f = (0, C.H)(e, t, "infinite"),
+              p = u.getQueryDefaults(f);
+            "undefined" != typeof window ||
+              "prepass" !== o ||
+              r?.trpc?.ssr === !1 ||
+              (r?.enabled ?? p?.enabled) === !1 ||
+              u.getQueryCache().find({ queryKey: f }) ||
+              a(f, { ...p, ...r });
+            let y = d(f, { ...p, ...r }),
+              m = r?.trpc?.abortOnUnmount ?? c,
+              b =
+                ((n = {
+                  ...y,
+                  initialPageParam: r.initialCursor ?? null,
+                  persister: r.persister,
+                  queryKey: f,
+                  queryFn: (e) => {
+                    let t = {
+                      ...y,
+                      trpc: { ...y?.trpc, ...(m ? { signal: e.signal } : {}) },
+                    };
+                    return i.query(
+                      ...(0, R.P)(f, t, e.pageParam ?? r.initialCursor)
+                    );
+                  },
+                }),
+                (0, s.t)(n, h, u));
+            return (b.trpc = S({ path: e.join(".") })), b;
+          },
+          useSuspenseInfiniteQuery: function (e, t, r) {
+            var n, i;
+            let a = l(),
+              u = (0, C.H)(e, t, "infinite"),
+              c = a.queryClient.getQueryDefaults(u),
+              f = d(u, { ...c, ...r }),
+              p = r?.trpc?.abortOnUnmount ?? a.abortOnUnmount,
+              y =
+                ((n = {
+                  ...r,
+                  initialPageParam: r.initialCursor ?? null,
+                  queryKey: u,
+                  queryFn: (e) => {
+                    let t = {
+                      ...f,
+                      trpc: { ...f?.trpc, ...(p ? { signal: e.signal } : {}) },
+                    };
+                    return a.client.query(
+                      ...(0, R.P)(u, t, e.pageParam ?? r.initialCursor)
+                    );
+                  },
+                }),
+                (i = a.queryClient),
+                (0, s.t)(
+                  { ...n, enabled: !0, suspense: !0, throwOnError: o.R3 },
+                  h,
+                  i
+                ));
+            return (y.trpc = S({ path: e.join(".") })), [y.data, y];
+          },
+        };
+      }
+    },
+    68458: (e, t, r) => {
+      r.d(t, { k: () => i });
+      var n = r(69950),
+        i = class {
+          #T;
+          destroy() {
+            this.clearGcTimeout();
+          }
+          scheduleGc() {
+            this.clearGcTimeout(),
+              (0, n.gn)(this.gcTime) &&
+                (this.#T = setTimeout(() => {
+                  this.optionalRemove();
+                }, this.gcTime));
+          }
+          updateGcTime(e) {
+            this.gcTime = Math.max(this.gcTime || 0, e ?? (n.S$ ? 1 / 0 : 3e5));
+          }
+          clearGcTimeout() {
+            this.#T && (clearTimeout(this.#T), (this.#T = void 0));
+          }
+        };
+    },
+    69549: (e, t, r) => {
+      r.d(t, { $: () => u });
+      var n = r(69950),
+        i = r(95635),
+        s = r(79382),
+        o = r(22844),
+        a = r(28306),
+        u = class extends o.Q {
+          constructor(e, t) {
+            super(),
+              (this.options = t),
+              (this.#C = e),
+              (this.#A = null),
+              this.bindMethods(),
+              this.setOptions(t);
+          }
+          #C;
+          #M = void 0;
+          #F = void 0;
+          #_ = void 0;
+          #U;
+          #k;
+          #A;
+          #N;
+          #K;
+          #L;
+          #H;
+          #$;
+          #z;
+          #B = new Set();
+          bindMethods() {
+            this.refetch = this.refetch.bind(this);
+          }
+          onSubscribe() {
+            1 === this.listeners.size &&
+              (this.#M.addObserver(this),
+              c(this.#M, this.options) ? this.#V() : this.updateResult(),
+              this.#G());
+          }
+          onUnsubscribe() {
+            this.hasListeners() || this.destroy();
+          }
+          shouldFetchOnReconnect() {
+            return l(this.#M, this.options, this.options.refetchOnReconnect);
+          }
+          shouldFetchOnWindowFocus() {
+            return l(this.#M, this.options, this.options.refetchOnWindowFocus);
+          }
+          destroy() {
+            (this.listeners = new Set()),
+              this.#J(),
+              this.#X(),
+              this.#M.removeObserver(this);
+          }
+          setOptions(e, t) {
+            let r = this.options,
+              i = this.#M;
+            if (
+              ((this.options = this.#C.defaultQueryOptions(e)),
+              (0, n.f8)(r, this.options) ||
+                this.#C
+                  .getQueryCache()
+                  .notify({
+                    type: "observerOptionsUpdated",
+                    query: this.#M,
+                    observer: this,
+                  }),
+              void 0 !== this.options.enabled &&
+                "boolean" != typeof this.options.enabled)
+            )
+              throw Error("Expected enabled to be a boolean");
+            this.options.queryKey || (this.options.queryKey = r.queryKey),
+              this.#W();
+            let s = this.hasListeners();
+            s && h(this.#M, i, this.options, r) && this.#V(),
+              this.updateResult(t),
+              s &&
+                (this.#M !== i ||
+                  this.options.enabled !== r.enabled ||
+                  this.options.staleTime !== r.staleTime) &&
+                this.#Z();
+            let o = this.#Y();
+            s &&
+              (this.#M !== i ||
+                this.options.enabled !== r.enabled ||
+                o !== this.#z) &&
+              this.#ee(o);
+          }
+          getOptimisticResult(e) {
+            var t, r;
+            let i = this.#C.getQueryCache().build(this.#C, e),
+              s = this.createResult(i, e);
+            return (
+              (t = this),
+              (r = s),
+              (0, n.f8)(t.getCurrentResult(), r) ||
+                ((this.#_ = s),
+                (this.#k = this.options),
+                (this.#U = this.#M.state)),
+              s
+            );
+          }
+          getCurrentResult() {
+            return this.#_;
+          }
+          trackResult(e) {
+            let t = {};
+            return (
+              Object.keys(e).forEach((r) => {
+                Object.defineProperty(t, r, {
+                  configurable: !1,
+                  enumerable: !0,
+                  get: () => (this.#B.add(r), e[r]),
+                });
+              }),
+              t
+            );
+          }
+          getCurrentQuery() {
+            return this.#M;
+          }
+          refetch({ ...e } = {}) {
+            return this.fetch({ ...e });
+          }
+          fetchOptimistic(e) {
+            let t = this.#C.defaultQueryOptions(e),
+              r = this.#C.getQueryCache().build(this.#C, t);
+            return (
+              (r.isFetchingOptimistic = !0),
+              r.fetch().then(() => this.createResult(r, t))
+            );
+          }
+          fetch(e) {
+            return this.#V({ ...e, cancelRefetch: e.cancelRefetch ?? !0 }).then(
+              () => (this.updateResult(), this.#_)
+            );
+          }
+          #V(e) {
+            this.#W();
+            let t = this.#M.fetch(this.options, e);
+            return e?.throwOnError || (t = t.catch(n.lQ)), t;
+          }
+          #Z() {
+            if (
+              (this.#J(),
+              n.S$ || this.#_.isStale || !(0, n.gn)(this.options.staleTime))
+            )
+              return;
+            let e = (0, n.j3)(this.#_.dataUpdatedAt, this.options.staleTime);
+            this.#H = setTimeout(() => {
+              this.#_.isStale || this.updateResult();
+            }, e + 1);
+          }
+          #Y() {
+            return (
+              ("function" == typeof this.options.refetchInterval
+                ? this.options.refetchInterval(this.#M)
+                : this.options.refetchInterval) ?? !1
+            );
+          }
+          #ee(e) {
+            this.#X(),
+              (this.#z = e),
+              !n.S$ &&
+                !1 !== this.options.enabled &&
+                (0, n.gn)(this.#z) &&
+                0 !== this.#z &&
+                (this.#$ = setInterval(() => {
+                  (this.options.refetchIntervalInBackground ||
+                    s.m.isFocused()) &&
+                    this.#V();
+                }, this.#z));
+          }
+          #G() {
+            this.#Z(), this.#ee(this.#Y());
+          }
+          #J() {
+            this.#H && (clearTimeout(this.#H), (this.#H = void 0));
+          }
+          #X() {
+            this.#$ && (clearInterval(this.#$), (this.#$ = void 0));
+          }
+          createResult(e, t) {
+            let r,
+              i = this.#M,
+              s = this.options,
+              o = this.#_,
+              u = this.#U,
+              l = this.#k,
+              d = e !== i ? e.state : this.#F,
+              { state: p } = e,
+              { error: y, errorUpdatedAt: m, fetchStatus: b, status: v } = p,
+              g = !1;
+            if (t._optimisticResults) {
+              let r = this.hasListeners(),
+                n = !r && c(e, t),
+                o = r && h(e, i, t, s);
+              (n || o) &&
+                ((b = (0, a.v_)(e.options.networkMode) ? "fetching" : "paused"),
+                p.dataUpdatedAt || (v = "pending")),
+                "isRestoring" === t._optimisticResults && (b = "idle");
+            }
+            if (t.select && void 0 !== p.data)
+              if (o && p.data === u?.data && t.select === this.#N) r = this.#K;
+              else
+                try {
+                  (this.#N = t.select),
+                    (r = t.select(p.data)),
+                    (r = (0, n.pl)(o?.data, r, t)),
+                    (this.#K = r),
+                    (this.#A = null);
+                } catch (e) {
+                  this.#A = e;
+                }
+            else r = p.data;
+            if (
+              void 0 !== t.placeholderData &&
+              void 0 === r &&
+              "pending" === v
+            ) {
+              let e;
+              if (
+                o?.isPlaceholderData &&
+                t.placeholderData === l?.placeholderData
+              )
+                e = o.data;
+              else if (
+                ((e =
+                  "function" == typeof t.placeholderData
+                    ? t.placeholderData(this.#L?.state.data, this.#L)
+                    : t.placeholderData),
+                t.select && void 0 !== e)
+              )
+                try {
+                  (e = t.select(e)), (this.#A = null);
+                } catch (e) {
+                  this.#A = e;
+                }
+              void 0 !== e &&
+                ((v = "success"), (r = (0, n.pl)(o?.data, e, t)), (g = !0));
+            }
+            this.#A &&
+              ((y = this.#A), (r = this.#K), (m = Date.now()), (v = "error"));
+            let w = "fetching" === b,
+              O = "pending" === v,
+              E = "error" === v,
+              R = O && w;
+            return {
+              status: v,
+              fetchStatus: b,
+              isPending: O,
+              isSuccess: "success" === v,
+              isError: E,
+              isInitialLoading: R,
+              isLoading: R,
+              data: r,
+              dataUpdatedAt: p.dataUpdatedAt,
+              error: y,
+              errorUpdatedAt: m,
+              failureCount: p.fetchFailureCount,
+              failureReason: p.fetchFailureReason,
+              errorUpdateCount: p.errorUpdateCount,
+              isFetched: p.dataUpdateCount > 0 || p.errorUpdateCount > 0,
+              isFetchedAfterMount:
+                p.dataUpdateCount > d.dataUpdateCount ||
+                p.errorUpdateCount > d.errorUpdateCount,
+              isFetching: w,
+              isRefetching: w && !O,
+              isLoadingError: E && 0 === p.dataUpdatedAt,
+              isPaused: "paused" === b,
+              isPlaceholderData: g,
+              isRefetchError: E && 0 !== p.dataUpdatedAt,
+              isStale: f(e, t),
+              refetch: this.refetch,
+            };
+          }
+          updateResult(e) {
+            let t = this.#_,
+              r = this.createResult(this.#M, this.options);
+            if (
+              ((this.#U = this.#M.state),
+              (this.#k = this.options),
+              void 0 !== this.#U.data && (this.#L = this.#M),
+              (0, n.f8)(r, t))
+            )
+              return;
+            this.#_ = r;
+            let i = {},
+              s = () => {
+                if (!t) return !0;
+                let { notifyOnChangeProps: e } = this.options,
+                  r = "function" == typeof e ? e() : e;
+                if ("all" === r || (!r && !this.#B.size)) return !0;
+                let n = new Set(r ?? this.#B);
+                return (
+                  this.options.throwOnError && n.add("error"),
+                  Object.keys(this.#_).some(
+                    (e) => this.#_[e] !== t[e] && n.has(e)
+                  )
+                );
+              };
+            e?.listeners !== !1 && s() && (i.listeners = !0),
+              this.#j({ ...i, ...e });
+          }
+          #W() {
+            let e = this.#C.getQueryCache().build(this.#C, this.options);
+            if (e === this.#M) return;
+            let t = this.#M;
+            (this.#M = e),
+              (this.#F = e.state),
+              this.hasListeners() &&
+                (t?.removeObserver(this), e.addObserver(this));
+          }
+          onQueryUpdate() {
+            this.updateResult(), this.hasListeners() && this.#G();
+          }
+          #j(e) {
+            i.j.batch(() => {
+              e.listeners &&
+                this.listeners.forEach((e) => {
+                  e(this.#_);
+                }),
+                this.#C
+                  .getQueryCache()
+                  .notify({ query: this.#M, type: "observerResultsUpdated" });
+            });
+          }
+        };
+      function c(e, t) {
+        return (
+          (!1 !== t.enabled &&
+            !e.state.dataUpdatedAt &&
+            ("error" !== e.state.status || !1 !== t.retryOnMount)) ||
+          (e.state.dataUpdatedAt > 0 && l(e, t, t.refetchOnMount))
+        );
+      }
+      function l(e, t, r) {
+        if (!1 !== t.enabled) {
+          let n = "function" == typeof r ? r(e) : r;
+          return "always" === n || (!1 !== n && f(e, t));
+        }
+        return !1;
+      }
+      function h(e, t, r, n) {
+        return (
+          !1 !== r.enabled &&
+          (e !== t || !1 === n.enabled) &&
+          (!r.suspense || "error" !== e.state.status) &&
+          f(e, r)
+        );
+      }
+      function f(e, t) {
+        return e.isStaleByTime(t.staleTime);
+      }
+    },
+    69950: (e, t, r) => {
+      r.d(t, {
+        BH: () => d,
+        Cp: () => f,
+        EN: () => h,
+        F$: () => l,
+        MK: () => u,
+        S$: () => n,
+        ZZ: () => E,
+        Zw: () => s,
+        f8: () => p,
+        gn: () => o,
+        j3: () => a,
+        lQ: () => i,
+        nJ: () => c,
+        pl: () => g,
+        rX: () => w,
+        y9: () => O,
+        yy: () => v,
+      });
+      var n = "undefined" == typeof window || "Deno" in window;
+      function i() {}
+      function s(e, t) {
+        return "function" == typeof e ? e(t) : e;
+      }
+      function o(e) {
+        return "number" == typeof e && e >= 0 && e !== 1 / 0;
+      }
+      function a(e, t) {
+        return Math.max(e + (t || 0) - Date.now(), 0);
+      }
+      function u(e, t) {
+        let {
+          type: r = "all",
+          exact: n,
+          fetchStatus: i,
+          predicate: s,
+          queryKey: o,
+          stale: a,
+        } = e;
+        if (o) {
+          if (n) {
+            if (t.queryHash !== l(o, t.options)) return !1;
+          } else if (!f(t.queryKey, o)) return !1;
+        }
+        if ("all" !== r) {
+          let e = t.isActive();
+          if (("active" === r && !e) || ("inactive" === r && e)) return !1;
+        }
+        return (
+          ("boolean" != typeof a || t.isStale() === a) &&
+          (void 0 === i || i === t.state.fetchStatus) &&
+          (!s || !!s(t))
+        );
+      }
+      function c(e, t) {
+        let { exact: r, status: n, predicate: i, mutationKey: s } = e;
+        if (s) {
+          if (!t.options.mutationKey) return !1;
+          if (r) {
+            if (h(t.options.mutationKey) !== h(s)) return !1;
+          } else if (!f(t.options.mutationKey, s)) return !1;
+        }
+        return (!n || t.state.status === n) && (!i || !!i(t));
+      }
+      function l(e, t) {
+        return (t?.queryKeyHashFn || h)(e);
+      }
+      function h(e) {
+        return JSON.stringify(e, (e, t) =>
+          m(t)
+            ? Object.keys(t)
+                .sort()
+                .reduce((e, r) => ((e[r] = t[r]), e), {})
+            : t
+        );
+      }
+      function f(e, t) {
+        return (
+          e === t ||
+          (typeof e == typeof t &&
+            !!e &&
+            !!t &&
+            "object" == typeof e &&
+            "object" == typeof t &&
+            !Object.keys(t).some((r) => !f(e[r], t[r])))
+        );
+      }
+      function d(e, t) {
+        if (e === t) return e;
+        let r = y(e) && y(t);
+        if (r || (m(e) && m(t))) {
+          let n = r ? e : Object.keys(e),
+            i = n.length,
+            s = r ? t : Object.keys(t),
+            o = s.length,
+            a = r ? [] : {},
+            u = 0;
+          for (let i = 0; i < o; i++) {
+            let o = r ? i : s[i];
+            !r && void 0 === e[o] && void 0 === t[o] && n.includes(o)
+              ? ((a[o] = void 0), u++)
+              : ((a[o] = d(e[o], t[o])),
+                a[o] === e[o] && void 0 !== e[o] && u++);
+          }
+          return i === o && u === i ? e : a;
+        }
+        return t;
+      }
+      function p(e, t) {
+        if ((e && !t) || (t && !e)) return !1;
+        for (let r in e) if (e[r] !== t[r]) return !1;
+        return !0;
+      }
+      function y(e) {
+        return Array.isArray(e) && e.length === Object.keys(e).length;
+      }
+      function m(e) {
+        if (!b(e)) return !1;
+        let t = e.constructor;
+        if (void 0 === t) return !0;
+        let r = t.prototype;
+        return !!b(r) && !!r.hasOwnProperty("isPrototypeOf");
+      }
+      function b(e) {
+        return "[object Object]" === Object.prototype.toString.call(e);
+      }
+      function v(e) {
+        return new Promise((t) => {
+          setTimeout(t, e);
+        });
+      }
+      function g(e, t, r) {
+        return "function" == typeof r.structuralSharing
+          ? r.structuralSharing(e, t)
+          : !1 !== r.structuralSharing
+          ? d(e, t)
+          : t;
+      }
+      function w(e) {
+        return e;
+      }
+      function O(e, t, r = 0) {
+        let n = [...e, t];
+        return r && n.length > r ? n.slice(1) : n;
+      }
+      function E(e, t, r = 0) {
+        let n = [t, ...e];
+        return r && n.length > r ? n.slice(0, -1) : n;
+      }
+    },
+    76231: (e, t, r) => {
+      r.d(t, { Ay: () => en });
+      var n = (function () {
+          function e() {
+            (this.keyToValue = new Map()), (this.valueToKey = new Map());
+          }
+          return (
+            (e.prototype.set = function (e, t) {
+              this.keyToValue.set(e, t), this.valueToKey.set(t, e);
+            }),
+            (e.prototype.getByKey = function (e) {
+              return this.keyToValue.get(e);
+            }),
+            (e.prototype.getByValue = function (e) {
+              return this.valueToKey.get(e);
+            }),
+            (e.prototype.clear = function () {
+              this.keyToValue.clear(), this.valueToKey.clear();
+            }),
+            e
+          );
+        })(),
+        i = (function () {
+          function e(e) {
+            (this.generateIdentifier = e), (this.kv = new n());
+          }
+          return (
+            (e.prototype.register = function (e, t) {
+              this.kv.getByValue(e) ||
+                (t || (t = this.generateIdentifier(e)), this.kv.set(t, e));
+            }),
+            (e.prototype.clear = function () {
+              this.kv.clear();
+            }),
+            (e.prototype.getIdentifier = function (e) {
+              return this.kv.getByValue(e);
+            }),
+            (e.prototype.getValue = function (e) {
+              return this.kv.getByKey(e);
+            }),
+            e
+          );
+        })(),
+        s = (function () {
+          var e = function (t, r) {
+            return (e =
+              Object.setPrototypeOf ||
+              ({ __proto__: [] } instanceof Array &&
+                function (e, t) {
+                  e.__proto__ = t;
+                }) ||
+              function (e, t) {
+                for (var r in t)
+                  Object.prototype.hasOwnProperty.call(t, r) && (e[r] = t[r]);
+              })(t, r);
+          };
+          return function (t, r) {
+            if ("function" != typeof r && null !== r)
+              throw TypeError(
+                "Class extends value " +
+                  String(r) +
+                  " is not a constructor or null"
+              );
+            function n() {
+              this.constructor = t;
+            }
+            e(t, r),
+              (t.prototype =
+                null === r
+                  ? Object.create(r)
+                  : ((n.prototype = r.prototype), new n()));
+          };
+        })(),
+        o = new ((function (e) {
+          function t() {
+            var t =
+              e.call(this, function (e) {
+                return e.name;
+              }) || this;
+            return (t.classToAllowedProps = new Map()), t;
+          }
+          return (
+            s(t, e),
+            (t.prototype.register = function (t, r) {
+              "object" == typeof r
+                ? (r.allowProps &&
+                    this.classToAllowedProps.set(t, r.allowProps),
+                  e.prototype.register.call(this, t, r.identifier))
+                : e.prototype.register.call(this, t, r);
+            }),
+            (t.prototype.getAllowedProps = function (e) {
+              return this.classToAllowedProps.get(e);
+            }),
+            t
+          );
+        })(i))(),
+        a = new i(function (e) {
+          var t;
+          return null != (t = e.description) ? t : "";
+        }),
+        u = function (e, t) {
+          var r = "function" == typeof Symbol && e[Symbol.iterator];
+          if (!r) return e;
+          var n,
+            i,
+            s = r.call(e),
+            o = [];
+          try {
+            for (; (void 0 === t || t-- > 0) && !(n = s.next()).done; )
+              o.push(n.value);
+          } catch (e) {
+            i = { error: e };
+          } finally {
+            try {
+              n && !n.done && (r = s.return) && r.call(s);
+            } finally {
+              if (i) throw i.error;
+            }
+          }
+          return o;
+        };
+      function c(e, t) {
+        Object.entries(e).forEach(function (e) {
+          var r = u(e, 2),
+            n = r[0];
+          return t(r[1], n);
+        });
+      }
+      function l(e, t) {
+        return -1 !== e.indexOf(t);
+      }
+      function h(e, t) {
+        for (var r = 0; r < e.length; r++) {
+          var n = e[r];
+          if (t(n)) return n;
+        }
+      }
+      var f = {},
+        d = {
+          register: function (e) {
+            f[e.name] = e;
+          },
+          findApplicable: function (e) {
+            return (function (e, t) {
+              var r = (function (e) {
+                if ("values" in Object) return Object.values(e);
+                var t = [];
+                for (var r in e) e.hasOwnProperty(r) && t.push(e[r]);
+                return t;
+              })(e);
+              if ("find" in r) return r.find(t);
+              for (var n = 0; n < r.length; n++) {
+                var i = r[n];
+                if (t(i)) return i;
+              }
+            })(f, function (t) {
+              return t.isApplicable(e);
+            });
+          },
+          findByName: function (e) {
+            return f[e];
+          },
+        },
+        p = function (e, t) {
+          var r = "function" == typeof Symbol && e[Symbol.iterator];
+          if (!r) return e;
+          var n,
+            i,
+            s = r.call(e),
+            o = [];
+          try {
+            for (; (void 0 === t || t-- > 0) && !(n = s.next()).done; )
+              o.push(n.value);
+          } catch (e) {
+            i = { error: e };
+          } finally {
+            try {
+              n && !n.done && (r = s.return) && r.call(s);
+            } finally {
+              if (i) throw i.error;
+            }
+          }
+          return o;
+        },
+        y = function (e, t) {
+          for (var r = 0, n = t.length, i = e.length; r < n; r++, i++)
+            e[i] = t[r];
+          return e;
+        },
+        m = [],
+        b = function (e) {
+          return Object.prototype.toString.call(e).slice(8, -1);
+        },
+        v = function (e) {
+          return void 0 === e;
+        },
+        g = function (e) {
+          return (
+            "Object" === b(e) &&
+            (null === Object.getPrototypeOf(e) ||
+              (e !== Object.prototype &&
+                e.constructor === Object &&
+                Object.getPrototypeOf(e) === Object.prototype))
+          );
+        },
+        w = function (e) {
+          return g(e) && 0 === Object.keys(e).length;
+        },
+        O = function (e) {
+          return Array.isArray(e);
+        },
+        E = function (e) {
+          return e instanceof Map;
+        },
+        R = function (e) {
+          return e instanceof Set;
+        },
+        C = function (e) {
+          return "Symbol" === b(e);
+        },
+        S = function (e) {
+          return "number" == typeof e && isNaN(e);
+        },
+        Q = function (e) {
+          return (
+            "boolean" == typeof e ||
+            null === e ||
+            v(e) ||
+            ("number" == typeof e && !isNaN(e)) ||
+            "string" == typeof e ||
+            C(e)
+          );
+        },
+        q = function (e) {
+          return e.replace(/\./g, "\\.");
+        },
+        P = function (e) {
+          return e.map(String).map(q).join(".");
+        },
+        x = function (e) {
+          for (var t = [], r = "", n = 0; n < e.length; n++) {
+            var i = e.charAt(n);
+            if ("\\" === i && "." === e.charAt(n + 1)) {
+              (r += "."), n++;
+              continue;
+            }
+            if ("." === i) {
+              t.push(r), (r = "");
+              continue;
+            }
+            r += i;
+          }
+          var s = r;
+          return t.push(s), t;
+        },
+        D = function () {
+          return (D =
+            Object.assign ||
+            function (e) {
+              for (var t, r = 1, n = arguments.length; r < n; r++)
+                for (var i in (t = arguments[r]))
+                  Object.prototype.hasOwnProperty.call(t, i) && (e[i] = t[i]);
+              return e;
+            }).apply(this, arguments);
+        },
+        I = function (e, t) {
+          var r = "function" == typeof Symbol && e[Symbol.iterator];
+          if (!r) return e;
+          var n,
+            i,
+            s = r.call(e),
+            o = [];
+          try {
+            for (; (void 0 === t || t-- > 0) && !(n = s.next()).done; )
+              o.push(n.value);
+          } catch (e) {
+            i = { error: e };
+          } finally {
+            try {
+              n && !n.done && (r = s.return) && r.call(s);
+            } finally {
+              if (i) throw i.error;
+            }
+          }
+          return o;
+        },
+        j = function (e, t) {
+          for (var r = 0, n = t.length, i = e.length; r < n; r++, i++)
+            e[i] = t[r];
+          return e;
+        };
+      function T(e, t, r, n) {
+        return { isApplicable: e, annotation: t, transform: r, untransform: n };
+      }
+      var A = [
+        T(
+          v,
+          "undefined",
+          function () {
+            return null;
+          },
+          function () {}
+        ),
+        T(
+          function (e) {
+            return "bigint" == typeof e;
+          },
+          "bigint",
+          function (e) {
+            return e.toString();
+          },
+          function (e) {
+            return "undefined" != typeof BigInt
+              ? BigInt(e)
+              : (console.error("Please add a BigInt polyfill."), e);
+          }
+        ),
+        T(
+          function (e) {
+            return e instanceof Date && !isNaN(e.valueOf());
+          },
+          "Date",
+          function (e) {
+            return e.toISOString();
+          },
+          function (e) {
+            return new Date(e);
+          }
+        ),
+        T(
+          function (e) {
+            return e instanceof Error;
+          },
+          "Error",
+          function (e) {
+            var t = { name: e.name, message: e.message };
+            return (
+              m.forEach(function (r) {
+                t[r] = e[r];
+              }),
+              t
+            );
+          },
+          function (e) {
+            var t = Error(e.message);
+            return (
+              (t.name = e.name),
+              (t.stack = e.stack),
+              m.forEach(function (r) {
+                t[r] = e[r];
+              }),
+              t
+            );
+          }
+        ),
+        T(
+          function (e) {
+            return e instanceof RegExp;
+          },
+          "regexp",
+          function (e) {
+            return "" + e;
+          },
+          function (e) {
+            return new RegExp(
+              e.slice(1, e.lastIndexOf("/")),
+              e.slice(e.lastIndexOf("/") + 1)
+            );
+          }
+        ),
+        T(
+          R,
+          "set",
+          function (e) {
+            return j([], I(e.values()));
+          },
+          function (e) {
+            return new Set(e);
+          }
+        ),
+        T(
+          E,
+          "map",
+          function (e) {
+            return j([], I(e.entries()));
+          },
+          function (e) {
+            return new Map(e);
+          }
+        ),
+        T(
+          function (e) {
+            var t;
+            return S(e) || (t = e) === 1 / 0 || t === -1 / 0;
+          },
+          "number",
+          function (e) {
+            return S(e) ? "NaN" : e > 0 ? "Infinity" : "-Infinity";
+          },
+          Number
+        ),
+        T(
+          function (e) {
+            return 0 === e && 1 / e == -1 / 0;
+          },
+          "number",
+          function () {
+            return "-0";
+          },
+          Number
+        ),
+      ];
+      function M(e, t, r, n) {
+        return { isApplicable: e, annotation: t, transform: r, untransform: n };
+      }
+      var F = M(
+          function (e) {
+            return !!C(e) && !!a.getIdentifier(e);
+          },
+          function (e) {
+            return ["symbol", a.getIdentifier(e)];
+          },
+          function (e) {
+            return e.description;
+          },
+          function (e, t) {
+            var r = a.getValue(t[1]);
+            if (!r) throw Error("Trying to deserialize unknown symbol");
+            return r;
+          }
+        ),
+        _ = [
+          Int8Array,
+          Uint8Array,
+          Int16Array,
+          Uint16Array,
+          Int32Array,
+          Uint32Array,
+          Float32Array,
+          Float64Array,
+          Uint8ClampedArray,
+        ].reduce(function (e, t) {
+          return (e[t.name] = t), e;
+        }, {}),
+        U = M(
+          function (e) {
+            return ArrayBuffer.isView(e) && !(e instanceof DataView);
+          },
+          function (e) {
+            return ["typed-array", e.constructor.name];
+          },
+          function (e) {
+            return j([], I(e));
+          },
+          function (e, t) {
+            var r = _[t[1]];
+            if (!r) throw Error("Trying to deserialize unknown typed array");
+            return new r(e);
+          }
+        );
+      function k(e) {
+        return null != e && !!e.constructor && !!o.getIdentifier(e.constructor);
+      }
+      var N = M(
+          k,
+          function (e) {
+            return ["class", o.getIdentifier(e.constructor)];
+          },
+          function (e) {
+            var t = o.getAllowedProps(e.constructor);
+            if (!t) return D({}, e);
+            var r = {};
+            return (
+              t.forEach(function (t) {
+                r[t] = e[t];
+              }),
+              r
+            );
+          },
+          function (e, t) {
+            var r = o.getValue(t[1]);
+            if (!r)
+              throw Error(
+                "Trying to deserialize unknown class - check https://github.com/blitz-js/superjson/issues/116#issuecomment-773996564"
+              );
+            return Object.assign(Object.create(r.prototype), e);
+          }
+        ),
+        K = M(
+          function (e) {
+            return !!d.findApplicable(e);
+          },
+          function (e) {
+            return ["custom", d.findApplicable(e).name];
+          },
+          function (e) {
+            return d.findApplicable(e).serialize(e);
+          },
+          function (e, t) {
+            var r = d.findByName(t[1]);
+            if (!r) throw Error("Trying to deserialize unknown custom value");
+            return r.deserialize(e);
+          }
+        ),
+        L = [N, F, K, U],
+        H = function (e) {
+          var t = h(L, function (t) {
+            return t.isApplicable(e);
+          });
+          if (t) return { value: t.transform(e), type: t.annotation(e) };
+          var r = h(A, function (t) {
+            return t.isApplicable(e);
+          });
+          if (r) return { value: r.transform(e), type: r.annotation };
+        },
+        $ = {};
+      A.forEach(function (e) {
+        $[e.annotation] = e;
+      });
+      var z = function (e, t) {
+          if (O(t))
+            switch (t[0]) {
+              case "symbol":
+                return F.untransform(e, t);
+              case "class":
+                return N.untransform(e, t);
+              case "custom":
+                return K.untransform(e, t);
+              case "typed-array":
+                return U.untransform(e, t);
+              default:
+                throw Error("Unknown transformation: " + t);
+            }
+          var r = $[t];
+          if (!r) throw Error("Unknown transformation: " + t);
+          return r.untransform(e);
+        },
+        B = function (e, t) {
+          for (var r = e.keys(); t > 0; ) r.next(), t--;
+          return r.next().value;
+        };
+      function V(e) {
+        if (l(e, "__proto__"))
+          throw Error("__proto__ is not allowed as a property");
+        if (l(e, "prototype"))
+          throw Error("prototype is not allowed as a property");
+        if (l(e, "constructor"))
+          throw Error("constructor is not allowed as a property");
+      }
+      var G = function (e, t, r) {
+          if ((V(t), 0 === t.length)) return r(e);
+          for (var n = e, i = 0; i < t.length - 1; i++) {
+            var s = t[i];
+            if (O(n)) n = n[+s];
+            else if (g(n)) n = n[s];
+            else if (R(n)) {
+              var o = +s;
+              n = B(n, o);
+            } else if (E(n)) {
+              if (i === t.length - 2) break;
+              var o = +s,
+                a = 0 == +t[++i] ? "key" : "value",
+                u = B(n, o);
+              switch (a) {
+                case "key":
+                  n = u;
+                  break;
+                case "value":
+                  n = n.get(u);
+              }
+            }
+          }
+          var c = t[t.length - 1];
+          if (((O(n) || g(n)) && (n[c] = r(n[c])), R(n))) {
+            var l = B(n, +c),
+              h = r(l);
+            l !== h && (n.delete(l), n.add(h));
+          }
+          if (E(n)) {
+            var o = +t[t.length - 2],
+              f = B(n, o),
+              a = 0 == +c ? "key" : "value";
+            switch (a) {
+              case "key":
+                var d = r(f);
+                n.set(d, n.get(f)), d !== f && n.delete(f);
+                break;
+              case "value":
+                n.set(f, r(n.get(f)));
+            }
+          }
+          return e;
+        },
+        J = function (e, t) {
+          var r = "function" == typeof Symbol && e[Symbol.iterator];
+          if (!r) return e;
+          var n,
+            i,
+            s = r.call(e),
+            o = [];
+          try {
+            for (; (void 0 === t || t-- > 0) && !(n = s.next()).done; )
+              o.push(n.value);
+          } catch (e) {
+            i = { error: e };
+          } finally {
+            try {
+              n && !n.done && (r = s.return) && r.call(s);
+            } finally {
+              if (i) throw i.error;
+            }
+          }
+          return o;
+        },
+        X = function (e, t) {
+          for (var r = 0, n = t.length, i = e.length; r < n; r++, i++)
+            e[i] = t[r];
+          return e;
+        },
+        W = function (e, t, r, n) {
+          if (
+            (void 0 === r && (r = []),
+            void 0 === n && (n = []),
+            Q(e) || ((i = r), (s = t.get(e)) ? s.push(i) : t.set(e, [i])),
+            !(g(e) || O(e) || E(e) || R(e) || k(e)))
+          ) {
+            var i,
+              s,
+              o,
+              a = H(e);
+            return a
+              ? { transformedValue: a.value, annotations: [a.type] }
+              : { transformedValue: e };
+          }
+          if (l(n, e)) return { transformedValue: null };
+          var u = H(e),
+            h = null != (o = null == u ? void 0 : u.value) ? o : e;
+          Q(e) || (n = X(X([], J(n)), [e]));
+          var f = O(h) ? [] : {},
+            d = {};
+          return (c(h, function (e, i) {
+            var s = W(e, t, X(X([], J(r)), [i]), n);
+            (f[i] = s.transformedValue),
+              O(s.annotations)
+                ? (d[i] = s.annotations)
+                : g(s.annotations) &&
+                  c(s.annotations, function (e, t) {
+                    d[q(i) + "." + t] = e;
+                  });
+          }),
+          w(d))
+            ? { transformedValue: f, annotations: u ? [u.type] : void 0 }
+            : { transformedValue: f, annotations: u ? [u.type, d] : d };
+        };
+      function Z(e) {
+        return Object.prototype.toString.call(e).slice(8, -1);
+      }
+      function Y(e) {
+        return "Array" === Z(e);
+      }
+      var ee = function () {
+          return (ee =
+            Object.assign ||
+            function (e) {
+              for (var t, r = 1, n = arguments.length; r < n; r++)
+                for (var i in (t = arguments[r]))
+                  Object.prototype.hasOwnProperty.call(t, i) && (e[i] = t[i]);
+              return e;
+            }).apply(this, arguments);
+        },
+        et = function (e) {
+          var t,
+            r,
+            n = new Map(),
+            i = W(e, n),
+            s = { json: i.transformedValue };
+          i.annotations &&
+            (s.meta = ee(ee({}, s.meta), { values: i.annotations }));
+          var o =
+            ((t = {}),
+            (r = void 0),
+            (n.forEach(function (e) {
+              if (!(e.length <= 1)) {
+                var n = J(
+                    e
+                      .map(function (e) {
+                        return e.map(String);
+                      })
+                      .sort(function (e, t) {
+                        return e.length - t.length;
+                      })
+                  ),
+                  i = n[0],
+                  s = n.slice(1);
+                0 === i.length ? (r = s.map(P)) : (t[P(i)] = s.map(P));
+              }
+            }),
+            r)
+              ? w(t)
+                ? [r]
+                : [r, t]
+              : w(t)
+              ? void 0
+              : t);
+          return (
+            o && (s.meta = ee(ee({}, s.meta), { referentialEqualities: o })), s
+          );
+        },
+        er = function (e) {
+          var t,
+            r = e.json,
+            n = e.meta,
+            i = (function e(t, r = {}) {
+              return Y(t)
+                ? t.map((t) => e(t, r))
+                : "Object" !== Z(t) ||
+                  t.constructor !== Object ||
+                  Object.getPrototypeOf(t) !== Object.prototype
+                ? t
+                : [
+                    ...Object.getOwnPropertyNames(t),
+                    ...Object.getOwnPropertySymbols(t),
+                  ].reduce((n, i) => {
+                    if (Y(r.props) && !r.props.includes(i)) return n;
+                    let s = e(t[i], r);
+                    var o = r.nonenumerable;
+                    let a = {}.propertyIsEnumerable.call(t, i)
+                      ? "enumerable"
+                      : "nonenumerable";
+                    return (
+                      "enumerable" === a && (n[i] = s),
+                      o &&
+                        "nonenumerable" === a &&
+                        Object.defineProperty(n, i, {
+                          value: s,
+                          enumerable: !1,
+                          writable: !0,
+                          configurable: !0,
+                        }),
+                      n
+                    );
+                  }, {});
+            })(r);
+          return (
+            (null == n ? void 0 : n.values) &&
+              ((t = i),
+              (function e(t, r, n) {
+                if ((void 0 === n && (n = []), t)) {
+                  if (!O(t))
+                    return void c(t, function (t, i) {
+                      return e(t, r, X(X([], J(n)), J(x(i))));
+                    });
+                  var i = J(t, 2),
+                    s = i[0],
+                    o = i[1];
+                  o &&
+                    c(o, function (t, i) {
+                      e(t, r, X(X([], J(n)), J(x(i))));
+                    }),
+                    r(s, n);
+                }
+              })(n.values, function (e, r) {
+                t = G(t, r, function (t) {
+                  return z(t, e);
+                });
+              }),
+              (i = t)),
+            (null == n ? void 0 : n.referentialEqualities) &&
+              (i = (function (e, t) {
+                function r(t, r) {
+                  var n,
+                    i,
+                    s =
+                      ((n = e),
+                      V((i = x(r))),
+                      i.forEach(function (e) {
+                        n = n[e];
+                      }),
+                      n);
+                  t.map(x).forEach(function (t) {
+                    e = G(e, t, function () {
+                      return s;
+                    });
+                  });
+                }
+                if (O(t)) {
+                  var n = J(t, 2),
+                    i = n[0],
+                    s = n[1];
+                  i.forEach(function (t) {
+                    e = G(e, x(t), function () {
+                      return e;
+                    });
+                  }),
+                    s && c(s, r);
+                } else c(t, r);
+                return e;
+              })(i, n.referentialEqualities)),
+            i
+          );
+        };
+      let en = {
+        stringify: function (e) {
+          return JSON.stringify(et(e));
+        },
+        parse: function (e) {
+          return er(JSON.parse(e));
+        },
+        serialize: et,
+        deserialize: er,
+        registerClass: function (e, t) {
+          return o.register(e, t);
+        },
+        registerSymbol: function (e, t) {
+          return a.register(e, t);
+        },
+        registerCustom: function (e, t) {
+          return d.register(ee({ name: t }, e));
+        },
+        allowErrorProps: function () {
+          for (var e = [], t = 0; t < arguments.length; t++)
+            e[t] = arguments[t];
+          m.push.apply(m, y([], p(e)));
+        },
+      };
+    },
+    76702: (e, t, r) => {
+      r.d(t, { E: () => i, R: () => s });
+      var n = r(7620);
+      let i = ["client", "ssrContext", "ssrState", "abortOnUnmount"],
+        s = n.createContext?.(null);
+    },
+    79382: (e, t, r) => {
+      r.d(t, { m: () => s });
+      var n = r(22844),
+        i = r(69950),
+        s = new (class extends n.Q {
+          #et;
+          #E;
+          #R;
+          constructor() {
+            super(),
+              (this.#R = (e) => {
+                if (!i.S$ && window.addEventListener) {
+                  let t = () => e();
+                  return (
+                    window.addEventListener("visibilitychange", t, !1),
+                    () => {
+                      window.removeEventListener("visibilitychange", t);
+                    }
+                  );
+                }
+              });
+          }
+          onSubscribe() {
+            this.#E || this.setEventListener(this.#R);
+          }
+          onUnsubscribe() {
+            this.hasListeners() || (this.#E?.(), (this.#E = void 0));
+          }
+          setEventListener(e) {
+            (this.#R = e),
+              this.#E?.(),
+              (this.#E = e((e) => {
+                "boolean" == typeof e ? this.setFocused(e) : this.onFocus();
+              }));
+          }
+          setFocused(e) {
+            this.#et !== e && ((this.#et = e), this.onFocus());
+          }
+          onFocus() {
+            this.listeners.forEach((e) => {
+              e();
+            });
+          }
+          isFocused() {
+            return "boolean" == typeof this.#et
+              ? this.#et
+              : globalThis.document?.visibilityState !== "hidden";
+          }
+        })();
+    },
+    79751: (e, t, r) => {
+      r.d(t, { w: () => i });
+      var n = r(33827);
+      function i(e, t) {
+        return (0, n.vX)(({ path: r, args: n }) => {
+          let i = [e, ...r],
+            s = i.pop();
+          if ("useMutation" === s) return t[s](i, ...n);
+          if ("_def" === s) return { path: i };
+          let [o, ...a] = n,
+            u = a[0] || {};
+          return t[s](i, o, u);
+        });
+      }
+    },
+    79954: (e, t, r) => {
+      r.d(t, { H: () => n });
+      function n(e, t, r) {
+        let n = e.flatMap((e) => e.split("."));
+        if (!t && (!r || "any" === r)) return n.length ? [n] : [];
+        if ("infinite" === r && t && "object" == typeof t && "cursor" in t) {
+          let { cursor: e, ...r } = t;
+          return [n, { input: r, type: "infinite" }];
+        }
+        return [
+          n,
+          {
+            ...(void 0 !== t && { input: t }),
+            ...(r && "any" !== r && { type: r }),
+          },
+        ];
+      }
+    },
+    81562: (e, t, r) => {
+      r.d(t, { n: () => h });
+      var n = r(7620),
+        i = r(40730),
+        s = r(95635),
+        o = r(22844),
+        a = r(69950),
+        u = class extends o.Q {
+          constructor(e, t) {
+            super(),
+              (this.#_ = void 0),
+              (this.#C = e),
+              this.setOptions(t),
+              this.bindMethods(),
+              this.#er();
+          }
+          #C;
+          #_;
+          #en;
+          #ei;
+          bindMethods() {
+            (this.mutate = this.mutate.bind(this)),
+              (this.reset = this.reset.bind(this));
+          }
+          setOptions(e) {
+            let t = this.options;
+            (this.options = this.#C.defaultMutationOptions(e)),
+              (0, a.f8)(t, this.options) ||
+                this.#C
+                  .getMutationCache()
+                  .notify({
+                    type: "observerOptionsUpdated",
+                    mutation: this.#en,
+                    observer: this,
+                  }),
+              this.#en?.setOptions(this.options),
+              t?.mutationKey &&
+                this.options.mutationKey &&
+                (0, a.EN)(t.mutationKey) !==
+                  (0, a.EN)(this.options.mutationKey) &&
+                this.reset();
+          }
+          onUnsubscribe() {
+            this.hasListeners() || this.#en?.removeObserver(this);
+          }
+          onMutationUpdate(e) {
+            this.#er(), this.#j(e);
+          }
+          getCurrentResult() {
+            return this.#_;
+          }
+          reset() {
+            this.#en?.removeObserver(this),
+              (this.#en = void 0),
+              this.#er(),
+              this.#j();
+          }
+          mutate(e, t) {
+            return (
+              (this.#ei = t),
+              this.#en?.removeObserver(this),
+              (this.#en = this.#C
+                .getMutationCache()
+                .build(this.#C, this.options)),
+              this.#en.addObserver(this),
+              this.#en.execute(e)
+            );
+          }
+          #er() {
+            let e = this.#en?.state ?? (0, i.$)();
+            this.#_ = {
+              ...e,
+              isPending: "pending" === e.status,
+              isSuccess: "success" === e.status,
+              isError: "error" === e.status,
+              isIdle: "idle" === e.status,
+              mutate: this.mutate,
+              reset: this.reset,
+            };
+          }
+          #j(e) {
+            s.j.batch(() => {
+              if (this.#ei && this.hasListeners()) {
+                let t = this.#_.variables,
+                  r = this.#_.context;
+                e?.type === "success"
+                  ? (this.#ei.onSuccess?.(e.data, t, r),
+                    this.#ei.onSettled?.(e.data, null, t, r))
+                  : e?.type === "error" &&
+                    (this.#ei.onError?.(e.error, t, r),
+                    this.#ei.onSettled?.(void 0, e.error, t, r));
+              }
+              this.listeners.forEach((e) => {
+                e(this.#_);
+              });
+            });
+          }
+        },
+        c = r(4869),
+        l = r(32290);
+      function h(e, t) {
+        let r = (0, c.jE)(t),
+          [i] = n.useState(() => new u(r, e));
+        n.useEffect(() => {
+          i.setOptions(e);
+        }, [i, e]);
+        let o = n.useSyncExternalStore(
+            n.useCallback((e) => i.subscribe(s.j.batchCalls(e)), [i]),
+            () => i.getCurrentResult(),
+            () => i.getCurrentResult()
+          ),
+          a = n.useCallback(
+            (e, t) => {
+              i.mutate(e, t).catch(f);
+            },
+            [i]
+          );
+        if (o.error && (0, l.G)(i.options.throwOnError, [o.error]))
+          throw o.error;
+        return { ...o, mutate: a, mutateAsync: o.mutate };
+      }
+      function f() {}
+    },
+    83179: (e, t, r) => {
+      r.d(t, { R: () => d });
+      var n = r(4869),
+        i = r(7620);
+      function s(e) {
+        return e.state.isPaused;
+      }
+      function o(e) {
+        return "success" === e.state.status;
+      }
+      function a(e, t, r) {
+        if ("object" != typeof t || null === t) return;
+        let n = e.getMutationCache(),
+          i = e.getQueryCache(),
+          s = t.mutations || [],
+          o = t.queries || [];
+        s.forEach((t) => {
+          n.build(
+            e,
+            {
+              ...r?.defaultOptions?.mutations,
+              mutationKey: t.mutationKey,
+              meta: t.meta,
+            },
+            t.state
+          );
+        }),
+          o.forEach(({ queryKey: t, state: n, queryHash: s, meta: o }) => {
+            let a = i.get(s);
+            if (a) {
+              if (a.state.dataUpdatedAt < n.dataUpdatedAt) {
+                let { fetchStatus: e, ...t } = n;
+                a.setState(t);
+              }
+              return;
+            }
+            i.build(
+              e,
+              {
+                ...r?.defaultOptions?.queries,
+                queryKey: t,
+                queryHash: s,
+                meta: o,
+              },
+              { ...n, fetchStatus: "idle" }
+            );
+          });
+      }
+      var u = (e) => {
+          let { children: t, options: r = {}, state: s, queryClient: o } = e,
+            u = (0, n.jE)(o),
+            [c, l] = i.useState(),
+            h = i.useRef(r);
+          return (
+            (h.current = r),
+            i.useMemo(() => {
+              if (s) {
+                if ("object" != typeof s) return;
+                let e = u.getQueryCache(),
+                  t = s.queries || [],
+                  r = [],
+                  n = [];
+                for (let i of t) {
+                  let t = e.get(i.queryHash);
+                  if (t) {
+                    let e = i.state.dataUpdatedAt > t.state.dataUpdatedAt,
+                      r =
+                        null == c
+                          ? void 0
+                          : c.find((e) => e.queryHash === i.queryHash);
+                    e &&
+                      (!r || i.state.dataUpdatedAt > r.state.dataUpdatedAt) &&
+                      n.push(i);
+                  } else r.push(i);
+                }
+                r.length > 0 && a(u, { queries: r }, h.current),
+                  n.length > 0 && l((e) => (e ? [...e, ...n] : n));
+              }
+            }, [u, c, s]),
+            i.useEffect(() => {
+              c && (a(u, { queries: c }, h.current), l(void 0));
+            }, [u, c]),
+            t
+          );
+        },
+        c = r(28902),
+        l = r(6542);
+      function h(e) {
+        let t = e.state.error;
+        if (t instanceof Error && "TRPCClientError" === t.name) {
+          let r = { message: t.message, data: t.data, shape: t.shape };
+          return { ...e, state: { ...e.state, error: r } };
+        }
+        return e;
+      }
+      var f = r(33827);
+      function d(e) {
+        let t = (0, l.r0)(e),
+          a = (function (e) {
+            let { config: t } = e;
+            return (a) => {
+              let f = (0, l.r0)(e),
+                d = (r) => {
+                  let [s] = (0, i.useState)(() => {
+                      if (r.trpc) return r.trpc;
+                      let n = t({}),
+                        i = (0, l.SX)(n),
+                        s = f.createClient(n);
+                      return {
+                        abortOnUnmount: n.abortOnUnmount,
+                        queryClient: i,
+                        trpcClient: s,
+                        ssrState: !!e.ssr && "mounting",
+                        ssrContext: null,
+                      };
+                    }),
+                    {
+                      queryClient: o,
+                      trpcClient: c,
+                      ssrState: h,
+                      ssrContext: d,
+                    } = s,
+                    p = f.useDehydratedState(c, r.pageProps?.trpcState);
+                  return i.createElement(
+                    f.Provider,
+                    {
+                      abortOnUnmount: s.abortOnUnmount ?? !1,
+                      client: c,
+                      queryClient: o,
+                      ssrState: h,
+                      ssrContext: d,
+                    },
+                    i.createElement(
+                      n.Ht,
+                      { client: o },
+                      i.createElement(
+                        u,
+                        { state: p },
+                        i.createElement(a, Object.assign({}, r))
+                      )
+                    )
+                  );
+                };
+              (a.getInitialProps ?? e.ssr) &&
+                (d.getInitialProps = async (n) => {
+                  let u = async () => {
+                      if ("function" == typeof e.ssr) {
+                        if ("undefined" != typeof window) return !1;
+                        try {
+                          return await e.ssr({ ctx: n.ctx });
+                        } catch (e) {
+                          return !1;
+                        }
+                      }
+                      return e.ssr;
+                    },
+                    f = await u(),
+                    d = n.AppTree,
+                    p = !!n.Component,
+                    y = p ? n.ctx : n,
+                    m = {};
+                  if (a.getInitialProps) {
+                    let e = await a.getInitialProps(n);
+                    m = { ...(p ? e.pageProps ?? {} : e), ...m };
+                  }
+                  let b = (e) => (p ? { pageProps: e } : e);
+                  if ("undefined" != typeof window || !f) return b(m);
+                  let v = t({ ctx: y }),
+                    g = (0, c.u4)(v),
+                    w = (0, l.SX)(v),
+                    O = {
+                      pageProps: m,
+                      trpc: {
+                        config: v,
+                        trpcClient: g,
+                        queryClient: w,
+                        ssrState: "prepass",
+                        ssrContext: y,
+                      },
+                    },
+                    E = await Promise.all([
+                      r.e(59166),
+                      r.e(75246),
+                      r.e(75646),
+                    ]).then(r.t.bind(r, 75646, 19));
+                  for (
+                    ;
+                    E.renderToString((0, i.createElement)(d, O)),
+                      w.isFetching();
+
+                  )
+                    await new Promise((e) => {
+                      let t = w.getQueryCache().subscribe((r) => {
+                        r?.query.getObserversCount() === 0 && (e(), t());
+                      });
+                    });
+                  let R = (function (e, t = {}) {
+                      let r = t.shouldDehydrateMutation ?? s,
+                        n = e
+                          .getMutationCache()
+                          .getAll()
+                          .flatMap((e) =>
+                            r(e)
+                              ? [
+                                  {
+                                    mutationKey: e.options.mutationKey,
+                                    state: e.state,
+                                    ...(e.meta && { meta: e.meta }),
+                                  },
+                                ]
+                              : []
+                          ),
+                        i = t.shouldDehydrateQuery ?? o;
+                      return {
+                        mutations: n,
+                        queries: e
+                          .getQueryCache()
+                          .getAll()
+                          .flatMap((e) =>
+                            i(e)
+                              ? [
+                                  {
+                                    state: e.state,
+                                    queryKey: e.queryKey,
+                                    queryHash: e.queryHash,
+                                    ...(e.meta && { meta: e.meta }),
+                                  },
+                                ]
+                              : []
+                          ),
+                      };
+                    })(w, {
+                      shouldDehydrateQuery: (e) =>
+                        "idle" !== e.state.fetchStatus ||
+                        "pending" !== e.state.status,
+                    }),
+                    C = {
+                      ...R,
+                      queries: R.queries.map(h),
+                      mutations: R.mutations.map(h),
+                    };
+                  m.trpcState =
+                    g.runtime.combinedTransformer.output.serialize(C);
+                  let S = b(m);
+                  if ("responseMeta" in e) {
+                    let t =
+                      e.responseMeta?.({
+                        ctx: y,
+                        clientErrors: [...R.queries, ...R.mutations]
+                          .map((e) => e.state.error)
+                          .flatMap((e) =>
+                            e instanceof Error && "TRPCClientError" === e.name
+                              ? [e]
+                              : []
+                          ),
+                      }) ?? {};
+                    for (let [e, r] of Object.entries(t.headers ?? {}))
+                      "string" == typeof r && y.res?.setHeader(e, r);
+                    t.status && y.res && (y.res.statusCode = t.status);
+                  }
+                  return S;
+                });
+              let p = a.displayName ?? a.name ?? "Component";
+              return (d.displayName = `withTRPC(${p})`), d;
+            };
+          })(e);
+        return (0, f.U6)((e) =>
+          "useContext" === e || "useUtils" === e
+            ? () => {
+                let e = t.useUtils();
+                return (0, i.useMemo)(() => (0, l.np)(e), [e]);
+              }
+            : "useQueries" === e
+            ? t.useQueries
+            : "useSuspenseQueries" === e
+            ? t.useSuspenseQueries
+            : "withTRPC" === e
+            ? a
+            : (0, l.wy)(e, t)
+        );
+      }
+    },
+    83861: (e, t, r) => {
+      r.d(t, { P: () => n });
+      function n(e, t, r) {
+        let n = e[0],
+          i = e[1]?.input;
+        return r && (i.cursor = r), [n.join("."), i, t?.trpc];
+      }
+    },
+    86336: (e, t, r) => {
+      r.d(t, { $1: () => a, LJ: () => s, wZ: () => o });
+      var n = r(7620),
+        i = r(32290),
+        s = (e, t) => {
+          (e.suspense || e.throwOnError) &&
+            !t.isReset() &&
+            (e.retryOnMount = !1);
+        },
+        o = (e) => {
+          n.useEffect(() => {
+            e.clearReset();
+          }, [e]);
+        },
+        a = (e) => {
+          let {
+            result: t,
+            errorResetBoundary: r,
+            throwOnError: n,
+            query: s,
+          } = e;
+          return (
+            t.isError &&
+            !r.isReset() &&
+            !t.isFetching &&
+            s &&
+            (0, i.G)(n, [t.error, s])
+          );
+        };
+    },
+    92993: (e, t, r) => {
+      r.d(t, { PL: () => i, RQ: () => u, rB: () => a });
+      var n = r(69950);
+      function i(e) {
+        return {
+          onFetch: (t, r) => {
+            let i = async () => {
+              let r,
+                i = t.options,
+                a = t.fetchOptions?.meta?.fetchMore?.direction,
+                u = t.state.data?.pages || [],
+                c = t.state.data?.pageParams || [],
+                l = !1,
+                h =
+                  t.options.queryFn ||
+                  (() =>
+                    Promise.reject(
+                      Error(`Missing queryFn: '${t.options.queryHash}'`)
+                    )),
+                f = async (e, r, i) => {
+                  if (l) return Promise.reject();
+                  if (null == r && e.pages.length) return Promise.resolve(e);
+                  let s = {
+                    queryKey: t.queryKey,
+                    pageParam: r,
+                    direction: i ? "backward" : "forward",
+                    meta: t.options.meta,
+                  };
+                  Object.defineProperty(s, "signal", {
+                    enumerable: !0,
+                    get: () => (
+                      t.signal.aborted
+                        ? (l = !0)
+                        : t.signal.addEventListener("abort", () => {
+                            l = !0;
+                          }),
+                      t.signal
+                    ),
+                  });
+                  let o = await h(s),
+                    { maxPages: a } = t.options,
+                    u = i ? n.ZZ : n.y9;
+                  return {
+                    pages: u(e.pages, o, a),
+                    pageParams: u(e.pageParams, r, a),
+                  };
+                };
+              if (a && u.length) {
+                let e = "backward" === a,
+                  t = { pages: u, pageParams: c },
+                  n = (e ? o : s)(i, t);
+                r = await f(t, n, e);
+              } else {
+                r = await f(
+                  { pages: [], pageParams: [] },
+                  c[0] ?? i.initialPageParam
+                );
+                let t = e ?? u.length;
+                for (let e = 1; e < t; e++) {
+                  let e = s(i, r);
+                  r = await f(r, e);
+                }
+              }
+              return r;
+            };
+            t.options.persister
+              ? (t.fetchFn = () =>
+                  t.options.persister?.(
+                    i,
+                    {
+                      queryKey: t.queryKey,
+                      meta: t.options.meta,
+                      signal: t.signal,
+                    },
+                    r
+                  ))
+              : (t.fetchFn = i);
+          },
+        };
+      }
+      function s(e, { pages: t, pageParams: r }) {
+        let n = t.length - 1;
+        return e.getNextPageParam(t[n], t, r[n], r);
+      }
+      function o(e, { pages: t, pageParams: r }) {
+        return e.getPreviousPageParam?.(t[0], t, r[0], r);
+      }
+      function a(e, t) {
+        return !!t && null != s(e, t);
+      }
+      function u(e, t) {
+        return !!t && !!e.getPreviousPageParam && null != o(e, t);
+      }
+    },
+    93257: (e, t, r) => {
+      r.d(t, {
+        EU: () => o,
+        R3: () => n,
+        iL: () => a,
+        nE: () => s,
+        tu: () => i,
+      });
+      var n = (e, t) => void 0 === t.state.data,
+        i = (e) => {
+          e.suspense && "number" != typeof e.staleTime && (e.staleTime = 1e3);
+        },
+        s = (e, t) => e.isLoading && e.isFetching && !t,
+        o = (e, t) => e?.suspense && t.isPending,
+        a = (e, t, r) =>
+          t.fetchOptimistic(e).catch(() => {
+            r.clearReset();
+          });
+    },
+    95635: (e, t, r) => {
+      r.d(t, { j: () => n });
+      var n = (function () {
+        let e = [],
+          t = 0,
+          r = (e) => {
+            e();
+          },
+          n = (e) => {
+            e();
+          },
+          i = (e) => setTimeout(e, 0),
+          s = (n) => {
+            t
+              ? e.push(n)
+              : i(() => {
+                  r(n);
+                });
+          };
+        return {
+          batch: (s) => {
+            let o;
+            t++;
+            try {
+              o = s();
+            } finally {
+              --t ||
+                (() => {
+                  let t = e;
+                  (e = []),
+                    t.length &&
+                      i(() => {
+                        n(() => {
+                          t.forEach((e) => {
+                            r(e);
+                          });
+                        });
+                      });
+                })();
+            }
+            return o;
+          },
+          batchCalls:
+            (e) =>
+            (...t) => {
+              s(() => {
+                e(...t);
+              });
+            },
+          schedule: s,
+          setNotifyFunction: (e) => {
+            r = e;
+          },
+          setBatchNotifyFunction: (e) => {
+            n = e;
+          },
+          setScheduler: (e) => {
+            i = e;
+          },
+        };
+      })();
+    },
+  },
+]);
+//# sourceMappingURL=75573-37f3422bb11a6e92.js.map

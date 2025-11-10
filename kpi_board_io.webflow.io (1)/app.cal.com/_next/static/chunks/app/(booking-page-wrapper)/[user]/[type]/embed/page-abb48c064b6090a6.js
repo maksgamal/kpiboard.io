@@ -1,0 +1,67 @@
+(self.webpackChunk_N_E = self.webpackChunk_N_E || []).push([
+  [42766, 83904],
+  {
+    1468: (e, n, t) => {
+      "use strict";
+      t.d(n, { default: () => d });
+      var a = t(54568),
+        i = t(27541),
+        l = t(67403),
+        r = t(56163),
+        u = t(21513);
+      let d = function (e) {
+        var n, t, d, s, o;
+        let {
+            slug: m,
+            user: v,
+            isEmbed: h,
+            booking: c,
+            isBrandingHidden: b,
+            eventData: g,
+            orgBannerUrl: p,
+          } = e,
+          N = (0, i.useSearchParams)();
+        return (0, a.jsx)(u.A, {
+          children: (0, a.jsx)("main", {
+            className: (0, r.s)({ isEmbed: !!h }),
+            children: (0, a.jsx)(l.w, {
+              username: v,
+              eventSlug: m,
+              bookingData: c,
+              hideBranding: b,
+              eventData: g,
+              entity: { ...g.entity, eventTypeId: null == g ? void 0 : g.id },
+              durationConfig:
+                null == (n = g.metadata) ? void 0 : n.multipleDuration,
+              orgBannerUrl: p,
+              duration:
+                ((d = null == (t = g.metadata) ? void 0 : t.multipleDuration),
+                (s = null == N ? void 0 : N.get("duration")),
+                (o = g.length),
+                d ? (d.includes(Number(s)) ? Number(s) : o) : null),
+            }),
+          }),
+        });
+      };
+    },
+    55062: (e, n, t) => {
+      Promise.resolve().then(t.bind(t, 94355)),
+        Promise.resolve().then(t.bind(t, 1468));
+    },
+  },
+  (e) => {
+    e.O(
+      0,
+      [
+        77628, 44949, 18842, 61721, 19664, 39145, 83631, 98691, 96006, 69885,
+        75573, 30996, 76911, 39214, 87208, 60996, 84790, 60993, 15599, 68304,
+        12897, 79537, 4247, 79702, 60346, 34579, 91915, 9890, 84551, 62117,
+        82312, 75786, 82017, 164, 83290, 28582, 39248, 36401, 54836, 6081, 587,
+        48598, 77358,
+      ],
+      () => e((e.s = 55062))
+    ),
+      (_N_E = e.O());
+  },
+]);
+//# sourceMappingURL=page-abb48c064b6090a6.js.map

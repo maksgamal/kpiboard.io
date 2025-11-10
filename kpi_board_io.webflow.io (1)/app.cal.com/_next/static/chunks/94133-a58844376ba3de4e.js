@@ -1,0 +1,408 @@
+"use strict";
+(self.webpackChunk_N_E = self.webpackChunk_N_E || []).push([
+  [94133],
+  {
+    35573: (e, t, n) => {
+      n.d(t, { i: () => r });
+      var a = n(76231),
+        s = n(28902),
+        o = n(83179),
+        E = n(61027);
+      let _ = (e) => (t) => {
+          let n,
+            a = t.op.path.split("."),
+            s = "";
+          return (
+            2 == a.length
+              ? ((n = a[0]), (s = a[1]))
+              : ((n = a[1]), (s = a.splice(2, a.length - 2).join("."))),
+            e[n]({ ...t, op: { ...t.op, path: s } })
+          );
+        },
+        r = (0, o.R)({
+          config() {
+            let e = "/api/trpc";
+            return {
+              links: [
+                (0, s.$H)({
+                  enabled: (e) =>
+                    "down" === e.direction && e.result instanceof Error,
+                }),
+                (0, s.hf)({
+                  condition: (e) => !!e.context.skipBatch,
+                  true: (t) =>
+                    _(
+                      Object.fromEntries(
+                        E.Hr.map((n) => [
+                          n,
+                          (0, s.Lb)({ url: "".concat(e, "/").concat(n) })(t),
+                        ])
+                      )
+                    ),
+                  false: (t) =>
+                    _(
+                      Object.fromEntries(
+                        E.Hr.map((n) => [
+                          n,
+                          (0, s.fu)({ url: "".concat(e, "/").concat(n) })(t),
+                        ])
+                      )
+                    ),
+                }),
+              ],
+              queryClientConfig: {
+                defaultOptions: {
+                  queries: {
+                    staleTime: 1e3,
+                    retry(e, t) {
+                      var n;
+                      let a =
+                        null == t || null == (n = t.data) ? void 0 : n.code;
+                      return (
+                        "BAD_REQUEST" !== a &&
+                        "FORBIDDEN" !== a &&
+                        "UNAUTHORIZED" !== a &&
+                        e < 3
+                      );
+                    },
+                  },
+                },
+              },
+              transformer: a.Ay,
+            };
+          },
+          ssr: !1,
+        });
+    },
+    40701: (e, t, n) => {
+      n.d(t, { D: () => E });
+      var a = n(35573),
+        s = n(40459);
+      let o = {
+        organizations: !1,
+        teams: !1,
+        "calendar-cache": !1,
+        "calendar-cache-serve": !1,
+        emails: !1,
+        insights: !1,
+        webhooks: !1,
+        workflows: !1,
+        "email-verification": !1,
+        "google-workspace-directory": !1,
+        "disable-signup": !1,
+        attributes: !1,
+        "organizer-request-email-v2": !1,
+        "delegation-credential": !1,
+        "salesforce-crm-tasker": !1,
+        "workflow-smtp-emails": !1,
+        "cal-video-log-in-overlay": !1,
+        "use-api-v2-for-team-slots": !1,
+        pbac: !1,
+        "restriction-schedule": !1,
+        "team-booking-page-cache": !1,
+        "cal-ai-voice-agents": !1,
+        "tiered-support-chat": !1,
+        "calendar-subscription-cache": !1,
+        "calendar-subscription-sync": !1,
+        "onboarding-v3": !1,
+        "booker-botid": !1,
+        "booking-calendar-view": !1,
+      };
+      function E() {
+        var e;
+        return null != (e = a.i.viewer.features.map.useQuery().data) ? e : o;
+      }
+      s.env.NEXT_PUBLIC_IS_E2E && ((o.organizations = !0), (o.teams = !0));
+    },
+    61027: (e, t, n) => {
+      n.d(t, { Hr: () => a }), n(6542);
+      let a = [
+        "loggedInViewerRouter",
+        "admin",
+        "apiKeys",
+        "appRoutingForms",
+        "apps",
+        "auth",
+        "availability",
+        "appBasecamp3",
+        "bookings",
+        "calendars",
+        "calVideo",
+        "credentials",
+        "deploymentSetup",
+        "dsync",
+        "eventTypes",
+        "eventTypesHeavy",
+        "features",
+        "i18n",
+        "insights",
+        "me",
+        "ooo",
+        "payments",
+        "public",
+        "timezones",
+        "saml",
+        "slots",
+        "teams",
+        "organizations",
+        "travelSchedules",
+        "users",
+        "viewer",
+        "webhook",
+        "workflows",
+        "googleWorkspace",
+        "oAuth",
+        "attributes",
+        "delegationCredential",
+        "routingForms",
+        "credits",
+        "filterSegments",
+        "aiVoiceAgent",
+        "phoneNumber",
+        "pbac",
+      ];
+    },
+    66339: (e, t, n) => {
+      n.d(t, {
+        $p: () => el,
+        A0: () => H,
+        C3: () => I,
+        CY: () => A,
+        Db: () => u,
+        GX: () => e_,
+        HD: () => eE,
+        HS: () => d,
+        IG: () => K,
+        IP: () => C,
+        Jb: () => Z,
+        LQ: () => Y,
+        MT: () => M,
+        N2: () => x,
+        Pv: () => y,
+        QE: () => et,
+        Qt: () => ev,
+        RZ: () => J,
+        SL: () => ep,
+        Sx: () => L,
+        Ty: () => V,
+        U6: () => w,
+        UR: () => en,
+        Um: () => q,
+        VG: () => j,
+        VY: () => b,
+        Wk: () => R,
+        X: () => U,
+        XI: () => ei,
+        XJ: () => ee,
+        XR: () => v,
+        YW: () => T,
+        Yw: () => eL,
+        _V: () => N,
+        a3: () => S,
+        aq: () => X,
+        cc: () => eA,
+        en: () => eo,
+        f3: () => W,
+        f_: () => z,
+        fq: () => $,
+        gx: () => er,
+        it: () => G,
+        jz: () => O,
+        lw: () => f,
+        ly: () => F,
+        m6: () => k,
+        ms: () => D,
+        ni: () => es,
+        p8: () => i,
+        pD: () => B,
+        qS: () => h,
+        rp: () => g,
+        sX: () => ea,
+        tb: () => ec,
+        ve: () => eR,
+        w2: () => p,
+        xc: () => P,
+        yq: () => eT,
+        yx: () => eI,
+        z8: () => Q,
+      });
+      var a,
+        s,
+        o,
+        E,
+        _,
+        r,
+        l,
+        c = n(40459);
+      c.env.RAILWAY_STATIC_URL && c.env.RAILWAY_STATIC_URL,
+        c.env.HEROKU_APP_NAME && c.env.HEROKU_APP_NAME,
+        c.env.RENDER_EXTERNAL_URL && c.env.RENDER_EXTERNAL_URL;
+      let i = "production" === (c.env.CALCOM_ENV || "production");
+      c.env.ORGANIZER_EMAIL_EXEMPT_DOMAINS;
+      let p = c.env.NEXT_PUBLIC_SINGLE_ORG_SLUG,
+        T = "https://app.cal.com",
+        A = "https://cal.com",
+        I = "Cal.com",
+        v = "help@cal.com",
+        L = "Cal.com, Inc.",
+        R = "Calcom",
+        N = "Cal.com";
+      c.env.EMAIL_FROM_NAME;
+      let u = new URL(T).hostname.endsWith(".vercel.app")
+          ? T
+          : "https://cal.com",
+        d =
+          T &&
+          (new URL(T).hostname.endsWith("cal.com") ||
+            new URL(T).hostname.endsWith("cal.dev") ||
+            new URL(T).hostname.endsWith("cal.qa") ||
+            new URL(T).hostname.endsWith("cal-staging.com") ||
+            new URL(T).hostname.endsWith("cal.eu")),
+        C =
+          new URL(T).hostname.endsWith(".cal.dev") ||
+          new URL(T).hostname.endsWith(".cal.qa") ||
+          new URL(T).hostname.endsWith(".cal-staging.com")
+            ? "https://console.cal.dev"
+            : "https://console.cal.com",
+        m = new URL(T).hostname,
+        S = ![".cal.com", ".cal.dev", ".cal.eu", ".cal.qa"].some((e) =>
+          m.endsWith(e)
+        ),
+        h = c.env.NEXT_PUBLIC_EMBED_LIB_URL || "".concat(T, "/embed/embed.js"),
+        O = 1e3,
+        g = 1440,
+        U = 1,
+        P = c.env.NEXT_PUBLIC_HOSTED_CAL_FEATURES || !S,
+        D =
+          parseInt(
+            null != (E = c.env.NEXT_PUBLIC_QUERY_RESERVATION_INTERVAL_SECONDS)
+              ? E
+              : "",
+            10
+          ) || 30,
+        w =
+          parseInt(
+            null != (_ = c.env.NEXT_PUBLIC_QUERY_RESERVATION_STALE_TIME_SECONDS)
+              ? _
+              : "",
+            10
+          ) || 20,
+        b =
+          parseInt(
+            null !=
+              (r = c.env.NEXT_PUBLIC_QUERY_AVAILABLE_SLOTS_INTERVAL_SECONDS)
+              ? r
+              : "",
+            10
+          ) || 300,
+        f = !0,
+        M = parseInt("0", 10) || 0,
+        B = "/avatar.svg",
+        Y = "https://cal.com/roadmap",
+        k = "https://cal.com/download",
+        V = "https://go.cal.com/booking",
+        X = "https://cal.com/docs",
+        y = !!(c.env.STRIPE_CLIENT_ID && c.env.STRIPE_PRIVATE_KEY) && P,
+        W = P,
+        H = 50,
+        F = 80,
+        G = "2",
+        K = "1" === c.env.NEXT_PUBLIC_ENABLE_PROFILE_SWITCHER,
+        q = JSON.parse("[".concat(c.env.ALLOWED_HOSTNAMES || "", "]")),
+        x = JSON.parse("[".concat(c.env.RESERVED_SUBDOMAINS || "", "]"));
+      parseInt("1"),
+        parseFloat(
+          c.env.NEXT_PUBLIC_ORGANIZATIONS_SELF_SERVE_PRICE_NEW || "37"
+        ),
+        c.env.E2E_TEST_MAILHOG_ENABLED;
+      let Q = "5.8.12";
+      c.env.CALCOM_CREDENTIAL_SYNC_SECRET &&
+        c.env.CALCOM_APP_CREDENTIAL_ENCRYPTION_KEY,
+        c.env.CALCOM_CREDENTIAL_SYNC_SECRET,
+        c.env.CALCOM_CREDENTIAL_SYNC_HEADER_NAME,
+        c.env.CALCOM_CREDENTIAL_SYNC_ENDPOINT,
+        c.env.CALCOM_SERVICE_ACCOUNT_ENCRYPTION_KEY;
+      let z = "#292929",
+        j = "#fafafa",
+        J = 40;
+      d || c.env.NEXT_PUBLIC_IS_E2E;
+      let Z = 100,
+        $ = /(^\w+:|^)\/\//,
+        ee = !!(null == (s = globalThis.window) || null == (a = s.Meticulous)
+          ? void 0
+          : a.isRunningAsTest),
+        et = parseInt(
+          null != (l = c.env.NEXT_PUBLIC_BOOKER_NUMBER_OF_DAYS_TO_LOAD)
+            ? l
+            : "0",
+          0
+        ),
+        en = "0x4AAAAAAAb88ltKXqpTgH2P",
+        ea = "0",
+        es = 30,
+        eo = !0,
+        eE = 1;
+      c.env.CALCOM_PRIVATE_API_ROUTE;
+      let e_ =
+          c.env.NEXT_PUBLIC_WEBSITE_PRIVACY_POLICY_URL ||
+          "https://cal.com/privacy",
+        er = c.env.NEXT_PUBLIC_WEBSITE_TERMS_URL || "https://cal.com/terms";
+      c.env.LINGO_DOT_DEV_API_KEY;
+      let el = 61,
+        ec = i
+          ? "".concat(T, "/sparkles-red.svg")
+          : "https://app.cal.com/sparkles-red.svg",
+        ei = i
+          ? "".concat(T, "/sparkles.svg")
+          : "https://app.cal.com/sparkles.svg",
+        ep = i
+          ? "".concat(T, "/start-recording.svg")
+          : "https://app.cal.com/start-recording.svg",
+        eT = i
+          ? "".concat(T, "/stop-recording.svg")
+          : "https://app.cal.com/stop-recording.svg";
+      null == (o = c.env.DIRECTORY_IDS_TO_LOG) || o.split(",");
+      let eA = !!(!S && c.env.IFFY_API_KEY),
+        eI = !0;
+      c.env.CAL_VIDEO_MEETING_LINK_FOR_TESTING;
+      let ev = !0;
+      parseInt(c.env.DATABASE_CHUNK_SIZE || "25", 10);
+      let eL = "default_group_id",
+        eR = (() => {
+          let e = "" !== "5".trim() ? Number("5") : NaN;
+          return Number.isFinite(e) ? e : 5;
+        })();
+      c.env.RETELL_AI_TEST_MODE,
+        (() => {
+          if (c.env.RETELL_AI_TEST_EVENT_TYPE_MAP)
+            try {
+              return JSON.parse(c.env.RETELL_AI_TEST_EVENT_TYPE_MAP);
+            } catch (e) {
+              return (
+                console.warn(
+                  "Failed to parse RETELL_AI_TEST_EVENT_TYPE_MAP",
+                  e
+                ),
+                null
+              );
+            }
+        })(),
+        c.env._CAL_INTERNAL_PAST_BOOKING_RESCHEDULE_CHANGE_TEAM_IDS;
+    },
+    67603: (e, t, n) => {
+      n.d(t, { C: () => E, U: () => o });
+      var a = n(7620);
+      let s = (0, a.createContext)(null);
+      function o() {
+        let e = (0, a.useContext)(s);
+        if (null === e)
+          throw Error("Error: useFlagMap was used outside of FeatureProvider.");
+        return e;
+      }
+      function E(e) {
+        return (0, a.createElement)(s.Provider, { value: e.value }, e.children);
+      }
+    },
+  },
+]);
+//# sourceMappingURL=94133-a58844376ba3de4e.js.map

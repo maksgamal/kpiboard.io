@@ -1,0 +1,1382 @@
+(self.webpackChunk_N_E = self.webpackChunk_N_E || []).push([
+  [28582],
+  {
+    7587: (e, t, r) => {
+      "use strict";
+      r.d(t, { V: () => R });
+      var l = r(54568),
+        n = r(7620),
+        a = r(50441),
+        s = r(49359),
+        i = r(74582),
+        o = r(24805),
+        d = r(88310);
+      function c() {
+        let e =
+            arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 0,
+          t = arguments.length > 1 ? arguments[1] : void 0,
+          r =
+            arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : 6;
+        for (; t.getDay() !== e; ) t.setDate(t.getDate() - 1);
+        return { startDate: t, endDate: new Date(t.getTime() + 24 * r * 36e5) };
+      }
+      let u = {
+          view: "week",
+          startDate: c(0, new Date()).startDate,
+          endDate: c(0, new Date()).endDate,
+          events: [],
+          startHour: 0,
+          endHour: 23,
+          gridCellsPerHour: 4,
+          timezone: d.m,
+          showBackgroundPattern: !0,
+          showBorder: !0,
+          borderColor: "default",
+        },
+        m = n.createContext(null);
+      function h(e, t) {
+        let r = n.useContext(m);
+        if (!r)
+          throw Error(
+            "useCalendarStore must be used within a CalendarStoreProvider"
+          );
+        return (0, i.Pj)(r, e, t);
+      }
+      r(28543);
+      var f = r(43328);
+      function x(e) {
+        let { showBorder: t, borderColor: r, days: n, containerNavRef: s } = e,
+          { i18n: i } = (0, f.Y)();
+        return (0, l.jsxs)("div", {
+          ref: s,
+          className: (0, a.A)(
+            "bg-default dark:bg-default sticky top-[var(--calendar-dates-sticky-offset,0px)] z-[80] flex-none border-b sm:pr-8",
+            "subtle" === r ? "border-b-subtle" : "border-b-default",
+            t &&
+              ("subtle" === r
+                ? "border-r-subtle border-r"
+                : "border-r-default border-r")
+          ),
+          children: [
+            (0, l.jsx)("div", {
+              className: "text-subtle flex leading-6 sm:hidden",
+              "data-dayslength": n.length,
+              children: n.map((e) => {
+                let t = (0, o.A)().isSame(e, "day");
+                return (0, l.jsxs)(
+                  "button",
+                  {
+                    type: "button",
+                    className: "flex flex-1 flex-col items-center pb-3 pt-2",
+                    children: [
+                      e.format("dd"),
+                      " ",
+                      (0, l.jsx)("span", {
+                        className: (0, a.A)(
+                          "text-emphasis mt-1 flex h-8 w-8 items-center justify-center font-medium",
+                          t && "bg-inverted text-inverted rounded-sm"
+                        ),
+                        children: e.format("D"),
+                      }),
+                    ],
+                  },
+                  e.toString()
+                );
+              }),
+            }),
+            (0, l.jsxs)("div", {
+              className:
+                "text-subtle -mr-px hidden auto-cols-fr leading-6 sm:flex",
+              children: [
+                (0, l.jsx)("div", {
+                  className: (0, a.A)(
+                    "col-end-1 w-16",
+                    t &&
+                      ("subtle" === r
+                        ? "border-l-subtle border-l"
+                        : "border-l-default border-l")
+                  ),
+                }),
+                n.map((e) => {
+                  let t = (0, o.A)().isSame(e, "day");
+                  return (0, l.jsx)(
+                    "div",
+                    {
+                      className: (0, a.A)(
+                        "flex flex-1 items-center justify-center py-3 text-xs font-medium uppercase",
+                        t && "text-default"
+                      ),
+                      children: (0, l.jsxs)("span", {
+                        children: [
+                          new Intl.DateTimeFormat(i.language, {
+                            weekday: "short",
+                          }).format(e.toDate()),
+                          " ",
+                          (0, l.jsx)("span", {
+                            className: (0, a.A)(
+                              "items-center justify-center p-1",
+                              t && "bg-brand-default text-brand rounded-md"
+                            ),
+                            children: e.format("DD"),
+                          }),
+                        ],
+                      }),
+                    },
+                    e.toString()
+                  );
+                }),
+              ],
+            }),
+          ],
+        });
+      }
+      var g = r(84e3);
+      function p(e) {
+        let { timezone: t } = e,
+          { timeFormat: r } = (0, g.x)(),
+          a = (0, n.useRef)(null),
+          [s, i] = (0, n.useState)(!1),
+          [d, c] = (0, n.useState)(null),
+          { startHour: u, endHour: m } = h((e) => ({
+            startHour: e.startHour || 0,
+            endHour: e.endHour || 23,
+          }));
+        return (
+          (0, n.useEffect)(() => {
+            let e = (0, o.A)().tz(t),
+              r = e.hour(),
+              l = e.minute();
+            (r > m || r < u) && c(null),
+              c(60 * r + l - 60 * u),
+              a.current &&
+                !s &&
+                setTimeout(() => {
+                  var e;
+                  null == a ||
+                    null == (e = a.current) ||
+                    e.scrollIntoView({ block: "center" }),
+                    i(!0);
+                }, 100);
+          }, [u, m, s, t]),
+          (0, l.jsxs)("div", {
+            ref: a,
+            className:
+              "absolute top-0 z-40 flex h-px items-center justify-center text-xs",
+            "aria-hidden": "true",
+            style: {
+              top: "calc(".concat(
+                d,
+                "*var(--one-minute-height) + var(--calendar-offset-top))"
+              ),
+              zIndex: 70,
+            },
+            children: [
+              (0, l.jsx)("div", {
+                className: "w-16 pr-2 text-right",
+                children: (0, o.A)().tz(t).format(r),
+              }),
+              (0, l.jsx)("div", { className: "bg-inverted h-3 w-px" }),
+              (0, l.jsx)("div", { className: "bg-inverted h-px w-screen" }),
+            ],
+          })
+        );
+      }
+      var v = r(95622),
+        b = r(61366);
+      function j(e) {
+        let t = (function (e) {
+            let {
+              day: t,
+              gridCellIdx: r,
+              totalGridCells: l,
+              selectionLength: n,
+              startHour: a,
+              timezone: s,
+            } = e;
+            return (0, o.A)(t)
+              .tz(s)
+              .startOf("day")
+              .add((((n + 1) * 60) / l) * r, "minutes")
+              .add(a, "hours");
+          })({
+            day: e.day,
+            gridCellIdx: e.gridCellIdx,
+            totalGridCells: e.totalGridCells,
+            selectionLength: e.selectionLength,
+            startHour: e.startHour,
+            timezone: e.timezone,
+          }),
+          r = (t.hour() - e.startHour) * 60 + t.minute();
+        return (0, l.jsx)(y, {
+          topOffsetMinutes: r,
+          timeSlot: (0, o.A)(t).tz(e.timezone),
+        });
+      }
+      function w(e) {
+        let { timezone: t, availableSlots: r, day: a, startHour: s } = e,
+          i = (0, o.A)(a).format("YYYY-MM-DD"),
+          d = r && r[i],
+          c = (0, n.useMemo)(() => {
+            let e = [],
+              r = -1,
+              l = -1,
+              n = !0,
+              a = 0;
+            if (
+              (null == d ||
+                d.forEach((a, i) => {
+                  let d = (0, o.A)(a.start).tz(t),
+                    c = (d.hour() - s) * 60 + d.minute();
+                  e.push({ slot: a, topOffsetMinutes: c }),
+                    a.away ? (-1 === r && (r = i), (l = i)) : (n = !1);
+                }),
+              n && -1 !== r)
+            ) {
+              let n = d[r],
+                s = d[l];
+              return ((a = (0, o.A)(s.end).diff((0, o.A)(n.start), "minutes")),
+              null == n.toUser)
+                ? null
+                : {
+                    slots: e,
+                    startEndTimeDuration: a,
+                    firstSlot: n,
+                    timezone: t,
+                  };
+            }
+            return { slots: e, startEndTimeDuration: a };
+          }, [d, s, t]);
+        if (null === c) return null;
+        if (c.startEndTimeDuration) {
+          var u;
+          let { firstSlot: e, startEndTimeDuration: t } = c;
+          return (0, l.jsx)(A, {
+            timeSlot: (0, o.A)(null == e ? void 0 : e.start).tz(c.timezone),
+            topOffsetMinutes:
+              null == (u = c.slots[0]) ? void 0 : u.topOffsetMinutes,
+            startEndTimeDuration: t,
+            children: (0, l.jsx)(b.a, {
+              fromUser: null == e ? void 0 : e.fromUser,
+              toUser: null == e ? void 0 : e.toUser,
+              reason: null == e ? void 0 : e.reason,
+              emoji: null == e ? void 0 : e.emoji,
+              borderDashed: !1,
+              date: i,
+              className: "pb-0",
+            }),
+          });
+        }
+        return (0, l.jsx)(l.Fragment, {
+          children: c.slots.map((e, r) =>
+            (0, l.jsx)(
+              y,
+              {
+                timeSlot: (0, o.A)(e.slot.start).tz(t),
+                topOffsetMinutes: e.topOffsetMinutes,
+              },
+              r
+            )
+          ),
+        });
+      }
+      function y(e) {
+        let { isDisabled: t, topOffsetMinutes: r, timeSlot: n } = e,
+          { timeFormat: s } = (0, g.x)(),
+          { onEmptyCellClick: i, hoverEventDuration: o } = h(
+            (e) => ({
+              onEmptyCellClick: e.onEmptyCellClick,
+              hoverEventDuration: e.hoverEventDuration,
+            }),
+            v.x
+          );
+        return (0, l.jsx)("div", {
+          className: (0, a.A)(
+            "group flex w-[calc(100%-1px)] items-center justify-center",
+            t && "pointer-events-none",
+            !t && "bg-default dark:bg-muted",
+            r && "absolute"
+          ),
+          "data-disabled": t,
+          "data-slot": n.toISOString(),
+          "data-testid": "calendar-empty-cell",
+          style: {
+            height: "calc(".concat(o, "*var(--one-minute-height))"),
+            overflow: "visible",
+            top: r ? "calc(".concat(r, "*var(--one-minute-height))") : void 0,
+          },
+          onClick: () => {
+            null == i || i(n.toDate());
+          },
+          children:
+            !t &&
+            0 !== o &&
+            (0, l.jsx)("div", {
+              className: (0, a.A)(
+                "opacity-4 bg-brand-default hover:bg-brand-default text-brand dark:border-emphasis absolute hidden rounded-[4px] p-[6px] text-xs font-semibold leading-5 group-hover:flex group-hover:cursor-pointer",
+                o && o > 15 && "items-start pt-3",
+                o && o < 15 && "items-center"
+              ),
+              style: {
+                height: "calc(".concat(o, "*var(--one-minute-height) - 2px)"),
+                zIndex: 80,
+                width: "calc(100% - 2px)",
+              },
+              children: (0, l.jsx)("div", {
+                className: "overflow-ellipsis leading-[0]",
+                children: n.format(s),
+              }),
+            }),
+        });
+      }
+      function A(e) {
+        let {
+          timeSlot: t,
+          children: r,
+          topOffsetMinutes: n,
+          startEndTimeDuration: s,
+        } = e;
+        return (0, l.jsx)("div", {
+          className: (0, a.A)(
+            "bg-default dark:bg-muted group absolute z-[65] flex w-[calc(100%-1px)] items-center justify-center"
+          ),
+          "data-slot": t.toISOString(),
+          style: {
+            top: n ? "calc(".concat(n, "*var(--one-minute-height))") : void 0,
+            overflow: "visible",
+          },
+          children: (0, l.jsx)("div", {
+            className: (0, a.A)(
+              "dark:border-emphasis bg-default dark:bg-muted cursor-pointer rounded-[4px] p-[6px] text-xs font-semibold dark:text-white"
+            ),
+            style: {
+              height: "calc(".concat(s, "*var(--one-minute-height) - 2px)"),
+              width: "calc(100% - 2px)",
+            },
+            children: r,
+          }),
+        });
+      }
+      let N = {
+        baseWidthPercent: 80,
+        offsetStepPercent: 8,
+        baseZIndex: 60,
+        safetyMarginPercent: 0.5,
+      };
+      var D = r(97282),
+        k = r(72221);
+      let E = (0, D.F)(
+        "group flex h-full w-full overflow-hidden rounded-[6px] px-[6px] text-xs leading-5 opacity-80 border-default font-medium",
+        {
+          variants: {
+            status: {
+              ACCEPTED:
+                "bg-subtle hover:bg-emphasis text-emphasis border-[1px] border-default",
+              PENDING:
+                "bg-muted text-emphasis border-[1px] border-dashed border-default",
+              REJECTED: "bg-muted border-[1px] text-subtle line-through",
+              CANCELLED: "bg-muted border-[1px] text-subtle line-through",
+              AWAITING_HOST:
+                "bg-muted text-emphasis border-[1px] border-dashed border-default",
+            },
+            disabled: {
+              true: "hover:cursor-default",
+              false: "hover:cursor-pointer",
+            },
+            selected: {
+              true: "bg-inverted text-inverted border-[1px] border-transparent",
+              false: "",
+            },
+          },
+        }
+      );
+      function C(e) {
+        var t, r, n;
+        let {
+            event: s,
+            currentlySelectedEventId: i,
+            eventDuration: d,
+            disabled: c,
+            onEventClick: u,
+            isHovered: m = !1,
+          } = e,
+          h = i === s.id,
+          { options: f } = s,
+          x = (0, o.A)(s.start).day(),
+          g = (0, l.jsx)("div", {
+            className: "flex min-w-[200px] max-w-[300px] flex-col gap-1 py-1",
+            children: (0, l.jsxs)("div", {
+              className: "flex items-start gap-2",
+              children: [
+                (null == f ? void 0 : f.color) &&
+                  (0, l.jsx)("div", {
+                    className: "mt-1 h-3 w-1 shrink-0 rounded-sm",
+                    style: { backgroundColor: f.color },
+                  }),
+                (0, l.jsxs)("div", {
+                  className: "flex-1",
+                  children: [
+                    (0, l.jsx)("div", {
+                      className: "font-semibold leading-tight",
+                      children: s.title,
+                    }),
+                    !(null == (t = s.options) ? void 0 : t.hideTime) &&
+                      (0, l.jsxs)("div", {
+                        className: "text-inverted-muted mt-1 text-xs",
+                        children: [
+                          (0, o.A)(s.start).format("HH:mm"),
+                          " - ",
+                          (0, o.A)(s.end).format("HH:mm"),
+                        ],
+                      }),
+                    s.description &&
+                      (0, l.jsx)("div", {
+                        className:
+                          "text-inverted-muted mt-1 text-xs leading-snug",
+                        children: s.description,
+                      }),
+                    (null == f ? void 0 : f.status) &&
+                      "ACCEPTED" !== f.status &&
+                      (0, l.jsx)("div", {
+                        className:
+                          "text-inverted-muted mt-1 text-xs capitalize",
+                        children: f.status.toLowerCase().replace("_", " "),
+                      }),
+                  ],
+                }),
+              ],
+            }),
+          }),
+          p = d < 40 ? "single-line" : d < 45 ? "multi-line" : "full";
+        return (0, l.jsx)(k.A, {
+          content: g,
+          className: "max-w-none",
+          side: x >= 1 && x <= 4 ? "right" : "left",
+          children: (0, l.jsxs)(u ? "button" : "div", {
+            onClick: () => (null == u ? void 0 : u(s)),
+            className: (0, a.A)(
+              E({
+                status: null == f ? void 0 : f.status,
+                disabled: c,
+                selected: h,
+              }),
+              null == f ? void 0 : f.className,
+              m && "ring-brand-default shadow-lg ring-2 ring-offset-0"
+            ),
+            style: { transition: "all 100ms ease-out" },
+            children: [
+              (null == f ? void 0 : f.color) &&
+                (0, l.jsx)("div", {
+                  className: "-ml-1.5 mr-1.5 h-full w-[3px] shrink-0",
+                  style: { backgroundColor: f.color },
+                }),
+              (0, l.jsxs)("div", {
+                className: (0, a.A)(
+                  "flex w-full",
+                  "single-line" !== p && "flex-col py-1"
+                ),
+                children: [
+                  "single-line" === p &&
+                    (0, l.jsxs)("div", {
+                      className: (0, a.A)(
+                        "flex w-full shrink-0 gap-2 overflow-hidden overflow-ellipsis whitespace-nowrap text-left leading-4",
+                        "items-center"
+                      ),
+                      children: [
+                        (0, l.jsx)("span", { children: s.title }),
+                        !(null == (r = s.options) ? void 0 : r.hideTime) &&
+                          (0, l.jsxs)("p", {
+                            className:
+                              "text-subtle mt-1 w-full whitespace-nowrap text-left text-[10px] leading-none",
+                            children: [
+                              (0, o.A)(s.start).format("HH:mm"),
+                              " - ",
+                              (0, o.A)(s.end).format("HH:mm"),
+                            ],
+                          }),
+                      ],
+                    }),
+                  "single-line" !== p &&
+                    (0, l.jsx)("p", {
+                      className: (0, a.A)(
+                        "shrink-0 whitespace-nowrap text-left leading-4"
+                      ),
+                      children: s.title,
+                    }),
+                  "single-line" !== p &&
+                    !(null == (n = s.options) ? void 0 : n.hideTime) &&
+                    (0, l.jsxs)("p", {
+                      className:
+                        "text-subtle mt-1 whitespace-nowrap text-left text-[10px] leading-none",
+                      children: [
+                        (0, o.A)(s.start).format("HH:mm"),
+                        " - ",
+                        (0, o.A)(s.end).format("HH:mm"),
+                      ],
+                    }),
+                  "full" === p &&
+                    s.description &&
+                    (0, l.jsx)("p", {
+                      className:
+                        "text-subtle mt-1 text-left text-[10px] leading-none",
+                      children: s.description,
+                    }),
+                ],
+              }),
+            ],
+          }),
+        });
+      }
+      function S(e) {
+        var t;
+        let { day: r } = e,
+          {
+            startHour: a,
+            events: s,
+            eventOnClick: i,
+          } = h(
+            (e) => ({
+              startHour: e.startHour,
+              events: e.events,
+              eventOnClick: e.onEventClick,
+            }),
+            v.x
+          ),
+          [d, c] = (0, n.useState)(null),
+          u = (0, n.useMemo)(
+            () =>
+              s.filter((e) => {
+                var t;
+                return (
+                  (0, o.A)(e.start).isSame(r, "day") &&
+                  !(null == (t = e.options) ? void 0 : t.allDay)
+                );
+              }),
+            [s, r]
+          ),
+          m = (0, n.useMemo)(() => {
+            var e = (function (e) {
+              let t =
+                  arguments.length > 1 && void 0 !== arguments[1]
+                    ? arguments[1]
+                    : {},
+                {
+                  baseWidthPercent: r,
+                  offsetStepPercent: l,
+                  baseZIndex: n,
+                  safetyMarginPercent: a,
+                } = { ...N, ...t },
+                s = (function (e) {
+                  if (0 === e.length) return [];
+                  let t = [],
+                    r = [e[0]],
+                    l = (0, o.A)(e[0].end);
+                  for (let n = 1; n < e.length; n++) {
+                    let a = e[n],
+                      s = (0, o.A)(a.start),
+                      i = (0, o.A)(a.end);
+                    s.isBefore(l)
+                      ? (r.push(a), i.isAfter(l) && (l = i))
+                      : (t.push(r), (r = [a]), (l = i));
+                  }
+                  return t.push(r), t;
+                })(
+                  [...e].sort((e, t) => {
+                    let r = (0, o.A)(e.start),
+                      l = (0, o.A)(t.start),
+                      n = r.diff(l);
+                    if (0 !== n) return n;
+                    let a = (0, o.A)(e.end);
+                    return (0, o.A)(t.end).diff(a);
+                  })
+                ),
+                i = [];
+              return (
+                s.forEach((e, t) => {
+                  let s = Math.min(
+                    l,
+                    Math.max(0, 100 - r - a) / Math.max(1, e.length - 1)
+                  );
+                  e.forEach((e, l) => {
+                    let o = Number((l * s).toFixed(3)),
+                      d =
+                        Math.floor(
+                          1e3 * Math.max(0, Math.min(r, 100 - o - a))
+                        ) / 1e3;
+                    i.push({
+                      event: e,
+                      leftOffsetPercent: o,
+                      widthPercent: d,
+                      baseZIndex: n + l,
+                      groupIndex: t,
+                      indexInGroup: l,
+                    });
+                  });
+                }),
+                i
+              );
+            })(u);
+            let t = new Map();
+            return (
+              e.forEach((e) => {
+                t.set(e.event.id, e);
+              }),
+              t
+            );
+          }, [u]),
+          f = (0, n.useMemo)(
+            () =>
+              new Map(
+                u.map((e) => {
+                  let t = (0, o.A)(e.start),
+                    r = (0, o.A)(e.end).diff(t, "minutes"),
+                    l = (t.hour() - (a || 0)) * 60 + t.minute();
+                  return [
+                    e.id,
+                    { eventStart: t, eventDuration: r, eventStartDiff: l },
+                  ];
+                })
+              ),
+            [u, a]
+          ),
+          x = d ? m.get(d) : null,
+          g = null != (t = null == x ? void 0 : x.groupIndex) ? t : null;
+        return (0, l.jsx)(l.Fragment, {
+          children: u.map((e) => {
+            var t;
+            let r = m.get(e.id);
+            if (!r) return null;
+            let n = f.get(e.id);
+            if (!n) return null;
+            let { eventStart: a, eventDuration: s, eventStartDiff: o } = n,
+              u = d === e.id,
+              h = null !== g && r.groupIndex === g,
+              x = u ? 100 : r.baseZIndex;
+            return (0, l.jsx)(
+              "div",
+              {
+                className: "absolute transition-all duration-100 ease-out",
+                "data-testid":
+                  null == (t = e.options) ? void 0 : t["data-test-id"],
+                onMouseEnter: () => c(e.id),
+                onMouseLeave: () => c(null),
+                style: {
+                  left: "".concat(r.leftOffsetPercent, "%"),
+                  width: "".concat(r.widthPercent, "%"),
+                  zIndex: x,
+                  top: "calc(".concat(o, "*var(--one-minute-height))"),
+                  height: "max(15px, calc(".concat(
+                    s,
+                    "*var(--one-minute-height)))"
+                  ),
+                  transform: u ? "scale(1.02)" : "scale(1)",
+                  opacity: null !== g && !u && h ? 0.6 : 1,
+                },
+                children: (0, l.jsx)(C, {
+                  event: e,
+                  eventDuration: s,
+                  onEventClick: i,
+                  isHovered: u,
+                }),
+              },
+              "".concat(e.id, "-").concat(a.toISOString())
+            );
+          }),
+        });
+      }
+      let _ = n.forwardRef(function (e, t) {
+        let { offsetHeight: r, gridStopsPerDay: n, children: a, zIndex: s } = e;
+        return (0,
+        l.jsx)("ol", { ref: t, className: "scheduler-grid-row-template col-start-1 col-end-2 row-start-1 grid auto-cols-auto text-[0px] sm:pr-8", style: { marginTop: r || "var(--gridDefaultSize)", zIndex: s }, "data-gridstopsperday": n, children: a });
+      });
+      var M = r(18511),
+        H = r(77197);
+      function z() {
+        let {
+          startDate: e,
+          endDate: t,
+          handleDateChange: r,
+        } = h((e) => ({
+          startDate: (0, o.A)(e.startDate),
+          endDate: (0, o.A)(e.endDate),
+          handleDateChange: e.handleDateChange,
+        }));
+        return (0, l.jsxs)("header", {
+          className:
+            "flex flex-none flex-col justify-between py-4 sm:flex-row sm:items-center",
+          children: [
+            (0, l.jsxs)("h1", {
+              className: "text-emphasis text-xl font-semibold",
+              children: [
+                e.format("MMM DD"),
+                "-",
+                t.format("DD"),
+                (0, l.jsxs)("span", {
+                  className: "text-subtle",
+                  children: [",", e.format("YYYY")],
+                }),
+              ],
+            }),
+            (0, l.jsx)("div", {
+              className: "flex items-center space-x-2 rtl:space-x-reverse",
+              children: (0, l.jsxs)(H.e, {
+                combined: !0,
+                children: [
+                  (0, l.jsx)(M.$, {
+                    StartIcon: "chevron-left",
+                    variant: "icon",
+                    color: "secondary",
+                    "aria-label": "Previous Week",
+                    onClick: () => {
+                      r("DECREMENT");
+                    },
+                  }),
+                  (0, l.jsx)(M.$, {
+                    StartIcon: "chevron-right",
+                    variant: "icon",
+                    color: "secondary",
+                    "aria-label": "Next Week",
+                    onClick: () => {
+                      r("INCREMENT");
+                    },
+                  }),
+                ],
+              }),
+            }),
+          ],
+        });
+      }
+      let T = (e) => {
+          let { hours: t, containerOffsetRef: r, borderColor: s } = e,
+            { timeFormat: i } = (0, g.x)(),
+            o = t[t.length - 1].add(1, "hour").minute(0).format(i),
+            d = (0, n.useId)();
+          return (0, l.jsxs)("div", {
+            className: (0, a.A)(
+              "pointer-events-none relative z-[60] col-start-1 col-end-2 row-start-1 grid divide-y",
+              "subtle" === s ? "divide-subtle" : "divide-default"
+            ),
+            style: {
+              gridTemplateRows: "repeat(".concat(
+                t.length,
+                ", minmax(var(--gridDefaultSize),1fr)"
+              ),
+            },
+            children: [
+              (0, l.jsx)("div", {
+                className: "row-end-1 h-[--calendar-offset-top] ",
+                ref: r,
+              }),
+              t.map((e) =>
+                (0, l.jsx)(
+                  "div",
+                  {
+                    children: (0, l.jsx)("div", {
+                      className:
+                        "text-muted sticky left-0 z-20 -ml-14 -mt-2.5 w-14 pr-2 text-right text-xs leading-5 rtl:-mr-14",
+                      children: e.minute(0).format(i),
+                    }),
+                  },
+                  "".concat(d, "-").concat(e.get("hour"))
+                )
+              ),
+              (0, l.jsx)(
+                "div",
+                {
+                  children: (0, l.jsx)("div", {
+                    className:
+                      "text-muted sticky left-0 z-20 -ml-14 -mt-2.5 w-14 pr-2 text-right text-xs leading-5 rtl:-mr-14",
+                    children: o,
+                  }),
+                },
+                "".concat(d, "-").concat(o)
+              ),
+            ],
+          });
+        },
+        I = (e) => {
+          let { className: t } = e;
+          return (0, l.jsx)("div", {
+            className: (0, a.A)(
+              "fixed left-[calc(50%+calc(var(--booker-meta-width,0px)/2))] top-1/2 z-[80] h-10 w-10 -translate-x-1/2 -translate-y-1/2",
+              t
+            ),
+            children: (0, l.jsxs)("svg", {
+              className: "h-10 w-10",
+              viewBox: "0 0 24 24",
+              xmlns: "http://www.w3.org/2000/svg",
+              children: [
+                (0, l.jsx)("path", {
+                  className: "fill-default",
+                  d: "M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z",
+                  opacity: ".25",
+                }),
+                (0, l.jsx)("path", {
+                  className: "animate-spinning fill-emphasis origin-center",
+                  d: "M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z",
+                }),
+              ],
+            }),
+          });
+        },
+        P = (e) => {
+          let { days: t, borderColor: r } = e,
+            n = () => {
+              let e = "en";
+              if ("undefined" != typeof navigator) {
+                let t = navigator.language;
+                e = new Intl.Locale(t).language;
+              }
+              return ["ar", "he", "fa", "ur"].includes(e);
+            },
+            s = n() ? "rtl" : "ltr";
+          return (0, l.jsx)("div", {
+            className: (0, a.A)(
+              "pointer-events-none relative z-[60] col-start-1 col-end-2 row-start-1 grid auto-cols-auto grid-rows-1 divide-x sm:pr-8",
+              "subtle" === r ? "divide-subtle" : "divide-default"
+            ),
+            dir: s,
+            style: { direction: s },
+            children: t.map((e, r) =>
+              (0, l.jsx)(
+                "div",
+                {
+                  className: "row-span-full",
+                  style: { gridColumnStart: n() ? t.length - r : r + 1 },
+                },
+                "Key_vertical_".concat(r)
+              )
+            ),
+          });
+        };
+      function O(e) {
+        var t, r;
+        let s = (0, n.useRef)(null),
+          i = (0, n.useRef)(null),
+          d = (0, n.useRef)(null),
+          c = (0, n.useRef)(null),
+          u = h((e) => e.initState),
+          m = h((e) => e.startDate),
+          f = h((e) => e.endDate),
+          g = h((e) => e.startHour || 0),
+          v = h((e) => e.endHour || 23),
+          b = h((e) => e.gridCellsPerHour || 4),
+          y = h((e) => e.availableTimeslots),
+          A = h((e) => e.hideHeader),
+          N = h((e) => e.timezone),
+          D = h((e) => e.showBackgroundPattern),
+          k = h((e) => {
+            var t;
+            return null == (t = e.showBorder) || t;
+          }),
+          E = h((e) => {
+            var t;
+            return null != (t = e.borderColor) ? t : "default";
+          }),
+          C = (0, n.useMemo)(
+            () =>
+              (function (e, t) {
+                let r = [],
+                  l = (0, o.A)(e).hour(0).minute(0).second(0).millisecond(0);
+                r.push(l);
+                let n = (0, o.A)(t).hour(0).minute(0).second(0).millisecond(0);
+                for (; l.isBefore(n); )
+                  r.push(l.add(1, "day")), (l = l.add(1, "day"));
+                return r.slice(0, 7);
+              })(m, f),
+            [m, f]
+          ),
+          M = (0, n.useMemo)(
+            () =>
+              (function (e, t, r) {
+                let l = [],
+                  n = (0, o.A)("1970-01-01").tz(r).hour(e);
+                l.push(n);
+                let a = (0, o.A)("1970-01-01").tz(r).hour(t);
+                for (; n.isBefore(a); )
+                  l.push(n.add(1, "hour")), (n = n.add(1, "hour"));
+                return l;
+              })(g || 0, v || 23, N),
+            [g, v, N]
+          ),
+          H = M.length * b;
+        return (
+          (0, n.useEffect)(() => {
+            u(e);
+          }, [e, u]),
+          (0, l.jsx)(F, {
+            children: (0, l.jsxs)("div", {
+              className: (0, a.A)(
+                "scheduler-wrapper flex h-full w-full flex-col"
+              ),
+              style: {
+                "--one-minute-height": "calc(".concat(58, "px/60)"),
+                "--gridDefaultSize": "".concat(58, "px"),
+              },
+              children: [
+                !0 !== A && (0, l.jsx)(z, {}),
+                e.isPending && (0, l.jsx)(I, {}),
+                (0, l.jsx)("div", {
+                  ref: s,
+                  className:
+                    "bg-default dark:bg-muted relative isolate flex h-full flex-auto flex-col",
+                  children: (0, l.jsxs)("div", {
+                    style: { width: "165%" },
+                    className:
+                      "flex h-full max-w-full flex-none flex-col sm:max-w-none md:max-w-full",
+                    children: [
+                      (0, l.jsx)(x, {
+                        containerNavRef: i,
+                        days: C,
+                        showBorder: k,
+                        borderColor: E,
+                      }),
+                      (0, l.jsxs)("div", {
+                        className: "relative flex flex-auto",
+                        children: [
+                          (0, l.jsx)(p, { timezone: N }),
+                          (0, l.jsx)("div", {
+                            className: (0, a.A)(
+                              "bg-default dark:bg-muted ring-muted sticky left-0 z-10 w-16 flex-none ring-1",
+                              k &&
+                                ("subtle" === E
+                                  ? "border-subtle border-l border-r"
+                                  : "border-default border-l border-r")
+                            ),
+                          }),
+                          (0, l.jsxs)("div", {
+                            className:
+                              "grid flex-auto grid-cols-1 grid-rows-1 [--disabled-gradient-background:#F8F9FB] [--disabled-gradient-foreground:#E6E7EB] dark:[--disabled-gradient-background:#262626] dark:[--disabled-gradient-foreground:#393939]",
+                            style:
+                              !1 === D
+                                ? void 0
+                                : {
+                                    backgroundColor:
+                                      "var(--disabled-gradient-background)",
+                                    background:
+                                      "repeating-linear-gradient(-45deg, var(--disabled-gradient-background), var(--disabled-gradient-background) 2.5px, var(--disabled-gradient-foreground) 2.5px, var(--disabled-gradient-foreground) 5px)",
+                                  },
+                            children: [
+                              (0, l.jsx)(T, {
+                                hours: M,
+                                numberOfGridStopsPerCell: b,
+                                containerOffsetRef: d,
+                                borderColor: E,
+                              }),
+                              (0, l.jsx)(P, { days: C, borderColor: E }),
+                              (0, l.jsx)(_, {
+                                offsetHeight:
+                                  null == (t = d.current)
+                                    ? void 0
+                                    : t.offsetHeight,
+                                gridStopsPerDay: H,
+                                children: C.map((e, t) =>
+                                  (0, l.jsx)(
+                                    "li",
+                                    {
+                                      className: "relative",
+                                      style: { gridColumnStart: t + 1 },
+                                      children: (0, l.jsx)(S, { day: e }),
+                                    },
+                                    e.toISOString()
+                                  )
+                                ),
+                              }),
+                              (0, l.jsx)(_, {
+                                ref: c,
+                                offsetHeight:
+                                  null == (r = d.current)
+                                    ? void 0
+                                    : r.offsetHeight,
+                                gridStopsPerDay: H,
+                                children: (0, l.jsx)(l.Fragment, {
+                                  children: [...Array(C.length)].map((e, t) =>
+                                    (0, l.jsx)(
+                                      "li",
+                                      {
+                                        className: "relative",
+                                        style: {
+                                          gridRow: "1 / span ".concat(H),
+                                        },
+                                        children: y
+                                          ? (0, l.jsx)(
+                                              w,
+                                              {
+                                                timezone: N,
+                                                day: C[t],
+                                                startHour: g,
+                                                availableSlots: y,
+                                              },
+                                              C[t].toISOString()
+                                            )
+                                          : (0, l.jsx)(l.Fragment, {
+                                              children: [...Array(H)].map(
+                                                (e, r) => {
+                                                  let n = ""
+                                                    .concat(t, "-")
+                                                    .concat(r);
+                                                  return (0, l.jsx)(
+                                                    j,
+                                                    {
+                                                      day: C[t],
+                                                      gridCellIdx: r,
+                                                      totalGridCells: H,
+                                                      selectionLength: v - g,
+                                                      startHour: g,
+                                                      timezone: N,
+                                                    },
+                                                    n
+                                                  );
+                                                }
+                                              ),
+                                            }),
+                                      },
+                                      t
+                                    )
+                                  ),
+                                }),
+                              }),
+                            ],
+                          }),
+                        ],
+                      }),
+                    ],
+                  }),
+                }),
+              ],
+            }),
+          })
+        );
+      }
+      function R(e) {
+        let t = (0, n.useRef)(null);
+        return (
+          t.current ||
+            ((t.current = (0, s.y)((e) => ({
+              ...u,
+              ...void 0,
+              setView: (t) => e({ view: t }),
+              setStartDate: (t) => e({ startDate: t }),
+              setEndDate: (t) => e({ endDate: t }),
+              setEvents: (t) => e({ events: t }),
+              initState: (t) => {
+                let r = t.events;
+                t.sortEvents &&
+                  (r = [...t.events].sort(
+                    (e, t) =>
+                      (0, o.A)(e.start).valueOf() - (0, o.A)(t.start).valueOf()
+                  ));
+                let l = (function (e) {
+                  e.sort((e, t) => e.start.getTime() - t.start.getTime());
+                  let t = [];
+                  for (let r = 0; r < e.length; r++)
+                    if (0 === t.length) t.push(e[r]);
+                    else {
+                      let l = t[t.length - 1],
+                        n = e[r];
+                      l.end.getTime() >= n.start.getTime()
+                        ? (l.end = n.end)
+                        : t.push(n);
+                    }
+                  return t;
+                })(t.blockingDates || []);
+                e({ ...t, blockingDates: l, events: r });
+              },
+              setSelectedEvent: (t) => e({ selectedEvent: t }),
+              handleDateChange: (t) =>
+                e((e) => {
+                  var r, l;
+                  let { startDate: n, endDate: a } = e;
+                  if ("INCREMENT" === t) {
+                    let t = (0, o.A)(n).add(1, e.view).toDate(),
+                      r = (0, o.A)(a).add(1, e.view).toDate();
+                    return (e.minDate && t < e.minDate) ||
+                      (e.maxDate && r > e.maxDate)
+                      ? { startDate: n, endDate: a }
+                      : (null == (l = e.onDateChange) || l.call(e, t, r),
+                        { startDate: t, endDate: r });
+                  }
+                  let s = (0, o.A)(n).subtract(1, e.view).toDate(),
+                    i = (0, o.A)(a).subtract(1, e.view).toDate();
+                  return (
+                    null == (r = e.onDateChange) || r.call(e, s, i),
+                    { startDate: s, endDate: i }
+                  );
+                }),
+            }))),
+            t.current.getState().initState(e)),
+          (0, n.useEffect)(() => {
+            t.current && t.current.getState().initState(e);
+          }, [e]),
+          (0, l.jsx)(m.Provider, {
+            value: t.current,
+            children: (0, l.jsx)(O, { ...e }),
+          })
+        );
+      }
+      let F = (e) => {
+        let { children: t } = e;
+        return (0, l.jsxs)(l.Fragment, {
+          children: [
+            (0, l.jsxs)("div", {
+              className:
+                "flex h-full flex-col items-center justify-center sm:hidden",
+              children: [
+                (0, l.jsx)("h1", {
+                  className: "text-2xl font-bold",
+                  children: "Mobile not supported yet ",
+                }),
+                (0, l.jsx)("p", {
+                  className: "text-subtle",
+                  children: "Please use a desktop browser to view this page",
+                }),
+              ],
+            }),
+            (0, l.jsx)("div", {
+              className: "hidden h-full sm:block",
+              children: t,
+            }),
+          ],
+        });
+      };
+    },
+    28543: () => {},
+    84096: (e, t, r) => {
+      "use strict";
+      r.d(t, { A: () => s });
+      var l = r(54568),
+        n = r(7620);
+      let a = (e) => {
+          let t;
+          if (!e || "string" != typeof e) return [e].filter(Boolean);
+          if (!/<[a-z][\s\S]*>/i.test(e)) return [e];
+          let r = e,
+            l = {};
+          if (
+            ([
+              { tag: "strong", component: "strong" },
+              { tag: "b", component: "b" },
+              { tag: "i", component: "i" },
+              { tag: "em", component: "em" },
+              { tag: "p", component: "p" },
+              { tag: "br", component: "br", selfClosing: !0 },
+              { tag: "div", component: "div" },
+              { tag: "span", component: "span" },
+              { tag: "ul", component: "ul" },
+              { tag: "ol", component: "ol" },
+              { tag: "li", component: "li" },
+            ].forEach((e) => {
+              let { tag: t, component: s, selfClosing: i } = e;
+              if (i) {
+                let e = RegExp("<".concat(t, "\\s*\\/>"), "g");
+                r = r.replace(e, (e) => {
+                  let r = "__HTML_"
+                    .concat(t, "_")
+                    .concat(Math.random().toString(36).substring(2), "__");
+                  return (l[r] = (0, n.createElement)(s, { key: r })), r;
+                });
+              } else {
+                let e = RegExp(
+                  "<".concat(t, ">(.*?)<\\/").concat(t, ">"),
+                  "gs"
+                );
+                r = r.replace(e, (e, r) => {
+                  let i = "__HTML_"
+                      .concat(t, "_")
+                      .concat(Math.random().toString(36).substring(2), "__"),
+                    o = a(r);
+                  return (
+                    (l[i] = (0, n.createElement)(
+                      s,
+                      { key: i },
+                      ...(o.length > 1 ? o : [r])
+                    )),
+                    i
+                  );
+                });
+              }
+            }),
+            0 === Object.keys(l).length)
+          )
+            return [r];
+          let s = [],
+            i = 0,
+            o = /__HTML_[^_]+_[a-z0-9]+__/g;
+          for (; null !== (t = o.exec(r)); ) {
+            let [e] = t,
+              n = t.index;
+            n > i && s.push(r.substring(i, n)),
+              l[e] && s.push(l[e]),
+              (i = n + e.length);
+          }
+          return i < r.length && s.push(r.substring(i)), s.length > 0 ? s : [r];
+        },
+        s = (e) => {
+          let t,
+            {
+              i18nKey: r,
+              components: s = [],
+              t: i,
+              values: o = {},
+              children: d,
+              parent: c,
+            } = e,
+            u = i(r, { ...o });
+          return !u && d
+            ? (0, l.jsx)(l.Fragment, { children: d })
+            : u
+            ? ((t =
+                Array.isArray(s) && s.length > 0
+                  ? ((e, t) => {
+                      let r = [],
+                        l = "",
+                        s = (e, t) => {
+                          let r = 1,
+                            l = "";
+                          for (let n = 0; n < e.length; n++) {
+                            if (
+                              "<" === e[n] &&
+                              e.substring(n + 1, n + 1 + t.length) === t &&
+                              ">" === e[n + 1 + t.length]
+                            ) {
+                              r++,
+                                (l += e.substring(n, n + 2 + t.length)),
+                                (n += 1 + t.length);
+                              continue;
+                            }
+                            if (
+                              "<" === e[n] &&
+                              e.substring(n + 1, n + 2 + t.length) ===
+                                "/".concat(t) &&
+                              ">" === e[n + 2 + t.length]
+                            ) {
+                              if (0 == --r) return l;
+                              (l += e.substring(n, n + 3 + t.length)),
+                                (n += 2 + t.length);
+                              continue;
+                            }
+                            l += e[n];
+                          }
+                          return null;
+                        };
+                      return (
+                        ((e) => {
+                          for (let i = 0; i < e.length; i++) {
+                            if ("<" === e[i] && /\d/.test(e[i + 1])) {
+                              let o = "",
+                                d = i + 1;
+                              for (; d < e.length && /\d/.test(e[d]); )
+                                (o += e[d]), d++;
+                              if (d < e.length && ">" === e[d]) {
+                                l && (r.push(...a(l)), (l = ""));
+                                let c = "</".concat(o, ">"),
+                                  u = s(e.substring(d + 1), o);
+                                if (null !== u) {
+                                  let e = parseInt(o, 10);
+                                  if (e < t.length) {
+                                    let l = t[e];
+                                    (0, n.isValidElement)(l)
+                                      ? r.push(
+                                          (0, n.cloneElement)(
+                                            l,
+                                            {
+                                              ...(l.props || {}),
+                                              key: l.key || "comp-".concat(e),
+                                            },
+                                            ...a(u)
+                                          )
+                                        )
+                                      : r.push(...a(u));
+                                  } else r.push(...a(u));
+                                  i = d + u.length + c.length;
+                                  continue;
+                                }
+                              }
+                            }
+                            l += e[i];
+                          }
+                          l && r.push(...a(l));
+                        })(e),
+                        r.length > 0 ? r : [e]
+                      );
+                    })(u, s)
+                  : ((e) =>
+                      null !== e && "object" == typeof e && !Array.isArray(e))(
+                      s
+                    ) && Object.keys(s).length > 0
+                  ? ((e, t) => {
+                      let r,
+                        l = e,
+                        s = {};
+                      Object.keys(t).forEach((e) => {
+                        let r = RegExp("{{\\s*".concat(e, "\\s*}}"), "g");
+                        l = l.replace(r, (r) => {
+                          let l = "__INTERP_"
+                            .concat(e, "_")
+                            .concat(
+                              Math.random().toString(36).substring(2),
+                              "__"
+                            );
+                          return (
+                            (0, n.isValidElement)(t[e]) &&
+                              (s[l] = (0, n.cloneElement)(t[e], {
+                                ...(t[e].props || {}),
+                                key: t[e].key || "interp-".concat(e),
+                              })),
+                            l
+                          );
+                        });
+                      }),
+                        Object.keys(t).forEach((e) => {
+                          let r = RegExp(
+                            "<".concat(e, ">(.*?)<\\/").concat(e, ">"),
+                            "gs"
+                          );
+                          l = l.replace(r, (r, l) => {
+                            let i = "__TAG_"
+                              .concat(e, "_")
+                              .concat(
+                                Math.random().toString(36).substring(2),
+                                "__"
+                              );
+                            if ((0, n.isValidElement)(t[e])) {
+                              let r = a(l);
+                              s[i] = (0, n.cloneElement)(
+                                t[e],
+                                {
+                                  ...(t[e].props || {}),
+                                  key: t[e].key || "tag-".concat(e),
+                                },
+                                ...(r.length > 1 ? r : [l])
+                              );
+                            }
+                            return i;
+                          });
+                        });
+                      let i = [],
+                        o = 0,
+                        d = /__(?:INTERP|TAG)_[^_]+_[a-z0-9]+__/g;
+                      for (; null !== (r = d.exec(l)); ) {
+                        let [e] = r,
+                          t = r.index;
+                        if (t > o) {
+                          let e = l.substring(o, t);
+                          i.push(...a(e));
+                        }
+                        s[e] && i.push(s[e]), (o = t + e.length);
+                      }
+                      if (o < l.length) {
+                        let e = l.substring(o);
+                        i.push(...a(e));
+                      }
+                      return i.length > 0 ? i : [l];
+                    })(u, s)
+                  : a(u)),
+              c)
+              ? (0, l.jsx)(c, { children: t })
+              : (0, l.jsx)(l.Fragment, { children: t })
+            : (0, l.jsx)(l.Fragment, {});
+        };
+    },
+  },
+]);
+//# sourceMappingURL=28582-ebe883a33b2e9ada.js.map

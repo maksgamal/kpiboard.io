@@ -1,0 +1,542 @@
+(self.webpackChunk_N_E = self.webpackChunk_N_E || []).push([
+  [24345],
+  {
+    389: (e, t, s) => {
+      Promise.resolve().then(s.bind(s, 23369)),
+        Promise.resolve().then(s.bind(s, 21759));
+    },
+    11510: (e, t, s) => {
+      "use strict";
+      s.d(t, { A: () => r });
+      var n = s(28141),
+        a = s(66339);
+      let r = new n.Vy({
+        minLevel: parseInt("3"),
+        maskValuesOfKeys: [
+          "password",
+          "passwordConfirmation",
+          "credentials",
+          "credential",
+        ],
+        prettyLogTimeZone: a.p8 ? "UTC" : "local",
+        prettyErrorStackTemplate:
+          "  • {{fileName}}	{{method}}\n	{{filePathWithLine}}",
+        prettyErrorTemplate:
+          "\n{{errorName}} {{errorMessage}}\nerror stack:\n{{errorStack}}",
+        prettyLogTemplate: "{{hh}}:{{MM}}:{{ss}}:{{ms}} [{{logLevelName}}] ",
+        stylePrettyLogs: !a.p8,
+        prettyLogStyles: { name: "yellow", dateIsoStr: "blue" },
+        type: a.p8 ? "json" : "pretty",
+      });
+    },
+    23369: (e, t, s) => {
+      "use strict";
+      s.d(t, { NotFound: () => h });
+      var n = s(54568),
+        a = s(19664),
+        r = s.n(a),
+        l = s(27541),
+        i = s(80835),
+        c = s(66339),
+        o = s(43328),
+        d = s(8949),
+        m = (function (e) {
+          return (
+            (e.ORG = "ORG"),
+            (e.TEAM = "TEAM"),
+            (e.USER = "USER"),
+            (e.OTHER = "OTHER"),
+            e
+          );
+        })(m || {});
+      function h(e) {
+        var t, s;
+        let { host: a } = e,
+          { t: m } = (0, o.Y)(),
+          h = null != (t = (0, l.usePathname)()) ? t : "",
+          {
+            username: u,
+            pageType: x,
+            url: p,
+          } = (function (e, t) {
+            var s, n;
+            let { isValidOrgDomain: a, currentOrgDomain: r } = (0, i.io)({
+                hostname: t,
+              }),
+              [l] =
+                null !=
+                (s = null == e ? void 0 : e.replace("%20", "-").split(/[?#]/))
+                  ? s
+                  : [];
+            if (!l || (a && r))
+              return {
+                username: null != r ? r : "",
+                pageType: "ORG",
+                url: ""
+                  .concat(
+                    c.CY,
+                    "/signup?callbackUrl=settings/organizations/new%3Fslug%3D"
+                  )
+                  .concat(
+                    null != (n = null == r ? void 0 : r.replace("/", ""))
+                      ? n
+                      : ""
+                  ),
+              };
+            {
+              let e = l.split("/");
+              return "team" === e[1] && 3 === e.length
+                ? {
+                    username: e[2],
+                    pageType: "TEAM",
+                    url: ""
+                      .concat(
+                        c.CY,
+                        "/signup?callbackUrl=settings/teams/new%3Fslug%3D"
+                      )
+                      .concat(e[2].replace("/", "")),
+                  }
+                : {
+                    username: l,
+                    pageType: "USER",
+                    url: ""
+                      .concat(c.CY, "/signup?username=")
+                      .concat(l.replace("/", "")),
+                  };
+            }
+          })(h, a),
+          g = null == h ? void 0 : h.startsWith("/booking"),
+          f = (null == h ? void 0 : h.includes("/", 2)) || g,
+          N = null == h ? void 0 : h.startsWith("/insights"),
+          b = [
+            {
+              title: m("enterprise"),
+              description:
+                "Learn more about organizations and subdomains in our enterprise plan.",
+              icon: "shield",
+              href: "".concat(c.CY, "/enterprise"),
+            },
+            {
+              title: m("documentation"),
+              description: m("documentation_description"),
+              icon: "file-text",
+              href: c.aq,
+            },
+            {
+              title: m("blog"),
+              description: m("blog_description"),
+              icon: "book-open",
+              href: "".concat(c.CY, "/blog"),
+            },
+          ];
+        return N
+          ? (0, n.jsx)("div", {
+              className: "min-h-screen bg-white px-4",
+              "data-testid": "404-page",
+              children: (0, n.jsxs)("main", {
+                className: "mx-auto max-w-xl pb-6 pt-16 sm:pt-24",
+                children: [
+                  (0, n.jsxs)("div", {
+                    className: "text-center",
+                    children: [
+                      (0, n.jsx)("p", {
+                        className:
+                          "text-sm font-semibold uppercase tracking-wide text-black",
+                        children: m("error_404"),
+                      }),
+                      (0, n.jsx)("h1", {
+                        className:
+                          "font-cal mt-2 text-4xl font-extrabold text-gray-900 sm:text-5xl",
+                        children:
+                          null != (s = m("feature_currently_disabled"))
+                            ? s
+                            : "Feature is currently disabled",
+                      }),
+                    ],
+                  }),
+                  (0, n.jsx)("div", {
+                    className: "mt-12",
+                    children: (0, n.jsx)("div", {
+                      className: "mt-8",
+                      children: (0, n.jsxs)(r(), {
+                        href: c.CY,
+                        className:
+                          "text-base font-medium text-black hover:text-gray-500",
+                        children: [
+                          m("or_go_back_home"),
+                          (0, n.jsx)("span", {
+                            "aria-hidden": "true",
+                            children: " →",
+                          }),
+                        ],
+                      }),
+                    }),
+                  }),
+                ],
+              }),
+            })
+          : (0, n.jsx)("div", {
+              className: "bg-default min-h-screen px-4",
+              "data-testid": "404-page",
+              children: (0, n.jsxs)("main", {
+                className: "mx-auto max-w-xl pb-6 pt-16 sm:pt-24",
+                children: [
+                  (0, n.jsxs)("div", {
+                    className: "text-center",
+                    children: [
+                      (0, n.jsx)("p", {
+                        className:
+                          "text-emphasis text-sm font-semibold uppercase tracking-wide",
+                        children: m("error_404"),
+                      }),
+                      (0, n.jsx)("h1", {
+                        className:
+                          "font-cal text-emphasis mt-2 text-4xl font-extrabold sm:text-5xl",
+                        children: g
+                          ? "Booking not found"
+                          : m("page_doesnt_exist"),
+                      }),
+                      f && "TEAM" !== x
+                        ? (0, n.jsx)("span", {
+                            className: "mt-2 inline-block text-lg",
+                            children: m("check_spelling_mistakes_or_go_back"),
+                          })
+                        : c.HS
+                        ? (0, n.jsxs)("a", {
+                            target: "_blank",
+                            href: p,
+                            className: "mt-2 inline-block text-lg",
+                            rel: "noreferrer",
+                            children: [
+                              m("404_the_".concat(x.toLowerCase())),
+                              " ",
+                              u
+                                ? (0, n.jsxs)(n.Fragment, {
+                                    children: [
+                                      (0, n.jsx)("strong", {
+                                        className: "text-blue-500",
+                                        children: u,
+                                      }),
+                                      " ".concat(m("is_still_available"), " "),
+                                      (0, n.jsx)("span", {
+                                        className: "text-blue-500",
+                                        children: m("register_now"),
+                                      }),
+                                      ".",
+                                    ],
+                                  })
+                                : null,
+                            ],
+                          })
+                        : (0, n.jsxs)("span", {
+                            className: "mt-2 inline-block text-lg",
+                            children: [
+                              m("404_the_".concat(x.toLowerCase())),
+                              " ",
+                              u
+                                ? (0, n.jsxs)(n.Fragment, {
+                                    children: [
+                                      (0, n.jsx)("strong", {
+                                        className:
+                                          "mt-2 inline-block text-lg text-green-500",
+                                        children: u,
+                                      }),
+                                      " ",
+                                      m("is_still_available"),
+                                    ],
+                                  })
+                                : null,
+                            ],
+                          }),
+                    ],
+                  }),
+                  (0, n.jsxs)("div", {
+                    className: "mt-12",
+                    children: [
+                      ((!f && c.HS) || "ORG" === x || "TEAM" === x) &&
+                        (0, n.jsx)("ul", {
+                          role: "list",
+                          className: "my-4",
+                          children: (0, n.jsx)("li", {
+                            className: "border-2 border-green-500 px-4 py-2",
+                            children: (0, n.jsxs)("a", {
+                              href: p,
+                              target: "_blank",
+                              className:
+                                "relative flex items-start space-x-4 py-6 rtl:space-x-reverse",
+                              rel: "noreferrer",
+                              children: [
+                                (0, n.jsx)("div", {
+                                  className: "flex-shrink-0",
+                                  children: (0, n.jsx)("span", {
+                                    className:
+                                      "flex h-12 w-12 items-center justify-center rounded-lg bg-green-50",
+                                    children: (0, n.jsx)(d.A, {
+                                      name: "check",
+                                      className: "h-6 w-6 text-green-500",
+                                      "aria-hidden": "true",
+                                    }),
+                                  }),
+                                }),
+                                (0, n.jsxs)("div", {
+                                  className: "min-w-0 flex-1",
+                                  children: [
+                                    (0, n.jsx)("h3", {
+                                      className:
+                                        "text-emphasis text-base font-medium",
+                                      children: (0, n.jsx)("span", {
+                                        className:
+                                          "focus-within:ring-empthasis rounded-sm focus-within:ring-2 focus-within:ring-offset-2",
+                                        children: (0, n.jsxs)("span", {
+                                          className: "focus:outline-none",
+                                          children: [
+                                            (0, n.jsx)("span", {
+                                              className: "absolute inset-0",
+                                              "aria-hidden": "true",
+                                            }),
+                                            m("register"),
+                                            " ",
+                                            (0, n.jsx)("strong", {
+                                              className: "text-green-500",
+                                              children: ""
+                                                .concat(
+                                                  "TEAM" === x
+                                                    ? "".concat(
+                                                        new URL(c.CY).host,
+                                                        "/team/"
+                                                      )
+                                                    : ""
+                                                )
+                                                .concat(u)
+                                                .concat(
+                                                  "ORG" === x
+                                                    ? ".".concat((0, i.e6)())
+                                                    : ""
+                                                ),
+                                            }),
+                                          ],
+                                        }),
+                                      }),
+                                    }),
+                                    (0, n.jsx)("p", {
+                                      className: "text-subtle text-base",
+                                      children: m(
+                                        "404_claim_entity_".concat(
+                                          x.toLowerCase()
+                                        )
+                                      ),
+                                    }),
+                                  ],
+                                }),
+                                (0, n.jsx)("div", {
+                                  className: "flex-shrink-0 self-center",
+                                  children: (0, n.jsx)(d.A, {
+                                    name: "chevron-right",
+                                    className: "text-muted h-5 w-5",
+                                    "aria-hidden": "true",
+                                  }),
+                                }),
+                              ],
+                            }),
+                          }),
+                        }),
+                      (0, n.jsx)("h2", {
+                        className:
+                          "text-subtle text-sm font-semibold uppercase tracking-wide",
+                        children: m("popular_pages"),
+                      }),
+                      (0, n.jsx)("ul", {
+                        role: "list",
+                        className: "border-subtle divide-subtle divide-y",
+                        children: b
+                          .filter((e, t) => "ORG" === x || 0 !== t)
+                          .map((e, t) =>
+                            (0, n.jsx)(
+                              "li",
+                              {
+                                className: "px-4 py-2",
+                                children: (0, n.jsxs)("a", {
+                                  href: e.href,
+                                  className:
+                                    "relative flex items-start space-x-4 py-6 rtl:space-x-reverse",
+                                  children: [
+                                    (0, n.jsx)("div", {
+                                      className: "flex-shrink-0",
+                                      children: (0, n.jsx)("span", {
+                                        className:
+                                          "bg-muted flex h-12 w-12 items-center justify-center rounded-lg",
+                                        children: (0, n.jsx)(d.A, {
+                                          name: e.icon,
+                                          className: "text-default h-6 w-6",
+                                          "aria-hidden": "true",
+                                        }),
+                                      }),
+                                    }),
+                                    (0, n.jsxs)("div", {
+                                      className: "min-w-0 flex-1",
+                                      children: [
+                                        (0, n.jsx)("h3", {
+                                          className:
+                                            "text-emphasis text-base font-medium",
+                                          children: (0, n.jsxs)("span", {
+                                            className:
+                                              "focus-within:ring-empthasis rounded-sm focus-within:ring-2 focus-within:ring-offset-2",
+                                            children: [
+                                              (0, n.jsx)("span", {
+                                                className: "absolute inset-0",
+                                                "aria-hidden": "true",
+                                              }),
+                                              e.title,
+                                            ],
+                                          }),
+                                        }),
+                                        (0, n.jsx)("p", {
+                                          className: "text-subtle text-base",
+                                          children: e.description,
+                                        }),
+                                      ],
+                                    }),
+                                    (0, n.jsx)("div", {
+                                      className: "flex-shrink-0 self-center",
+                                      children: (0, n.jsx)(d.A, {
+                                        name: "chevron-right",
+                                        className: "text-muted h-5 w-5",
+                                        "aria-hidden": "true",
+                                      }),
+                                    }),
+                                  ],
+                                }),
+                              },
+                              t
+                            )
+                          ),
+                      }),
+                      (0, n.jsx)("div", {
+                        className: "mt-8",
+                        children: (0, n.jsxs)(r(), {
+                          href: c.CY,
+                          className:
+                            "hover:text-subtle text-emphasis text-base font-medium",
+                          children: [
+                            m("or_go_back_home"),
+                            (0, n.jsx)("span", {
+                              "aria-hidden": "true",
+                              children: " →",
+                            }),
+                          ],
+                        }),
+                      }),
+                    ],
+                  }),
+                ],
+              }),
+            });
+      }
+    },
+    80835: (e, t, s) => {
+      "use strict";
+      s.d(t, { O8: () => o, e6: () => c, io: () => i });
+      var n = s(66339),
+        a = s(11510),
+        r = s(40459);
+      let l = a.A.getSubLogger({ prefix: ["orgDomains.ts"] });
+      function i(e) {
+        let { hostname: t, fallback: s, forcedSlug: a } = e,
+          i = (function (e, t) {
+            if (t) {
+              if (r.env.NEXT_PUBLIC_IS_E2E || r.env.INTEGRATION_TEST_MODE)
+                return (
+                  l.debug(
+                    "Using provided forcedSlug in E2E/Integration Test mode",
+                    { forcedSlug: t }
+                  ),
+                  t
+                );
+              l.debug("Ignoring forcedSlug in non-test mode", {
+                forcedSlug: t,
+              });
+            }
+            if (n.w2)
+              return (
+                l.debug(
+                  "In Single Org Mode, using SINGLE_ORG_SLUG as the Org slug",
+                  { SINGLE_ORG_SLUG: n.w2 }
+                ),
+                n.w2
+              );
+            if (!e.includes("."))
+              return (
+                l.warn('Org support not enabled for hostname without "."', {
+                  hostname: e,
+                }),
+                null
+              );
+            let s = n.Um.find((e) => {
+              let t = new URL(n.YW);
+              return ""
+                .concat(t.hostname)
+                .concat(t.port ? ":".concat(t.port) : "")
+                .endsWith(".".concat(e));
+            });
+            if (!s)
+              return (
+                l.warn("Match of WEBAPP_URL with ALLOWED_HOSTNAMES failed", {
+                  WEBAPP_URL: n.YW,
+                  ALLOWED_HOSTNAMES: n.Um,
+                }),
+                null
+              );
+            let a = e.replace(s ? ".".concat(s) : "", "");
+            return -1 === a.indexOf(".")
+              ? a
+              : (l.warn(
+                  "Derived slug ended up having dots, so not considering it an org domain",
+                  { slug: a }
+                ),
+                null);
+          })(t, a),
+          c = null !== i && !n.N2.includes(i);
+        if (c || !s)
+          return { currentOrgDomain: c ? i : null, isValidOrgDomain: c };
+        let o = !n.N2.includes(s);
+        return { currentOrgDomain: o ? s : null, isValidOrgDomain: o };
+      }
+      function c() {
+        var e;
+        if (!n.p8 && r.env.LOCAL_TESTING_DOMAIN_VERCEL)
+          return r.env.LOCAL_TESTING_DOMAIN_VERCEL;
+        let t =
+          null == (e = n.YW.replace("https://", ""))
+            ? void 0
+            : e.replace("http://", "").split(".");
+        return 3 === t.length ? t.slice(1).join(".") : t.join(".");
+      }
+      function o(e) {
+        let t =
+          arguments.length > 1 && void 0 !== arguments[1]
+            ? arguments[1]
+            : { protocol: !0 };
+        return e
+          ? ""
+              .concat(t.protocol ? "".concat(new URL(n.CY).protocol, "//") : "")
+              .concat(e, ".")
+              .concat(c())
+          : t.protocol
+          ? n.CY
+          : n.CY.replace("https://", "").replace("http://", "");
+      }
+    },
+  },
+  (e) => {
+    e.O(
+      0,
+      [
+        18842, 61721, 19664, 39145, 98691, 96006, 75573, 30996, 12897, 45318,
+        89188, 62117, 94133, 21759, 587, 48598, 77358,
+      ],
+      () => e((e.s = 389))
+    ),
+      (_N_E = e.O());
+  },
+]);
+//# sourceMappingURL=not-found-031512c0299001f4.js.map
