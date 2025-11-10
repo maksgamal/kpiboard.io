@@ -1,0 +1,29 @@
+{
+  "rewrites": [
+    {
+      "source": "/blogs",
+      "destination": "/blogs.html"
+    },
+    {
+      "source": "/thankyou",
+      "destination": "/thankyou.html"
+    },
+    {
+      "source": "/blog-posts/the-retail-ecommerce-metrics-that-actually-drive-profit",
+      "destination": "/the-retail-ecommerce-metrics-that-actually-drive-profit.html"
+    },
+    {
+      "source": "/blog-posts/struggling-with-scattered-reports-save-20-hours-a-month-with-smarter-bi-dashboards",
+      "destination": "/struggling-with-scattered-reports-save-20-hours-a-month-with-smarter-bi-dashboards.html"
+    },
+    {
+      "source": "/blog-posts/the-hidden-leak-how-one-e-commerce-brand-discovered-a-120k-problem-using-data",
+      "destination": "/the-hidden-leak-how-one-e-commerce-brand-discovered-a-120k-problem-using-data.html"
+    },
+    {
+      "source": "/blog-posts/how-one-digital-agency-stopped-drowning-in-spreadsheets-and-started-scaling-smarter",
+      "destination": "/how-one-digital-agency-stopped-drowning-in-spreadsheets-and-started-scaling-smarter.html"
+    }
+  ]
+}
+
