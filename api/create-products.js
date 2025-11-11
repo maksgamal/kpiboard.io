@@ -37,24 +37,85 @@ const PLANS = {
   },
 };
 
+async function findOrCreateProduct(planKey, planData) {
+  // First, try to find existing product by name
+  const existingProducts = await stripe.products.list({
+    limit: 100,
+  });
+  
+  const existingProduct = existingProducts.data.find(
+    p => p.name === planData.name && p.metadata?.plan === planKey
+  );
+  
+  if (existingProduct) {
+    console.log(`Found existing product: ${planData.name} (${existingProduct.id})`);
+    return existingProduct;
+  }
+  
+  // If not found, create new product
+  console.log(`Creating new product: ${planData.name}`);
+  const product = await stripe.products.create({
+    name: planData.name,
+    description: planData.description,
+    metadata: {
+      plan: planKey,
+    },
+  });
+  
+  return product;
+}
+
+async function findOrCreatePrice(product, planKey, interval, amount) {
+  // First, try to find existing price
+  const existingPrices = await stripe.prices.list({
+    product: product.id,
+    limit: 100,
+  });
+  
+  const existingPrice = existingPrices.data.find(
+    p => 
+      p.unit_amount === amount &&
+      p.currency === 'usd' &&
+      p.recurring?.interval === interval.interval &&
+      p.recurring?.interval_count === interval.interval_count &&
+      p.metadata?.plan === planKey &&
+      p.metadata?.billingCycle === interval.key
+  );
+  
+  if (existingPrice) {
+    console.log(`Found existing price: ${interval.key} (${existingPrice.id})`);
+    return existingPrice;
+  }
+  
+  // If not found, create new price
+  console.log(`Creating new price: ${interval.key}`);
+  const price = await stripe.prices.create({
+    product: product.id,
+    unit_amount: amount,
+    currency: 'usd',
+    recurring: {
+      interval: interval.interval,
+      interval_count: interval.interval_count,
+    },
+    metadata: {
+      plan: planKey,
+      billingCycle: interval.key,
+    },
+  });
+  
+  return price;
+}
+
 async function createProducts() {
   const products = {};
   
   for (const [planKey, planData] of Object.entries(PLANS)) {
-    console.log(`Creating product: ${planData.name}`);
-    
-    // Create product
-    const product = await stripe.products.create({
-      name: planData.name,
-      description: planData.description,
-      metadata: {
-        plan: planKey,
-      },
-    });
+    // Find or create product
+    const product = await findOrCreateProduct(planKey, planData);
     
     products[planKey] = { product, prices: {} };
     
-    // Create prices
+    // Find or create prices
     const intervals = [
       { key: 'monthly', amount: planData.monthly, interval: 'month', interval_count: 1 },
       { key: 'quarterly', amount: planData.quarterly, interval: 'month', interval_count: 3 },
@@ -62,19 +123,12 @@ async function createProducts() {
     ];
     
     for (const interval of intervals) {
-      const price = await stripe.prices.create({
-        product: product.id,
-        unit_amount: interval.amount,
-        currency: 'usd',
-        recurring: {
-          interval: interval.interval,
-          interval_count: interval.interval_count,
-        },
-        metadata: {
-          plan: planKey,
-          billingCycle: interval.key,
-        },
-      });
+      const price = await findOrCreatePrice(
+        product,
+        planKey,
+        interval,
+        interval.amount
+      );
       
       products[planKey].prices[interval.key] = price;
     }
@@ -175,7 +229,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    console.log('Creating Stripe products and prices...');
+    console.log('Finding or creating Stripe products and prices...');
     
     const products = await createProducts();
     const priceIds = getPriceIds(products);
@@ -184,7 +238,8 @@ module.exports = async (req, res) => {
     // Format response
     const response = {
       success: true,
-      message: 'Products and prices created successfully!',
+      message: 'Products and prices ready! (Existing products were reused to avoid duplicates)',
+      note: 'If you see duplicate products in Stripe Dashboard, you can archive or delete the older ones manually.',
       products: {},
       priceIds: priceIds,
       updatedFile: {
