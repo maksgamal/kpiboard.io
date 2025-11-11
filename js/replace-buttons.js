@@ -27,43 +27,107 @@
     return 'monthly';
   }
   
+  // Helper function to determine billing cycle from card context
+  function getBillingCycleFromCard(card) {
+    if (!card) return null;
+    
+    const cardText = (card.textContent || '').toLowerCase();
+    
+    // Check for explicit billing cycle indicators in the card
+    if (cardText.includes('monthly subscription') || 
+        (cardText.includes('/month') && !cardText.includes('quarterly') && !cardText.includes('annual'))) {
+      return 'monthly';
+    } else if (cardText.includes('quarterly subscription') || cardText.includes('quarterly') || cardText.includes('10%')) {
+      return 'quarterly';
+    } else if (cardText.includes('annual subscription') || cardText.includes('annual') || cardText.includes('30%')) {
+      return 'annual';
+    }
+    
+    // Check for specific monthly prices (not quarterly/annual)
+    if (cardText.includes('$3,000') && !cardText.includes('$2,700') && !cardText.includes('$2,100')) {
+      return 'monthly';
+    } else if (cardText.includes('$5,500') && !cardText.includes('$4,950') && !cardText.includes('$3,850')) {
+      return 'monthly';
+    } else if (cardText.includes('$10,000') && !cardText.includes('$9,000') && !cardText.includes('$7,000')) {
+      return 'monthly';
+    } else if (cardText.includes('$20,000') && !cardText.includes('$18,000') && !cardText.includes('$14,000')) {
+      return 'monthly';
+    }
+    
+    return null;
+  }
+  
   // Helper function to determine plan from context
   function getPlanFromContext(button) {
     // Try to find parent card/container
     let container = button;
-    for (let i = 0; i < 10; i++) {
+    let bestMatch = null;
+    let bestMatchScore = 0;
+    
+    for (let i = 0; i < 15; i++) {
       container = container.parentElement;
       if (!container) break;
       
       const containerText = (container.textContent || '').toLowerCase();
       const containerClass = (container.className || '').toLowerCase();
       
-      // Check for plan names in text or class names
+      let score = 0;
+      let plan = null;
+      
+      // Check for plan names in text or class names (higher priority)
       if (containerText.includes('enterprise') || containerClass.includes('enterprise')) {
-        return 'enterprise';
+        plan = 'enterprise';
+        score = containerText.includes('enterprise plan') ? 10 : 5;
       } else if (containerText.includes('advanced') || containerClass.includes('advanced')) {
-        return 'advanced';
+        plan = 'advanced';
+        score = containerText.includes('advanced plan') ? 10 : 5;
       } else if (containerText.includes('professional') || containerText.includes('pro plan') || 
-                 containerClass.includes('professional') || containerClass.includes('pro')) {
-        return 'pro';
+                 containerClass.includes('professional') || (containerClass.includes('pro') && !containerClass.includes('product'))) {
+        plan = 'pro';
+        score = containerText.includes('pro plan') || containerText.includes('professional plan') ? 10 : 5;
       } else if (containerText.includes('basic') || containerText.includes('starter') || 
                  containerClass.includes('basic') || containerClass.includes('starter')) {
-        return 'basic';
+        plan = 'basic';
+        score = containerText.includes('basic plan') || containerText.includes('starter plan') ? 10 : 5;
       }
       
-      // Check for price indicators
-      if (containerText.includes('$3,000') || containerText.includes('$2,700') || containerText.includes('$2,100')) {
-        return 'basic';
-      } else if (containerText.includes('$5,500') || containerText.includes('$4,950') || containerText.includes('$3,850')) {
-        return 'pro';
-      } else if (containerText.includes('$10,000') || containerText.includes('$9,000') || containerText.includes('$7,000')) {
-        return 'advanced';
-      } else if (containerText.includes('$20,000') || containerText.includes('$18,000') || containerText.includes('$14,000')) {
-        return 'enterprise';
+      // If we found a plan name, use it if score is better
+      if (plan && score > bestMatchScore) {
+        bestMatch = plan;
+        bestMatchScore = score;
+      }
+      
+      // Check for price indicators (lower priority, but still useful)
+      if (!bestMatch || bestMatchScore < 8) {
+        if (containerText.includes('$3,000') || containerText.includes('$2,700') || containerText.includes('$2,100') || 
+            containerText.includes('$8,100') || containerText.includes('$25,200')) {
+          if (!bestMatch || bestMatchScore < 7) {
+            bestMatch = 'basic';
+            bestMatchScore = 7;
+          }
+        } else if (containerText.includes('$5,500') || containerText.includes('$4,950') || containerText.includes('$3,850') ||
+                   containerText.includes('$14,850') || containerText.includes('$46,200')) {
+          if (!bestMatch || bestMatchScore < 7) {
+            bestMatch = 'pro';
+            bestMatchScore = 7;
+          }
+        } else if (containerText.includes('$10,000') || containerText.includes('$9,000') || containerText.includes('$7,000') ||
+                   containerText.includes('$27,000') || containerText.includes('$84,000')) {
+          if (!bestMatch || bestMatchScore < 7) {
+            bestMatch = 'advanced';
+            bestMatchScore = 7;
+          }
+        } else if (containerText.includes('$20,000') || containerText.includes('$18,000') || containerText.includes('$14,000') ||
+                   containerText.includes('$54,000') || containerText.includes('$168,000')) {
+          if (!bestMatch || bestMatchScore < 7) {
+            bestMatch = 'enterprise';
+            bestMatchScore = 7;
+          }
+        }
       }
     }
     
-    return null;
+    return bestMatch;
   }
   
   function replaceButtons() {
@@ -115,16 +179,26 @@
             console.warn(`Could not determine plan from context for button ${buttonIndex}, using position fallback: ${finalPlan}`);
           }
           
+          // Try to determine billing cycle from card context (for summary cards)
+          const card = button.closest('[class*="card"], [class*="plan"], [class*="pricing"], [class*="table"], [class*="summary"]') || 
+                       button.closest('div')?.parentElement;
+          let finalBillingCycle = billingCycle;
+          const cardBillingCycle = getBillingCycleFromCard(card);
+          if (cardBillingCycle) {
+            finalBillingCycle = cardBillingCycle;
+            console.log(`Found billing cycle from card context: ${finalBillingCycle}`);
+          }
+          
           // Create new button with Stripe link
           const newButton = document.createElement('a');
-          const checkoutUrl = `/api/redirect-to-checkout?plan=${finalPlan}&billingCycle=${billingCycle}`;
+          const checkoutUrl = `/api/redirect-to-checkout?plan=${finalPlan}&billingCycle=${finalBillingCycle}`;
           newButton.href = checkoutUrl;
           newButton.className = button.className;
           newButton.textContent = 'Buy subscription';
           newButton.style.cssText = button.style.cssText;
           newButton.setAttribute('data-replaced', 'true');
           newButton.setAttribute('data-plan', finalPlan);
-          newButton.setAttribute('data-billing', billingCycle);
+          newButton.setAttribute('data-billing', finalBillingCycle);
           
           // Copy all attributes except data-w-id, onclick, and href
           Array.from(button.attributes).forEach(attr => {
@@ -144,11 +218,11 @@
             'quarterly': { basic: 8100, pro: 14850, advanced: 27000, enterprise: 54000 },
             'annual': { basic: 25200, pro: 46200, advanced: 84000, enterprise: 168000 },
           };
-          const expectedPrice = expectedPrices[billingCycle]?.[finalPlan];
+          const expectedPrice = expectedPrices[finalBillingCycle]?.[finalPlan];
           
           console.log(`✅ Replaced button ${buttonIndex + 1}:`, {
             plan: finalPlan,
-            billingCycle: billingCycle,
+            billingCycle: finalBillingCycle,
             url: checkoutUrl,
             expectedPrice: expectedPrice ? `$${expectedPrice.toLocaleString()}` : 'N/A',
             button: newButton
@@ -168,12 +242,12 @@
     
     if (summaryButtons.length > 0) {
       // Determine billing cycle from active tab or default to monthly
-      let billingCycle = 'monthly';
+      let defaultBillingCycle = 'monthly';
       const activeTab = pricingSection.querySelector('.w-tab-pane.w--tab-active');
       if (activeTab) {
-        billingCycle = getBillingCycleFromTab(activeTab);
+        defaultBillingCycle = getBillingCycleFromTab(activeTab);
       }
-      console.log(`Summary buttons: billingCycle = ${billingCycle}`);
+      console.log(`Summary buttons: defaultBillingCycle = ${defaultBillingCycle}`);
       
       summaryButtons.forEach((button, buttonIndex) => {
         if (replacedButtons.has(button)) {
@@ -190,16 +264,26 @@
           console.warn(`Could not determine plan from context for summary button ${buttonIndex}, using position fallback: ${finalPlan}`);
         }
         
+        // Try to determine billing cycle from card context first
+        const card = button.closest('[class*="card"], [class*="plan"], [class*="pricing"], [class*="table"], [class*="summary"]') || 
+                     button.closest('div')?.parentElement;
+        let finalBillingCycle = defaultBillingCycle;
+        const cardBillingCycle = getBillingCycleFromCard(card);
+        if (cardBillingCycle) {
+          finalBillingCycle = cardBillingCycle;
+          console.log(`Summary button ${buttonIndex}: Found billing cycle from card context: ${finalBillingCycle}`);
+        }
+        
         // Create new button with Stripe link
         const newButton = document.createElement('a');
-        const checkoutUrl = `/api/redirect-to-checkout?plan=${finalPlan}&billingCycle=${billingCycle}`;
+        const checkoutUrl = `/api/redirect-to-checkout?plan=${finalPlan}&billingCycle=${finalBillingCycle}`;
         newButton.href = checkoutUrl;
         newButton.className = button.className;
         newButton.textContent = 'Buy subscription';
         newButton.style.cssText = button.style.cssText;
         newButton.setAttribute('data-replaced', 'true');
         newButton.setAttribute('data-plan', finalPlan);
-        newButton.setAttribute('data-billing', billingCycle);
+        newButton.setAttribute('data-billing', finalBillingCycle);
         
         // Copy all attributes except data-w-id, onclick, and href
         Array.from(button.attributes).forEach(attr => {
@@ -219,11 +303,11 @@
           'quarterly': { basic: 8100, pro: 14850, advanced: 27000, enterprise: 54000 },
           'annual': { basic: 25200, pro: 46200, advanced: 84000, enterprise: 168000 },
         };
-        const expectedPrice = expectedPrices[billingCycle]?.[finalPlan];
+        const expectedPrice = expectedPrices[finalBillingCycle]?.[finalPlan];
         
         console.log(`✅ Replaced summary button ${buttonIndex + 1}:`, {
           plan: finalPlan,
-          billingCycle: billingCycle,
+          billingCycle: finalBillingCycle,
           url: checkoutUrl,
           expectedPrice: expectedPrice ? `$${expectedPrice.toLocaleString()}` : 'N/A',
           button: newButton
