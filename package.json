@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "KPI Board Business Intelligence Team Website",
   "scripts": {
-    "dev": "vercel dev"
+    "dev": "vercel dev",
+    "start": "python -m http.server 8080",
+    "test-api": "echo 'API endpoints work only on Vercel. Use: vercel dev'"
   },
   "dependencies": {
     "stripe": "^14.0.0",

@@ -8,17 +8,17 @@ const PRICE_MAP = {
   'advanced-monthly': 1000000,  // $10,000
   'enterprise-monthly': 2000000, // $20,000
   
-  // Quarterly prices (10% discount, in cents)
-  'basic-quarterly': 270000,     // $2,700
-  'pro-quarterly': 495000,       // $4,950
-  'advanced-quarterly': 900000,  // $9,000
-  'enterprise-quarterly': 1800000, // $18,000
+  // Quarterly prices (10% discount, in cents) - price per month * 3 months
+  'basic-quarterly': 810000,     // $2,700/month * 3 = $8,100 per quarter
+  'pro-quarterly': 1485000,      // $4,950/month * 3 = $14,850 per quarter
+  'advanced-quarterly': 2700000, // $9,000/month * 3 = $27,000 per quarter
+  'enterprise-quarterly': 5400000, // $18,000/month * 3 = $54,000 per quarter
   
-  // Annual prices (30% discount, in cents)
-  'basic-annual': 210000,        // $2,100
-  'pro-annual': 385000,          // $3,850
-  'advanced-annual': 700000,     // $7,000
-  'enterprise-annual': 1400000,  // $14,000
+  // Annual prices (30% discount, in cents) - price per month * 12 months
+  'basic-annual': 2520000,       // $2,100/month * 12 = $25,200 per year
+  'pro-annual': 4620000,         // $3,850/month * 12 = $46,200 per year
+  'advanced-annual': 8400000,     // $7,000/month * 12 = $84,000 per year
+  'enterprise-annual': 16800000, // $14,000/month * 12 = $168,000 per year
 };
 
 // Plan names mapping

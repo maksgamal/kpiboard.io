@@ -8,30 +8,30 @@ const PLANS = {
   basic: {
     name: 'Basic Plan',
     description: 'For small businesses that need essential analytics, but without mobile dashboard support or advanced features.',
-    monthly: 300000,    // $3,000
-    quarterly: 270000,  // $2,700 (10% off)
-    annual: 210000,     // $2,100 (30% off)
+    monthly: 300000,    // $3,000/month
+    quarterly: 810000,  // $2,700/month * 3 = $8,100 per quarter (10% off)
+    annual: 2520000,    // $2,100/month * 12 = $25,200 per year (30% off)
   },
   pro: {
     name: 'Pro Plan',
     description: 'For growing companies that need custom dashboards, AI-driven insights, automation, and mobile reporting.',
-    monthly: 550000,    // $5,500
-    quarterly: 495000,  // $4,950 (10% off)
-    annual: 385000,     // $3,850 (30% off)
+    monthly: 550000,    // $5,500/month
+    quarterly: 1485000, // $4,950/month * 3 = $14,850 per quarter (10% off)
+    annual: 4620000,    // $3,850/month * 12 = $46,200 per year (30% off)
   },
   advanced: {
     name: 'Advanced Plan',
     description: 'Suited for large enterprises needing fully tailored dashboards, advanced AI insights, and priority support.',
-    monthly: 1000000,   // $10,000
-    quarterly: 900000,  // $9,000 (10% off)
-    annual: 700000,     // $7,000 (30% off)
+    monthly: 1000000,   // $10,000/month
+    quarterly: 2700000, // $9,000/month * 3 = $27,000 per quarter (10% off)
+    annual: 8400000,    // $7,000/month * 12 = $84,000 per year (30% off)
   },
   enterprise: {
     name: 'Enterprise Plan',
     description: 'Complete BI service, with real-time analytics, AI insights, a dedicated BI consultant, and enterprise-level security.',
-    monthly: 2000000,   // $20,000
-    quarterly: 1800000, // $18,000 (10% off)
-    annual: 1400000,    // $14,000 (30% off)
+    monthly: 2000000,   // $20,000/month
+    quarterly: 5400000, // $18,000/month * 3 = $54,000 per quarter (10% off)
+    annual: 16800000,   // $14,000/month * 12 = $168,000 per year (30% off)
   },
 };
 
@@ -78,7 +78,13 @@ async function createProducts() {
       });
       
       products[planKey].prices[interval.key] = price;
-      console.log(`  Price created (${interval.key}): ${price.id} - $${interval.amount / 100}/mo`);
+      const displayAmount = interval.amount / 100;
+      const displayText = interval.key === 'monthly' 
+        ? `$${displayAmount}/month`
+        : interval.key === 'quarterly'
+        ? `$${displayAmount} per quarter ($${displayAmount / 3}/month)`
+        : `$${displayAmount} per year ($${displayAmount / 12}/month)`;
+      console.log(`  Price created (${interval.key}): ${price.id} - ${displayText}`);
     }
     
     console.log('');

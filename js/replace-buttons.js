@@ -69,11 +69,14 @@
           
           // Create new button with Stripe link
           const newButton = document.createElement('a');
-          newButton.href = `/api/redirect-to-checkout?plan=${finalPlan}&billingCycle=${billingCycle}`;
+          const checkoutUrl = `/api/redirect-to-checkout?plan=${finalPlan}&billingCycle=${billingCycle}`;
+          newButton.href = checkoutUrl;
           newButton.className = button.className;
           newButton.textContent = 'Buy subscription';
           newButton.style.cssText = button.style.cssText;
           newButton.setAttribute('data-replaced', 'true');
+          newButton.setAttribute('data-plan', finalPlan);
+          newButton.setAttribute('data-billing', billingCycle);
           
           // Copy all attributes except data-w-id, onclick, and href
           Array.from(button.attributes).forEach(attr => {
@@ -87,7 +90,21 @@
           replacedButtons.add(button);
           totalReplaced++;
           
-          console.log('Replaced button:', finalPlan, billingCycle, buttonIndex, newButton);
+          // Expected prices for verification
+          const expectedPrices = {
+            'monthly': { basic: 3000, pro: 5500, advanced: 10000, enterprise: 20000 },
+            'quarterly': { basic: 8100, pro: 14850, advanced: 27000, enterprise: 54000 },
+            'annual': { basic: 25200, pro: 46200, advanced: 84000, enterprise: 168000 },
+          };
+          const expectedPrice = expectedPrices[billingCycle]?.[finalPlan];
+          
+          console.log(`✅ Replaced button ${buttonIndex + 1}:`, {
+            plan: finalPlan,
+            billingCycle: billingCycle,
+            url: checkoutUrl,
+            expectedPrice: expectedPrice ? `$${expectedPrice.toLocaleString()}` : 'N/A',
+            button: newButton
+          });
         });
       });
     }
@@ -141,11 +158,14 @@
         
         // Create new button with Stripe link
         const newButton = document.createElement('a');
-        newButton.href = `/api/redirect-to-checkout?plan=${finalPlan}&billingCycle=${billingCycle}`;
+        const checkoutUrl = `/api/redirect-to-checkout?plan=${finalPlan}&billingCycle=${billingCycle}`;
+        newButton.href = checkoutUrl;
         newButton.className = button.className;
         newButton.textContent = 'Buy subscription';
         newButton.style.cssText = button.style.cssText;
         newButton.setAttribute('data-replaced', 'true');
+        newButton.setAttribute('data-plan', finalPlan);
+        newButton.setAttribute('data-billing', billingCycle);
         
         // Copy all attributes except data-w-id, onclick, and href
         Array.from(button.attributes).forEach(attr => {
@@ -159,7 +179,21 @@
         replacedButtons.add(button);
         totalReplaced++;
         
-        console.log('Replaced summary button:', finalPlan, billingCycle, buttonIndex, newButton);
+        // Expected prices for verification
+        const expectedPrices = {
+          'monthly': { basic: 3000, pro: 5500, advanced: 10000, enterprise: 20000 },
+          'quarterly': { basic: 8100, pro: 14850, advanced: 27000, enterprise: 54000 },
+          'annual': { basic: 25200, pro: 46200, advanced: 84000, enterprise: 168000 },
+        };
+        const expectedPrice = expectedPrices[billingCycle]?.[finalPlan];
+        
+        console.log(`✅ Replaced summary button ${buttonIndex + 1}:`, {
+          plan: finalPlan,
+          billingCycle: billingCycle,
+          url: checkoutUrl,
+          expectedPrice: expectedPrice ? `$${expectedPrice.toLocaleString()}` : 'N/A',
+          button: newButton
+        });
       });
     }
     
