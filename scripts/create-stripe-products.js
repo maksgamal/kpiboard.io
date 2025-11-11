@@ -3,6 +3,8 @@
 
 require('dotenv').config();
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const fs = require('fs');
+const path = require('path');
 
 const PLANS = {
   basic: {
@@ -99,7 +101,58 @@ async function createProducts() {
     console.log(`    Annual: ${data.prices.annual.id}`);
   }
   
+  // Update stripe-prices.js file with Price IDs
+  console.log('\n📝 Updating api/stripe-prices.js with Price IDs...');
+  updateStripePricesFile(products);
+  
   return products;
+}
+
+function updateStripePricesFile(products) {
+  const pricesFilePath = path.join(__dirname, '..', 'api', 'stripe-prices.js');
+  
+  // Check if file exists
+  if (!fs.existsSync(pricesFilePath)) {
+    console.error('❌ Error: api/stripe-prices.js not found');
+    return;
+  }
+  
+  // Read current file
+  let fileContent = fs.readFileSync(pricesFilePath, 'utf8');
+  
+  // Update Price IDs
+  const priceIdMap = {
+    'basic-monthly': products.basic.prices.monthly.id,
+    'pro-monthly': products.pro.prices.monthly.id,
+    'advanced-monthly': products.advanced.prices.monthly.id,
+    'enterprise-monthly': products.enterprise.prices.monthly.id,
+    'basic-quarterly': products.basic.prices.quarterly.id,
+    'pro-quarterly': products.pro.prices.quarterly.id,
+    'advanced-quarterly': products.advanced.prices.quarterly.id,
+    'enterprise-quarterly': products.enterprise.prices.quarterly.id,
+    'basic-annual': products.basic.prices.annual.id,
+    'pro-annual': products.pro.prices.annual.id,
+    'advanced-annual': products.advanced.prices.annual.id,
+    'enterprise-annual': products.enterprise.prices.annual.id,
+  };
+  
+  let updatedCount = 0;
+  
+  // Replace null values with actual Price IDs
+  for (const [key, priceId] of Object.entries(priceIdMap)) {
+    // Match: 'key': null or "key": null
+    const regex = new RegExp(`(['"]${key}['"]:\\s*)null`, 'g');
+    const beforeReplace = fileContent;
+    fileContent = fileContent.replace(regex, `$1'${priceId}'`);
+    
+    if (fileContent !== beforeReplace) {
+      updatedCount++;
+    }
+  }
+  
+  // Write updated file
+  fs.writeFileSync(pricesFilePath, fileContent, 'utf8');
+  console.log(`✅ Updated api/stripe-prices.js with ${updatedCount} Price IDs`);
 }
 
 // Run the script

@@ -18,9 +18,16 @@ STRIPE_SECRET_KEY=sk_live_...ваш_секретний_ключ
 node scripts/create-stripe-products.js
 ```
 
-Скрипт створить:
-- 4 продукти (Basic, Pro, Advanced, Enterprise)
-- 12 цін (по 3 для кожного продукту: Monthly, Quarterly, Annual)
+**Скрипт автоматично:**
+- ✅ Створить 4 продукти (Basic, Pro, Advanced, Enterprise)
+- ✅ Створить 12 цін (по 3 для кожного продукту: Monthly, Quarterly, Annual)
+- ✅ Оновить `api/stripe-prices.js` з Price IDs
+- ✅ Виведе всі Product IDs та Price IDs в консоль
+
+**Після створення:**
+- API endpoints автоматично використовуватимуть створені Price IDs
+- Продукти будуть видимі в Stripe Dashboard
+- Всі кнопки "Buy subscription" працюватимуть з правильними цінами
 
 ## Варіант 2: Створення через Stripe Dashboard
 
@@ -63,8 +70,27 @@ node scripts/create-stripe-products.js
 
 5. Натисніть на кнопку "Buy subscription" - має відкритися Stripe Checkout
 
-## Важливо
+## Як це працює
 
-- API endpoints використовують `price_data` для динамічного створення цін, тому **створення продуктів заздалегідь не обов'язкове**
-- Однак, якщо ви хочете використовувати попередньо створені продукти, оновіть API endpoints для використання Price IDs замість `price_data`
+API endpoints підтримують **два режими**:
+
+1. **З Price IDs** (рекомендовано після створення продуктів):
+   - Використовує попередньо створені продукти та ціни з Stripe
+   - Краще для аналітики та управління
+   - Продукти видимі в Stripe Dashboard
+   - Скрипт автоматично оновлює `api/stripe-prices.js` з Price IDs
+
+2. **З price_data** (fallback, якщо Price IDs не встановлені):
+   - Створює ціни динамічно під час checkout
+   - Працює навіть без попередньо створених продуктів
+   - Продукти створюються автоматично при першому checkout
+
+**Після запуску скрипта** `api/stripe-prices.js` автоматично оновлюється з Price IDs, і API endpoints використовуватимуть їх замість `price_data`.
+
+## Якщо створюєте продукти вручну через Dashboard
+
+Після створення продуктів вручну, оновіть `api/stripe-prices.js` з Price IDs:
+1. Відкрийте `api/stripe-prices.js`
+2. Замініть `null` на відповідні Price IDs з Stripe Dashboard
+3. Price IDs мають формат `price_xxxxxxxxxxxxx`
 
