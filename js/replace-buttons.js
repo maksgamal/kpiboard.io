@@ -241,13 +241,13 @@
     console.log('Found', summaryButtons.length, 'Get Started buttons outside tabs');
     
     if (summaryButtons.length > 0) {
-      // Determine billing cycle from active tab or default to monthly
+      // Determine billing cycle from active tab - summary buttons should always match active tab
       let defaultBillingCycle = 'monthly';
       const activeTab = pricingSection.querySelector('.w-tab-pane.w--tab-active');
       if (activeTab) {
         defaultBillingCycle = getBillingCycleFromTab(activeTab);
       }
-      console.log(`Summary buttons: defaultBillingCycle = ${defaultBillingCycle}`);
+      console.log(`Summary buttons: using active tab billingCycle = ${defaultBillingCycle}`);
       
       summaryButtons.forEach((button, buttonIndex) => {
         if (replacedButtons.has(button)) {
@@ -264,15 +264,9 @@
           console.warn(`Could not determine plan from context for summary button ${buttonIndex}, using position fallback: ${finalPlan}`);
         }
         
-        // Try to determine billing cycle from card context first
-        const card = button.closest('[class*="card"], [class*="plan"], [class*="pricing"], [class*="table"], [class*="summary"]') || 
-                     button.closest('div')?.parentElement;
-        let finalBillingCycle = defaultBillingCycle;
-        const cardBillingCycle = getBillingCycleFromCard(card);
-        if (cardBillingCycle) {
-          finalBillingCycle = cardBillingCycle;
-          console.log(`Summary button ${buttonIndex}: Found billing cycle from card context: ${finalBillingCycle}`);
-        }
+        // Summary buttons should ALWAYS use active tab's billing cycle
+        // They will be updated when tab changes via updateButtonUrls()
+        const finalBillingCycle = defaultBillingCycle;
         
         // Create new button with Stripe link
         const newButton = document.createElement('a');
@@ -356,18 +350,32 @@
         const checkoutUrl = `/api/redirect-to-checkout?plan=${plan}&billingCycle=${billingCycle}`;
         button.href = checkoutUrl;
         button.setAttribute('data-billing', billingCycle);
-        console.log(`Updated button: plan=${plan}, billingCycle=${billingCycle}`);
+        console.log(`Updated tab button: plan=${plan}, billingCycle=${billingCycle}`);
       }
     });
     
-    // Also update summary buttons outside tabs
+    // Update ALL summary buttons outside tabs - they should always match active tab
     const summaryButtons = pricingSection.querySelectorAll('a[data-replaced="true"]:not(.w-tab-pane a)');
+    console.log(`Found ${summaryButtons.length} summary buttons to update`);
+    
     summaryButtons.forEach(button => {
       const plan = button.getAttribute('data-plan');
       if (plan) {
+        // Always use active tab's billing cycle for summary buttons
         const checkoutUrl = `/api/redirect-to-checkout?plan=${plan}&billingCycle=${billingCycle}`;
         button.href = checkoutUrl;
         button.setAttribute('data-billing', billingCycle);
+        console.log(`Updated summary button: plan=${plan}, billingCycle=${billingCycle}`);
+      } else {
+        // If button doesn't have data-plan, try to determine it again
+        const finalPlan = getPlanFromContext(button);
+        if (finalPlan) {
+          const checkoutUrl = `/api/redirect-to-checkout?plan=${finalPlan}&billingCycle=${billingCycle}`;
+          button.href = checkoutUrl;
+          button.setAttribute('data-plan', finalPlan);
+          button.setAttribute('data-billing', billingCycle);
+          console.log(`Re-detected and updated summary button: plan=${finalPlan}, billingCycle=${billingCycle}`);
+        }
       }
     });
   }
@@ -379,10 +387,17 @@
       const tabLinks = pricingSection.querySelectorAll('.w-tab-link');
       tabLinks.forEach(tabLink => {
         tabLink.addEventListener('click', function() {
-          // First replace any new buttons
-          setTimeout(replaceButtons, 300);
-          // Then update URLs for billing cycle change
-          setTimeout(updateButtonUrls, 500);
+          // Wait for tab to become active, then update
+          setTimeout(() => {
+            updateButtonUrls();
+            // Also replace any new buttons that might have appeared
+            replaceButtons();
+          }, 100);
+          
+          // Additional update after tab animation completes
+          setTimeout(() => {
+            updateButtonUrls();
+          }, 500);
         });
       });
       
@@ -400,8 +415,14 @@
         });
         
         if (hasActiveTabChange) {
-          setTimeout(replaceButtons, 300);
-          setTimeout(updateButtonUrls, 500);
+          // Tab changed - update button URLs immediately
+          setTimeout(() => {
+            updateButtonUrls();
+            replaceButtons();
+          }, 100);
+          setTimeout(() => {
+            updateButtonUrls();
+          }, 500);
         } else {
           setTimeout(replaceButtons, 300);
         }
