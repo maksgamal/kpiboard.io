@@ -36,12 +36,27 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'Missing plan or billingCycle' });
   }
 
+  // Validate plan
+  const validPlans = ['basic', 'pro', 'advanced', 'enterprise'];
+  if (!validPlans.includes(plan)) {
+    return res.status(400).json({ error: `Invalid plan: ${plan}. Must be one of: ${validPlans.join(', ')}` });
+  }
+
+  // Validate billing cycle
+  const validBillingCycles = ['monthly', 'quarterly', 'annual'];
+  if (!validBillingCycles.includes(billingCycle)) {
+    return res.status(400).json({ error: `Invalid billingCycle: ${billingCycle}. Must be one of: ${validBillingCycles.join(', ')}` });
+  }
+
   const priceKey = `${plan}-${billingCycle}`;
   const priceId = STRIPE_PRICE_IDS[priceKey];
   const amount = PRICE_MAP[priceKey];
 
+  console.log(`Creating checkout session: plan=${plan}, billingCycle=${billingCycle}, priceKey=${priceKey}`);
+  console.log(`Price ID: ${priceId || 'not set'}, Amount: ${amount ? `$${(amount / 100).toLocaleString()}` : 'not set'}`);
+
   if (!amount && !priceId) {
-    return res.status(400).json({ error: 'Invalid plan or billing cycle' });
+    return res.status(400).json({ error: `Invalid plan or billing cycle combination: ${priceKey}` });
   }
 
   try {

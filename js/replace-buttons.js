@@ -2,6 +2,70 @@
 (function() {
   const replacedButtons = new Set();
   
+  // Helper function to determine billing cycle from tab
+  function getBillingCycleFromTab(tab) {
+    // Check tab link text
+    const tabLink = document.querySelector(`.w-tab-link[aria-controls="${tab.id}"]`);
+    if (tabLink) {
+      const linkText = tabLink.textContent.trim().toLowerCase();
+      if (linkText.includes('quarterly') || linkText.includes('quarter')) {
+        return 'quarterly';
+      } else if (linkText.includes('annual') || linkText.includes('year')) {
+        return 'annual';
+      }
+    }
+    
+    // Check tab content
+    const tabContent = tab.textContent || '';
+    if (tabContent.includes('Quarterly') || tabContent.includes('10%') || tabContent.includes('quarter')) {
+      return 'quarterly';
+    } else if (tabContent.includes('Annual') || tabContent.includes('30%') || tabContent.includes('year')) {
+      return 'annual';
+    }
+    
+    // Default to monthly
+    return 'monthly';
+  }
+  
+  // Helper function to determine plan from context
+  function getPlanFromContext(button) {
+    // Try to find parent card/container
+    let container = button;
+    for (let i = 0; i < 10; i++) {
+      container = container.parentElement;
+      if (!container) break;
+      
+      const containerText = (container.textContent || '').toLowerCase();
+      const containerClass = (container.className || '').toLowerCase();
+      
+      // Check for plan names in text or class names
+      if (containerText.includes('enterprise') || containerClass.includes('enterprise')) {
+        return 'enterprise';
+      } else if (containerText.includes('advanced') || containerClass.includes('advanced')) {
+        return 'advanced';
+      } else if (containerText.includes('professional') || containerText.includes('pro plan') || 
+                 containerClass.includes('professional') || containerClass.includes('pro')) {
+        return 'pro';
+      } else if (containerText.includes('basic') || containerText.includes('starter') || 
+                 containerClass.includes('basic') || containerClass.includes('starter')) {
+        return 'basic';
+      }
+      
+      // Check for price indicators
+      if (containerText.includes('$3,000') || containerText.includes('$2,700') || containerText.includes('$2,100')) {
+        return 'basic';
+      } else if (containerText.includes('$5,500') || containerText.includes('$4,950') || containerText.includes('$3,850')) {
+        return 'pro';
+      } else if (containerText.includes('$10,000') || containerText.includes('$9,000') || containerText.includes('$7,000')) {
+        return 'advanced';
+      } else if (containerText.includes('$20,000') || containerText.includes('$18,000') || containerText.includes('$14,000')) {
+        return 'enterprise';
+      }
+    }
+    
+    return null;
+  }
+  
   function replaceButtons() {
     const pricingSection = document.getElementById('Pricing') || document.querySelector('.section_pricing-home');
     if (!pricingSection) {
@@ -20,14 +84,9 @@
     // Process buttons in tabs
     if (tabs.length > 0) {
       tabs.forEach((tab, tabIndex) => {
-        // Determine billing cycle
-        let billingCycle = 'monthly';
-        const tabContent = tab.textContent || '';
-        if (tabContent.includes('Quarterly') || tabContent.includes('10%')) {
-          billingCycle = 'quarterly';
-        } else if (tabContent.includes('Annual') || tabContent.includes('30%')) {
-          billingCycle = 'annual';
-        }
+        // Determine billing cycle from tab
+        const billingCycle = getBillingCycleFromTab(tab);
+        console.log(`Tab ${tabIndex}: billingCycle = ${billingCycle}`);
         
         // Find all "Get Started" buttons in this tab
         const buttons = tab.querySelectorAll('a, button');
@@ -46,25 +105,14 @@
             return; // Already replaced
           }
           
-          // Determine plan based on button position (order in the tab)
-          // Usually: Basic (0), Pro (1), Advanced (2), Enterprise (3)
-          const plans = ['basic', 'pro', 'advanced', 'enterprise'];
-          const plan = plans[buttonIndex % 4] || 'basic';
+          // Try to determine plan from context first (most reliable)
+          let finalPlan = getPlanFromContext(button);
           
-          // Also try to determine from context as backup
-          const card = button.closest('[class*="card"], [class*="plan"], [class*="pricing"], [class*="table"], [class*="summary"]') || 
-                       button.closest('div')?.parentElement;
-          const cardText = card ? card.textContent.toLowerCase() : '';
-          
-          let finalPlan = plan;
-          if (cardText.includes('enterprise')) {
-            finalPlan = 'enterprise';
-          } else if (cardText.includes('advanced')) {
-            finalPlan = 'advanced';
-          } else if (cardText.includes('pro') || cardText.includes('professional')) {
-            finalPlan = 'pro';
-          } else if (cardText.includes('basic') || cardText.includes('starter')) {
-            finalPlan = 'basic';
+          // If not found, use button position as fallback
+          if (!finalPlan) {
+            const plans = ['basic', 'pro', 'advanced', 'enterprise'];
+            finalPlan = plans[buttonIndex % 4] || 'basic';
+            console.warn(`Could not determine plan from context for button ${buttonIndex}, using position fallback: ${finalPlan}`);
           }
           
           // Create new button with Stripe link
@@ -123,37 +171,23 @@
       let billingCycle = 'monthly';
       const activeTab = pricingSection.querySelector('.w-tab-pane.w--tab-active');
       if (activeTab) {
-        const tabContent = activeTab.textContent || '';
-        if (tabContent.includes('Quarterly') || tabContent.includes('10%')) {
-          billingCycle = 'quarterly';
-        } else if (tabContent.includes('Annual') || tabContent.includes('30%')) {
-          billingCycle = 'annual';
-        }
+        billingCycle = getBillingCycleFromTab(activeTab);
       }
+      console.log(`Summary buttons: billingCycle = ${billingCycle}`);
       
       summaryButtons.forEach((button, buttonIndex) => {
         if (replacedButtons.has(button)) {
           return;
         }
         
-        // Determine plan from context
-        const card = button.closest('[class*="card"], [class*="plan"], [class*="pricing"], [class*="table"], [class*="summary"]') || 
-                     button.closest('div')?.parentElement;
-        const cardText = card ? card.textContent.toLowerCase() : '';
+        // Try to determine plan from context first
+        let finalPlan = getPlanFromContext(button);
         
-        let finalPlan = 'basic';
-        if (cardText.includes('enterprise')) {
-          finalPlan = 'enterprise';
-        } else if (cardText.includes('advanced')) {
-          finalPlan = 'advanced';
-        } else if (cardText.includes('pro') || cardText.includes('professional')) {
-          finalPlan = 'pro';
-        } else if (cardText.includes('basic') || cardText.includes('starter')) {
-          finalPlan = 'basic';
-        } else {
-          // Fallback: determine by button index
+        // If not found, use button index as fallback
+        if (!finalPlan) {
           const plans = ['basic', 'pro', 'advanced', 'enterprise'];
           finalPlan = plans[buttonIndex % 4] || 'basic';
+          console.warn(`Could not determine plan from context for summary button ${buttonIndex}, using position fallback: ${finalPlan}`);
         }
         
         // Create new button with Stripe link
@@ -218,6 +252,42 @@
   setTimeout(replaceButtons, 2000);
   setTimeout(replaceButtons, 3000);
   
+  // Function to update button URLs when tab changes
+  function updateButtonUrls() {
+    const pricingSection = document.getElementById('Pricing') || document.querySelector('.section_pricing-home');
+    if (!pricingSection) return;
+    
+    // Find active tab
+    const activeTab = pricingSection.querySelector('.w-tab-pane.w--tab-active');
+    if (!activeTab) return;
+    
+    const billingCycle = getBillingCycleFromTab(activeTab);
+    console.log(`Tab changed, updating button URLs for billingCycle: ${billingCycle}`);
+    
+    // Update all replaced buttons in active tab
+    const buttons = activeTab.querySelectorAll('a[data-replaced="true"], a[data-plan]');
+    buttons.forEach(button => {
+      const plan = button.getAttribute('data-plan');
+      if (plan) {
+        const checkoutUrl = `/api/redirect-to-checkout?plan=${plan}&billingCycle=${billingCycle}`;
+        button.href = checkoutUrl;
+        button.setAttribute('data-billing', billingCycle);
+        console.log(`Updated button: plan=${plan}, billingCycle=${billingCycle}`);
+      }
+    });
+    
+    // Also update summary buttons outside tabs
+    const summaryButtons = pricingSection.querySelectorAll('a[data-replaced="true"]:not(.w-tab-pane a)');
+    summaryButtons.forEach(button => {
+      const plan = button.getAttribute('data-plan');
+      if (plan) {
+        const checkoutUrl = `/api/redirect-to-checkout?plan=${plan}&billingCycle=${billingCycle}`;
+        button.href = checkoutUrl;
+        button.setAttribute('data-billing', billingCycle);
+      }
+    });
+  }
+  
   // Also listen for tab changes in Webflow
   document.addEventListener('DOMContentLoaded', function() {
     const pricingSection = document.getElementById('Pricing') || document.querySelector('.section_pricing-home');
@@ -225,13 +295,32 @@
       const tabLinks = pricingSection.querySelectorAll('.w-tab-link');
       tabLinks.forEach(tabLink => {
         tabLink.addEventListener('click', function() {
-          setTimeout(replaceButtons, 500);
+          // First replace any new buttons
+          setTimeout(replaceButtons, 300);
+          // Then update URLs for billing cycle change
+          setTimeout(updateButtonUrls, 500);
         });
       });
       
       // Use MutationObserver to watch for tab content changes
       const observer = new MutationObserver(function(mutations) {
-        setTimeout(replaceButtons, 300);
+        // Check if active tab changed
+        const hasActiveTabChange = mutations.some(mutation => {
+          if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+            const target = mutation.target;
+            return target.classList.contains('w-tab-pane') && 
+                   (target.classList.contains('w--tab-active') || 
+                    !target.classList.contains('w--tab-active'));
+          }
+          return false;
+        });
+        
+        if (hasActiveTabChange) {
+          setTimeout(replaceButtons, 300);
+          setTimeout(updateButtonUrls, 500);
+        } else {
+          setTimeout(replaceButtons, 300);
+        }
       });
       
       const tabContent = pricingSection.querySelector('.w-tab-content');
