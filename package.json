@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "vercel dev",
     "start": "python -m http.server 8080",
-    "test-api": "echo 'API endpoints work only on Vercel. Use: vercel dev'"
+    "test-api": "echo 'API endpoints work only on Vercel. Use: vercel dev'",
+    "create-products": "node scripts/create-stripe-products.js",
+    "update-prices": "node scripts/update-prices-from-api.js"
   },
   "dependencies": {
     "stripe": "^14.0.0",
