@@ -1,35 +1,6 @@
 # Інструкції: Створення продуктів в Stripe
 
-## Варіант 1: Використання скрипта (Рекомендовано)
-
-### Крок 1: Встановіть залежності
-```bash
-npm install
-```
-
-### Крок 2: Створіть файл `.env`
-Створіть файл `.env` в корені проекту з вашим Stripe Secret Key:
-```env
-STRIPE_SECRET_KEY=sk_live_...ваш_секретний_ключ
-```
-
-### Крок 3: Запустіть скрипт
-```bash
-node scripts/create-stripe-products.js
-```
-
-**Скрипт автоматично:**
-- ✅ Створить 4 продукти (Basic, Pro, Advanced, Enterprise)
-- ✅ Створить 12 цін (по 3 для кожного продукту: Monthly, Quarterly, Annual)
-- ✅ Оновить `api/stripe-prices.js` з Price IDs
-- ✅ Виведе всі Product IDs та Price IDs в консоль
-
-**Після створення:**
-- API endpoints автоматично використовуватимуть створені Price IDs
-- Продукти будуть видимі в Stripe Dashboard
-- Всі кнопки "Buy subscription" працюватимуть з правильними цінами
-
-## Варіант 2: Створення через Stripe Dashboard
+## Створення продуктів через Stripe Dashboard
 
 Якщо ви хочете створити продукти вручну:
 

@@ -30,24 +30,12 @@
 
 ## 2. Створення продуктів в Stripe
 
-### Варіант A: Використання скрипта (Рекомендовано)
-
-```bash
-# 1. Встановіть залежності
-npm install
-
-# 2. Створіть файл .env з вашим Stripe Secret Key
-echo "STRIPE_SECRET_KEY=sk_live_..." > .env
-
-# 3. Запустіть скрипт
-node scripts/create-stripe-products.js
-```
-
-### Варіант B: Через Stripe Dashboard
+Створіть продукти через Stripe Dashboard:
 
 1. Увійдіть в [Stripe Dashboard](https://dashboard.stripe.com/)
 2. Перейдіть до **Products** → **Add product**
 3. Створіть продукти з цінами згідно з `INSTRUCTIONS_STRIPE_PRODUCTS.md`
+4. Після створення продуктів, оновіть `api/stripe-prices.js` з Price IDs з Stripe Dashboard
 
 ## 3. Тестування
 

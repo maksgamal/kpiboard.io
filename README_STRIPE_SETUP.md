@@ -2,28 +2,7 @@
 
 ## Створення продуктів в Stripe
 
-### Варіант 1: Використання скрипта (Рекомендовано)
-
-1. **Встановіть залежності:**
-   ```bash
-   npm install
-   ```
-
-2. **Створіть файл `.env` в корені проекту:**
-   ```env
-   STRIPE_SECRET_KEY=sk_live_...your_secret_key_here
-   ```
-
-3. **Запустіть скрипт:**
-   ```bash
-   node scripts/create-stripe-products.js
-   ```
-
-4. **Скрипт створить:**
-   - 4 продукти (Basic, Pro, Advanced, Enterprise)
-   - 12 цін (по 3 для кожного продукту: Monthly, Quarterly, Annual)
-
-### Варіант 2: Створення через Stripe Dashboard
+Створіть продукти через Stripe Dashboard:
 
 1. Увійдіть в [Stripe Dashboard](https://dashboard.stripe.com/)
 2. Перейдіть до **Products** → **Add product**
@@ -53,10 +32,11 @@
 
 API endpoints використовують `price_data` для динамічного створення цін під час checkout, тому **створення продуктів заздалегідь не обов'язкове**. 
 
-Однак, якщо ви хочете використовувати попередньо створені продукти та ціни (що краще для аналітики та управління), ви можете:
+Однак, якщо ви хочете використовувати попередньо створені продукти та ціни (що краще для аналітики та управління):
 
-1. Створити продукти через скрипт або Dashboard
-2. Оновити `api/redirect-to-checkout.js` та `api/create-checkout-session.js` для використання Price IDs замість `price_data`
+1. Створіть продукти через Stripe Dashboard
+2. Оновіть `api/stripe-prices.js` з Price IDs з Stripe Dashboard
+3. API endpoints автоматично використовуватимуть Price IDs замість `price_data`
 
 ### Локальне тестування
 
