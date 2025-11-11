@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Stripe Checkout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .plan {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        button {
+            background: #635bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #5a52e5;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Stripe Checkout</h1>
+    <p>Це тестова сторінка для перевірки Stripe Checkout. Натисніть кнопку, щоб перейти до checkout.</p>
+    
+    <div class="plan">
+        <h2>Basic Plan - Monthly</h2>
+        <p>$3,000/month</p>
+        <button onclick="testCheckout('basic', 'monthly')">Buy subscription</button>
+    </div>
+    
+    <div class="plan">
+        <h2>Pro Plan - Monthly</h2>
+        <p>$5,500/month</p>
+        <button onclick="testCheckout('pro', 'monthly')">Buy subscription</button>
+    </div>
+    
+    <div class="plan">
+        <h2>Advanced Plan - Monthly</h2>
+        <p>$10,000/month</p>
+        <button onclick="testCheckout('advanced', 'monthly')">Buy subscription</button>
+    </div>
+    
+    <div class="plan">
+        <h2>Enterprise Plan - Monthly</h2>
+        <p>$20,000/month</p>
+        <button onclick="testCheckout('enterprise', 'monthly')">Buy subscription</button>
+    </div>
+
+    <script>
+        // For localhost testing, use the create-checkout-session endpoint
+        async function testCheckout(plan, billingCycle) {
+            try {
+                const response = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        plan: plan,
+                        billingCycle: billingCycle,
+                    }),
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    alert('Error: ' + data.error);
+                    return;
+                }
+                
+                if (data.url) {
+                    window.location.href = data.url;
+                } else if (data.sessionId) {
+                    // Use Stripe.js if available
+                    if (window.Stripe) {
+                        const stripe = Stripe('pk_live_51SRstvIjrSulcnnC6b9JAPyxUiE8dWPJTjgYbBOwhok9yTl5SQQKdXXMKoX7EGVEMsMyFEAHfGTVsm0CBTgDjjd700V0vcujQP');
+                        const { error } = await stripe.redirectToCheckout({ sessionId: data.sessionId });
+                        if (error) {
+                            alert('Error: ' + error.message);
+                        }
+                    } else {
+                        alert('Stripe.js not loaded. Session ID: ' + data.sessionId);
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please make sure you are running on Vercel or using Vercel CLI (vercel dev).');
+            }
+        }
+    </script>
+    
+    <script src="https://js.stripe.com/v3/"></script>
+</body>
+</html>
+
