@@ -5469,6 +5469,15 @@ figcaption {
   display: flex;
 }
 
+.section_choice-home .choice_card h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-family: Clashdisplay Variable, Arial, sans-serif;
+  font-size: 2.875rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
 .card_img-wrapper {
   border: 1px solid var(--base-color-brand--yellow);
   background-color: var(--base-color-neutral--white);
@@ -6213,6 +6222,31 @@ figcaption {
 
 .div-block-31 {
   max-width: 1215px;
+}
+
+/* Ensure dashboard slider media is centered in every slide */
+#Dashboard-examples .splide__slide.ch {
+  align-items: center;
+}
+
+#Dashboard-examples .splide__slide.ch > .w-inline-block.w-lightbox {
+  justify-content: center;
+  width: 100%;
+  display: flex;
+}
+
+#Dashboard-examples .slider-img {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 100%;
+  height: auto !important;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+#Dashboard-examples #main-slider .splide__slide.ch .w-lightbox {
+  width: 100%;
 }
 
 .section_hero-blogs {
