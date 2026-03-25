@@ -30,7 +30,7 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { plan, billingCycle } = req.body;
+  const { plan, billingCycle, promotionCode } = req.body;
 
   if (!plan || !billingCycle) {
     return res.status(400).json({ error: 'Missing plan or billingCycle' });
@@ -45,6 +45,22 @@ module.exports = async (req, res) => {
   }
 
   try {
+    let discounts = [];
+    if (promotionCode && typeof promotionCode === 'string') {
+      // Attempt to find matching promotion code in Stripe.
+      // If it's not found, we still allow customer to apply a promotion code manually (see allow_promotion_codes).
+      const promoList = await stripe.promotionCodes.list({
+        code: promotionCode.trim(),
+        active: true,
+        limit: 1,
+      });
+
+      if (promoList && promoList.data && promoList.data.length > 0) {
+        const promo = promoList.data[0];
+        discounts = [{ promotion_code: promo.id }];
+      }
+    }
+
     // Prepare line items - use Price ID if available, otherwise use price_data
     let lineItems;
     
@@ -79,17 +95,25 @@ module.exports = async (req, res) => {
     }
 
     // Create Stripe Checkout Session
-    const session = await stripe.checkout.sessions.create({
+    const sessionOptions = {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'subscription',
+      allow_promotion_codes: true,
       success_url: `${req.headers.origin}/thankyou?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.origin}/#Pricing`,
       metadata: {
         plan: plan,
         billingCycle: billingCycle,
+        ...(promotionCode ? { promotionCode: promotionCode } : {}),
       },
-    });
+    };
+
+    if (discounts.length > 0) {
+      sessionOptions.discounts = discounts;
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionOptions);
 
     return res.status(200).json({ sessionId: session.id, url: session.url });
   } catch (error) {
