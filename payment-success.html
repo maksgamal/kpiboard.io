@@ -63,9 +63,10 @@
       rel="apple-touch-icon"
     />
     <link href="https://kpiboard.io/payment-success" rel="canonical" />
+    <!-- Google tag (gtag.js) -->
     <script
-      async=""
-      src="https://www.googletagmanager.com/gtag/js?id=G-B9G6QKQN6H"
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=AW-18075960612"
     ></script>
     <script type="text/javascript">
       window.dataLayer = window.dataLayer || [];
@@ -73,6 +74,7 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
+      gtag("config", "AW-18075960612");
       gtag("set", "developer_id.dZGVlNj", true);
       gtag("config", "G-B9G6QKQN6H");
     </script>
@@ -939,13 +941,21 @@ a,
     ></script>
     <script type="text/javascript">
       (function () {
-        var sid = new URLSearchParams(window.location.search).get("session_id");
+        var params = new URLSearchParams(window.location.search);
+        var sid = params.get("session_id");
         if (!sid) return;
+        var amountParam = params.get("amount") || params.get("value");
+        var purchasePayload = {
+          transaction_id: sid,
+          currency: "USD",
+        };
+        if (amountParam != null && amountParam !== "") {
+          var parsed = parseFloat(amountParam);
+          if (!isNaN(parsed)) purchasePayload.value = parsed;
+        }
         if (typeof gtag === "function") {
-          gtag("event", "purchase", {
-            transaction_id: sid,
-            currency: "USD",
-          });
+          gtag("event", "purchase", purchasePayload);
+          gtag("event", "ads_conversion_PURCHASE_1", purchasePayload);
         }
         if (typeof fbq === "function") {
           fbq("track", "Subscribe", {currency: "USD"});

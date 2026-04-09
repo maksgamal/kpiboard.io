@@ -4635,6 +4635,53 @@ figcaption {
   overflow: hidden;
 }
 
+.marquee.client-marquee {
+  display: block;
+  overflow: visible;
+}
+
+.client-marquee-track {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: max-content;
+  will-change: transform;
+}
+
+.client-marquee-track--ltr {
+  animation: client-marquee-seamless 80s linear infinite;
+}
+
+.client-marquee-track--rtl {
+  animation: client-marquee-seamless-rtl 80s linear infinite backwards;
+}
+
+@keyframes client-marquee-seamless {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes client-marquee-seamless-rtl {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .client-marquee-track--ltr,
+  .client-marquee-track--rtl {
+    animation: none;
+    transform: none;
+  }
+}
+
 .cover {
   grid-column-gap: 16px;
   grid-row-gap: 16px;
