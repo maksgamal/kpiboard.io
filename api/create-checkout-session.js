@@ -124,14 +124,11 @@ module.exports = async (req, res) => {
       ];
     }
 
-    // Stripe: you cannot set both `discounts` and `allow_promotion_codes` on the same session.
-    // - With pre-applied promotion → discounts only, no promo field on checkout.
-    // - Without pre-applied discount → customer can enter a code on Checkout.
+    // Stripe: never send both `discounts` and `allow_promotion_codes` (even `false` counts).
     const sessionOptions = {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'subscription',
-      allow_promotion_codes: discounts.length === 0,
       success_url: `${origin}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/#Pricing`,
       metadata: {
@@ -143,6 +140,8 @@ module.exports = async (req, res) => {
 
     if (discounts.length > 0) {
       sessionOptions.discounts = discounts;
+    } else {
+      sessionOptions.allow_promotion_codes = true;
     }
 
     const session = await stripe.checkout.sessions.create(sessionOptions);

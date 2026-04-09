@@ -37,6 +37,11 @@
   };
 
   checkoutButton.addEventListener('click', async function(e) {
+    const href = checkoutButton.getAttribute('href');
+    if (href && /^https?:\/\//i.test(href)) {
+      return;
+    }
+
     e.preventDefault();
 
     checkoutButton.disabled = true;
