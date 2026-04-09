@@ -32,3 +32,5 @@ npm-debug.log*
 # Node (Vercel installs deps on build; do not commit)
 node_modules/
 
+.vercel
+.env*.local
