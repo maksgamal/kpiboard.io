@@ -29,3 +29,6 @@ npm-debug.log*
 *.tmp
 *.temp
 
+# Node (Vercel installs deps on build; do not commit)
+node_modules/
+

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vercel dev",
     "start": "python -m http.server 8080",
+    "serve": "python serve.py 8009",
     "test-api": "echo 'API endpoints work only on Vercel. Use: vercel dev'"
   },
   "dependencies": {

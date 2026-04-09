@@ -1,7 +1,9 @@
 # ⚠️ Важливо: API Endpoints на Localhost
 
 ## Проблема
-API endpoints (`/api/redirect-to-checkout`, `/api/create-checkout-session`) **НЕ працюють** на звичайному localhost (Python http.server), тому що вони є **Vercel Serverless Functions**.
+API endpoints (`/api/redirect-to-checkout`, `/api/create-checkout-session`) **НЕ працюють** на звичайному localhost (Python `http.server`), тому що вони є **Vercel Serverless Functions**.
+
+Також **`python -m http.server` не застосовує `vercel.json`**: шляхи на кшталт `/payment-success` або `/thankyou` без `.html` дадуть помилку. Для статичного перегляду використовуй **`python serve.py`** (порт за замовчуванням `8009`) або відкривай **`/payment-success.html`** напряму.
 
 ## Рішення: Використання Vercel CLI
 

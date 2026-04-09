@@ -1,5 +1,12 @@
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { STRIPE_PRICE_IDS, PRICE_MAP } = require('./stripe-prices');
+
+function getStripe() {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) {
+    return null;
+  }
+  return require('stripe')(key);
+}
 
 // Plan names mapping
 const PLAN_NAMES = {
@@ -30,7 +37,24 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { plan, billingCycle, promotionCode } = req.body;
+  const stripe = getStripe();
+  if (!stripe) {
+    const msg = 'Stripe is not configured (missing STRIPE_SECRET_KEY).';
+    return res.status(500).json({ error: msg, message: msg });
+  }
+
+  const parsedBody =
+    typeof req.body === 'string'
+      ? (() => {
+          try {
+            return JSON.parse(req.body);
+          } catch (_) {
+            return {};
+          }
+        })()
+      : (req.body || {});
+
+  const { plan, billingCycle, promotionCode } = parsedBody;
 
   if (!plan || !billingCycle) {
     return res.status(400).json({ error: 'Missing plan or billingCycle' });
@@ -45,6 +69,12 @@ module.exports = async (req, res) => {
   }
 
   try {
+    const protocol =
+      req.headers['x-forwarded-proto'] ||
+      (req.headers.host && req.headers.host.includes('localhost') ? 'http' : 'https');
+    const host = req.headers['x-forwarded-host'] || req.headers.host;
+    const origin = req.headers.origin || (host ? `${protocol}://${host}` : 'https://kpiboard.io');
+
     let discounts = [];
     if (promotionCode && typeof promotionCode === 'string') {
       // Attempt to find matching promotion code in Stripe.
@@ -94,14 +124,16 @@ module.exports = async (req, res) => {
       ];
     }
 
-    // Create Stripe Checkout Session
+    // Stripe: you cannot set both `discounts` and `allow_promotion_codes` on the same session.
+    // - With pre-applied promotion → discounts only, no promo field on checkout.
+    // - Without pre-applied discount → customer can enter a code on Checkout.
     const sessionOptions = {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'subscription',
-      allow_promotion_codes: true,
-      success_url: `${req.headers.origin}/thankyou?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.headers.origin}/#Pricing`,
+      allow_promotion_codes: discounts.length === 0,
+      success_url: `${origin}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/#Pricing`,
       metadata: {
         plan: plan,
         billingCycle: billingCycle,
@@ -118,7 +150,7 @@ module.exports = async (req, res) => {
     return res.status(200).json({ sessionId: session.id, url: session.url });
   } catch (error) {
     console.error('Stripe error:', error);
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message, message: error.message });
   }
 }
 

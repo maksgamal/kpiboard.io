@@ -9,6 +9,10 @@
       "destination": "/thankyou.html"
     },
     {
+      "source": "/payment-success",
+      "destination": "/payment-success.html"
+    },
+    {
       "source": "/blog-posts/the-retail-ecommerce-metrics-that-actually-drive-profit",
       "destination": "/the-retail-ecommerce-metrics-that-actually-drive-profit.html"
     },

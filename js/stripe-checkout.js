@@ -25,6 +25,17 @@
   const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
   checkoutButton.setAttribute('data-stripe-type', 'checkout-session');
 
+  const extractApiError = async (response) => {
+    const raw = await response.text().catch(() => '');
+    if (!raw) return `Request failed with status ${response.status}`;
+    try {
+      const data = JSON.parse(raw);
+      return data.message || data.error || `Request failed with status ${response.status}`;
+    } catch (_) {
+      return raw.slice(0, 240);
+    }
+  };
+
   checkoutButton.addEventListener('click', async function(e) {
     e.preventDefault();
 
@@ -47,11 +58,15 @@
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ message: 'Failed to create checkout session' }));
-        throw new Error(errorData.message || 'Failed to create checkout session');
+        const apiError = await extractApiError(response);
+        throw new Error(apiError);
       }
 
       const session = await response.json();
+      if (session && session.url) {
+        window.location.assign(session.url);
+        return;
+      }
       const sessionId = session && (session.sessionId || session.id);
       if (!sessionId) throw new Error('Invalid session response');
 
@@ -59,7 +74,14 @@
       if (result && result.error) throw new Error(result.error.message);
     } catch (error) {
       console.error('Stripe Checkout Error:', error);
-      alert('Unable to start checkout. Please try again or contact support at hello@kpiboard.io');
+      const details =
+        error && error.message
+          ? `\n\nDetails: ${error.message}`
+          : '';
+      alert(
+        'Unable to start checkout. Please try again or contact support at hello@kpiboard.io' +
+          details
+      );
 
       checkoutButton.disabled = false;
       checkoutButton.innerHTML = originalText;

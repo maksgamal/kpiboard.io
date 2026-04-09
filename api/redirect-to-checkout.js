@@ -98,7 +98,7 @@ module.exports = async (req, res) => {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'subscription',
-      success_url: `${req.headers.origin || 'https://www.kpiboard.io'}/thankyou?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${req.headers.origin || 'https://www.kpiboard.io'}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.origin || 'https://www.kpiboard.io'}/#Pricing`,
       metadata: {
         plan: plan,
