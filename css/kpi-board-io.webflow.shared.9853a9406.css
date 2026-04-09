@@ -4581,6 +4581,10 @@ figcaption {
   position: relative;
 }
 
+.section_data-security-home .data-security-subtitle {
+  margin-bottom: 2.5rem;
+}
+
 .client_content-wrapper {
   grid-column-gap: 14px;
   grid-row-gap: 14px;
@@ -4589,13 +4593,37 @@ figcaption {
 }
 
 .client_marquee-wrapper {
-  grid-column-gap: 40px;
-  grid-row-gap: 40px;
+  gap: 80px;
+  grid-column-gap: 80px;
+  grid-row-gap: 80px;
   flex: none;
   justify-content: center;
   align-items: center;
-  width: 1185px;
+  width: max-content;
+  max-width: none;
   display: flex;
+}
+
+.client_marquee-img-box {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  height: 224px;
+  max-width: 720px;
+  border-radius: 40px;
+  overflow: hidden;
+  background-color: #fff;
+  isolation: isolate;
+}
+
+.client_marquee-img {
+  display: block;
+  height: 224px;
+  width: auto;
+  max-width: 720px;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 .marquee {
