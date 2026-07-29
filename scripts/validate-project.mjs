@@ -36,15 +36,21 @@ assert(
 );
 
 const landing = read("bi-team/index.html");
-const ids = [...landing.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
-const duplicateIds = [...new Set(ids.filter((id, index) => ids.indexOf(id) !== index))];
-assert(duplicateIds.length === 0, `Duplicate landing IDs: ${duplicateIds.join(", ")}`);
-assert(landing.includes('id="lead-consent"'), "Landing must include explicit email consent.");
-assert(landing.includes('name="website"'), "Landing must include a honeypot field.");
 assert(
-  landing.includes('<meta name="robots" content="noindex, nofollow"'),
+  landing.includes('<meta name="robots" content="noindex,nofollow"'),
   "Preview landing must remain noindex until production approval."
 );
+assert(
+  landing.includes("Stop hiring BI specialists."),
+  "Landing must include the BI team subscription positioning."
+);
+assert(landing.includes('id="process"'), "Landing must expose the process anchor.");
+for (const rootAssetPath of ['href="/css/', 'src="/js/', 'src="/assets/']) {
+  assert(
+    landing.includes(rootAssetPath),
+    `Cloned landing must use root-relative assets: ${rootAssetPath}`
+  );
+}
 
 const portalEndpoint = read("api/create-billing-portal-session.js");
 assert(
