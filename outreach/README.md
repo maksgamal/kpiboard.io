@@ -1,5 +1,62 @@
 # KPIBoard Brevo email system
 
+## MCP connection for Codex
+
+Brevo uses a dedicated MCP token for AI clients. It is different from the REST API key used by the website and synchronization scripts.
+
+1. In Brevo, open **SMTP & API → API Keys**, create a key, and enable the **MCP** option.
+2. Copy `outreach/brevo-mcp.example.toml` into `C:\Users\<you>\.codex\config.toml`.
+3. Create or update `C:\Users\<you>\.codex\.env`:
+
+   ```env
+   BREVO_MCP_TOKEN=your-real-mcp-token
+   ```
+
+4. Restart Codex Desktop. Do not put the MCP token in the repository or Vercel.
+
+The MCP endpoint is `https://mcp.brevo.com/v1/brevo/mcp` and authentication uses the `Authorization: Bearer` header.
+
+## REST API key location
+
+Generate a standard Brevo API v3 key and store it only in the ignored project file `.env.local`:
+
+```env
+BREVO_API_KEY=your-real-rest-api-key
+BREVO_SENDER_NAME=KPIBoard
+BREVO_SENDER_EMAIL=verified-sender@your-domain.com
+BREVO_REPLY_TO_EMAIL=reply@your-domain.com
+BREVO_NURTURE_LIST_ID=123
+```
+
+Add the same website-related variables to Vercel project environment variables. `BREVO_MCP_TOKEN` must not be added to Vercel.
+
+## Create inactive templates
+
+Preview the six English opt-in templates without changing Brevo:
+
+```powershell
+npm run brevo:templates:dry-run
+```
+
+After the REST API key and verified sender are configured:
+
+```powershell
+npm run brevo:templates:create
+```
+
+This creates inactive templates only. It never activates or sends them.
+
+## Automation blueprint
+
+Use the `optInNurture` section of `brevo-automation.json` in Brevo Automations:
+
+1. Trigger: contact added after Double Opt-In confirmation.
+2. Require `LIFECYCLE_STAGE = OPTED_IN` and a known `ICP`.
+3. Add the six template emails at days 0, 3, 7, 12, 18, and 26.
+4. Exit on meeting booked, reply, opportunity, customer, unsubscribe, complaint, or hard bounce.
+5. Suppress contacts without documented consent and anyone already in another sales/nurture automation.
+6. Keep the workflow paused until sender/domain verification, links, footer, and test contacts are validated.
+
 This directory contains the English email architecture for KPIBoard.
 
 ## Safety boundary

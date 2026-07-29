@@ -13,6 +13,7 @@ const files = [
   "api/lead.js",
   "api/redirect-to-checkout.js",
   "bi-team/script.js",
+  "scripts/brevo-create-templates.mjs",
   "scripts/brevo-sync-campaigns.mjs",
   "scripts/validate-project.mjs",
 ];

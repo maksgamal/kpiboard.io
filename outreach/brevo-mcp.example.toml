@@ -1,0 +1,7 @@
+# Add this block to C:\Users\<you>\.codex\config.toml
+# Store the real token in C:\Users\<you>\.codex\.env:
+# BREVO_MCP_TOKEN=your-generated-mcp-token
+
+[mcp_servers.brevo]
+url = "https://mcp.brevo.com/v1/brevo/mcp"
+bearer_token_env_var = "BREVO_MCP_TOKEN"

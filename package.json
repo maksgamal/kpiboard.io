@@ -11,7 +11,9 @@
     "syntax": "node scripts/check-syntax.mjs",
     "check": "npm run validate && npm run syntax",
     "brevo:dry-run": "node --env-file=.env.local scripts/brevo-sync-campaigns.mjs",
-    "brevo:create-drafts": "node --env-file=.env.local scripts/brevo-sync-campaigns.mjs --apply"
+    "brevo:create-drafts": "node --env-file=.env.local scripts/brevo-sync-campaigns.mjs --apply",
+    "brevo:templates:dry-run": "node --env-file=.env.local scripts/brevo-create-templates.mjs",
+    "brevo:templates:create": "node --env-file=.env.local scripts/brevo-create-templates.mjs --apply"
   },
   "dependencies": {
     "stripe": "^14.0.0",
