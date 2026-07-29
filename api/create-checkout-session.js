@@ -1,4 +1,10 @@
 const { STRIPE_PRICE_IDS, PRICE_MAP } = require('./stripe-prices');
+const {
+  applyCors,
+  getSafeSiteOrigin,
+  hasDisallowedOrigin,
+  isRateLimited,
+} = require('./_request-security');
 
 function getStripe() {
   const key = process.env.STRIPE_SECRET_KEY;
@@ -24,17 +30,23 @@ const BILLING_CYCLES = {
 };
 
 module.exports = async (req, res) => {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  const origin = applyCors(req, res, ['POST', 'OPTIONS']);
 
   if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+    if (!origin || hasDisallowedOrigin(req)) return res.status(403).end();
+    return res.status(204).end();
   }
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  if (hasDisallowedOrigin(req)) {
+    return res.status(403).json({ error: 'This request origin is not allowed' });
+  }
+
+  if (isRateLimited(req, 'checkout', 10)) {
+    return res.status(429).json({ error: 'Too many checkout attempts. Try again later.' });
   }
 
   const stripe = getStripe();
@@ -69,18 +81,18 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const protocol =
-      req.headers['x-forwarded-proto'] ||
-      (req.headers.host && req.headers.host.includes('localhost') ? 'http' : 'https');
-    const host = req.headers['x-forwarded-host'] || req.headers.host;
-    const origin = req.headers.origin || (host ? `${protocol}://${host}` : 'https://kpiboard.io');
+    const safeOrigin = getSafeSiteOrigin(req);
 
     let discounts = [];
     if (promotionCode && typeof promotionCode === 'string') {
+      const normalizedPromotionCode = promotionCode.trim().toUpperCase();
+      if (!/^[A-Z0-9_-]{1,40}$/.test(normalizedPromotionCode)) {
+        return res.status(400).json({ error: 'Invalid promotion code format' });
+      }
       // Attempt to find matching promotion code in Stripe.
       // If it's not found, we still allow customer to apply a promotion code manually (see allow_promotion_codes).
       const promoList = await stripe.promotionCodes.list({
-        code: promotionCode.trim(),
+        code: normalizedPromotionCode,
         active: true,
         limit: 1,
       });
@@ -129,8 +141,8 @@ module.exports = async (req, res) => {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'subscription',
-      success_url: `${origin}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/#Pricing`,
+      success_url: `${safeOrigin}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${safeOrigin}/#Pricing`,
       metadata: {
         plan: plan,
         billingCycle: billingCycle,
@@ -148,8 +160,14 @@ module.exports = async (req, res) => {
 
     return res.status(200).json({ sessionId: session.id, url: session.url });
   } catch (error) {
-    console.error('Stripe error:', error);
-    return res.status(500).json({ error: error.message, message: error.message });
+    console.error('Stripe checkout error:', {
+      type: error && error.type ? error.type : 'unknown',
+      code: error && error.code ? error.code : 'unknown',
+    });
+    return res.status(500).json({
+      error: 'Checkout could not be started',
+      message: 'Checkout could not be started. Try again or contact hello@kpiboard.io.',
+    });
   }
 }
 

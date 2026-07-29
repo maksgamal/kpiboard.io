@@ -1,0 +1,482 @@
+{
+  "$schema": "./brevo-automation.schema.json",
+  "version": "1.0.0",
+  "name": "KPIBoard English Email System",
+  "language": "en",
+  "provider": "brevo",
+  "mode": "draft_only",
+  "compliance": {
+    "requires_explicit_opt_in_for_brevo": true,
+    "allow_scraped_contacts": false,
+    "allow_purchased_contacts": false,
+    "allow_guessed_addresses": false,
+    "global_suppression_list_required": true,
+    "unsubscribe_required": true,
+    "physical_address_required_before_send": true,
+    "notes": "Brevo sequences are restricted to contacts with documented active, explicit, and specific consent. The cold outreach library is copy-only and is never synchronized or sent by the included tooling."
+  },
+  "defaults": {
+    "senderName": "KPIBoard",
+    "senderEmailEnv": "BREVO_SENDER_EMAIL",
+    "replyToEnv": "BREVO_REPLY_TO_EMAIL",
+    "landingPage": "https://www.kpiboard.io/bi-team/",
+    "primaryCta": "Book a free analytics audit",
+    "primaryCtaUrl": "https://www.kpiboard.io/bi-team/#audit",
+    "timezone": "Europe/Kiev",
+    "utmSource": "brevo",
+    "utmMedium": "email"
+  },
+  "contact_model": {
+    "requiredAttributes": [
+      { "name": "FNAME", "type": "text" },
+      { "name": "ICP", "type": "category" },
+      { "name": "ROLE_GROUP", "type": "category" },
+      { "name": "LEAD_SOURCE", "type": "text" },
+      { "name": "CONSENT_SOURCE", "type": "text" },
+      { "name": "CONSENT_AT", "type": "date" },
+      { "name": "LIFECYCLE_STAGE", "type": "category" }
+    ],
+    "icpValues": [
+      "ECOMMERCE",
+      "RETAIL",
+      "MANUFACTURING",
+      "SAAS",
+      "HEALTHCARE",
+      "LOGISTICS"
+    ],
+    "roleGroupValues": ["FOUNDER", "FINANCE", "OPERATIONS", "MARKETING", "DATA"],
+    "lifecycleValues": ["OPTED_IN", "MQL", "MEETING_BOOKED", "OPPORTUNITY", "CUSTOMER"]
+  },
+  "global_rules": {
+    "entry": [
+      "Contact completed double opt-in",
+      "ICP attribute is known",
+      "LIFECYCLE_STAGE equals OPTED_IN",
+      "Contact is not blocklisted"
+    ],
+    "exit": [
+      "Meeting booked",
+      "Direct reply received",
+      "Opportunity created",
+      "Customer created",
+      "Unsubscribe or complaint",
+      "Hard bounce"
+    ],
+    "suppression": [
+      "Global suppression list",
+      "Existing customers unless the sequence explicitly targets customers",
+      "Open support issue in the last 48 hours",
+      "Another active sales or nurture automation",
+      "No documented consent"
+    ],
+    "frequencyCap": {
+      "maxMarketingEmailsPerSevenDays": 2,
+      "quietDaysAfterReply": 30
+    }
+  },
+  "optInNurture": {
+    "id": "bi-team-opt-in-nurture",
+    "syncToBrevo": true,
+    "goal": "Convert an explicitly opted-in lead into a booked analytics audit.",
+    "narrativeArc": "Diagnose reporting friction, quantify the operating cost, explain the team model, show relevant use cases, remove risk, and invite a practical first conversation.",
+    "entryEvent": "double_opt_in_confirmed",
+    "emails": [
+      {
+        "id": "nurture-01",
+        "day": 0,
+        "journeyStage": "awareness",
+        "subjectOptions": [
+          "Your analytics audit: where to start",
+          "The first reporting problem to fix",
+          "One question before we talk data"
+        ],
+        "previewText": "Start with the decision that is hardest to make today.",
+        "purpose": "Set expectations and help the lead identify the highest-value reporting problem.",
+        "body": "Hi {{ contact.FNAME }},\n\nThanks for requesting a KPIBoard analytics audit.\n\nThe best place to start is not a dashboard. It is a decision your team currently makes too slowly, with too much manual work, or with numbers nobody fully trusts.\n\nBefore our conversation, choose one recurring question that creates the most friction. It might be:\n\n• Which products and channels are actually profitable?\n• Where are we likely to run out of stock?\n• Why do Finance and Marketing report different revenue?\n• Which customers are worth acquiring again?\n\nReply with that one question. We will use it to make the audit specific and useful.\n\nBest,\nKPIBoard",
+        "cta": { "label": "Book the analytics audit", "url": "https://www.kpiboard.io/bi-team/#audit" },
+        "condition": "All newly confirmed opt-in leads."
+      },
+      {
+        "id": "nurture-02",
+        "day": 3,
+        "journeyStage": "awareness",
+        "subjectOptions": [
+          "The hidden cost of “final_v7.xlsx”",
+          "Manual reporting costs more than hours",
+          "How much does reporting cost each month?"
+        ],
+        "previewText": "Time is only the visible part of the reporting bill.",
+        "purpose": "Quantify the direct and indirect cost of fragmented reporting.",
+        "body": "Hi {{ contact.FNAME }},\n\nManual reporting has an obvious cost: the hours people spend exporting, reconciling, and rebuilding files.\n\nThe larger cost is what happens next:\n\n• decisions wait for the report;\n• teams debate definitions;\n• margin or stock problems surface late;\n• senior people become spreadsheet operators.\n\nA useful first step is to calculate the monthly time cost of reporting. Multiply the people involved by their weekly hours, hourly cost, and 4.33 weeks.\n\nThat number does not include errors or missed decisions, but it gives the problem a baseline.\n\nKPIBoard replaces that recurring assembly work with a governed model and automated reporting.",
+        "cta": { "label": "Estimate your reporting cost", "url": "https://www.kpiboard.io/bi-team/#use-cases" },
+        "condition": "Send unless a meeting is already booked."
+      },
+      {
+        "id": "nurture-03",
+        "day": 7,
+        "journeyStage": "consideration",
+        "subjectOptions": [
+          "Why one BI hire rarely solves the whole problem",
+          "A BI developer is not a data team",
+          "The capability gap behind most dashboards"
+        ],
+        "previewText": "The path from raw systems to decisions crosses several disciplines.",
+        "purpose": "Explain the fractional team model and differentiate it from staff augmentation.",
+        "body": "Hi {{ contact.FNAME }},\n\nA dashboard is the last visible layer of analytics work.\n\nBefore it becomes reliable, someone must define the KPI, connect the systems, transform the data, govern access, build the model, validate the result, and maintain delivery.\n\nThat usually crosses five capabilities:\n\n• analytics architecture;\n• data engineering;\n• BI development;\n• business analysis;\n• project coordination.\n\nHiring one specialist often moves only one part of that chain.\n\nKPIBoard provides the complete function as a focused subscription: one priority at a time, visible progress, and ownership that remains with your business.",
+        "cta": { "label": "See the team model", "url": "https://www.kpiboard.io/bi-team/#process" },
+        "condition": "Send to leads who have not converted."
+      },
+      {
+        "id": "nurture-04",
+        "day": 12,
+        "journeyStage": "consideration",
+        "subjectOptions": [
+          "Choose the use case, not the dashboard",
+          "Four places analytics usually pays back",
+          "Where should a BI team start?"
+        ],
+        "previewText": "Start where uncertainty creates a measurable operating cost.",
+        "purpose": "Help leads select a first use case by decision value.",
+        "body": "Hi {{ contact.FNAME }},\n\nA first analytics project should be narrow enough to ship and important enough to change a decision.\n\nFour useful starting points are:\n\n1. Profitability — connect revenue, discounts, fees, refunds, COGS, and ad spend.\n2. Inventory — combine demand, stock, lead times, and purchasing risk.\n3. Growth efficiency — connect acquisition cost to contribution margin and customer value.\n4. Executive control — align revenue, cash, pipeline, service, and targets.\n\nThe right choice is the one where a better answer changes what your team does next week.\n\nReply with 1, 2, 3, or 4 and we will send you the questions we use to scope it.",
+        "cta": { "label": "Review the use cases", "url": "https://www.kpiboard.io/bi-team/#use-cases" },
+        "condition": "Send unless the lead replied, unsubscribed, or booked."
+      },
+      {
+        "id": "nurture-05",
+        "day": 18,
+        "journeyStage": "decision",
+        "subjectOptions": [
+          "What the first four weeks look like",
+          "A practical path from systems to signal",
+          "How KPIBoard starts"
+        ],
+        "previewText": "No six-month black box—just visible stages and review points.",
+        "purpose": "Reduce implementation anxiety by showing a staged delivery process.",
+        "body": "Hi {{ contact.FNAME }},\n\nAnalytics projects feel risky when the plan is vague and value appears only at the end.\n\nWe use visible stages instead:\n\nWeek 1: clarify the decision, KPIs, owners, sources, and architecture.\nWeek 2: connect and transform the required data.\nWeek 3: build and validate the semantic model.\nWeek 4+: ship the first decision view, automate it, and improve it in review cycles.\n\nTiming depends on access and data quality, so we do not promise an artificial universal deadline. We do promise a clear priority, visible progress, and early feedback.\n\nIf you want, we can map the first stage before you commit to a larger build.",
+        "cta": { "label": "Map the first stage", "url": "https://www.kpiboard.io/bi-team/#audit" },
+        "condition": "Send to non-converted leads."
+      },
+      {
+        "id": "nurture-06",
+        "day": 26,
+        "journeyStage": "decision",
+        "subjectOptions": [
+          "Should we close the loop?",
+          "Is analytics still a priority?",
+          "Keep this open?"
+        ],
+        "previewText": "A simple yes, later, or no is enough.",
+        "purpose": "Create a respectful final decision point and clean the active nurture pool.",
+        "body": "Hi {{ contact.FNAME }},\n\nI have sent a few ideas about turning scattered reporting into a trusted decision system.\n\nShould we keep the conversation open?\n\nReply with:\n\n• Yes — analytics is a current priority.\n• Later — check back in a future quarter.\n• No — close the loop.\n\nIf it is a current priority, we can use a short audit to identify the first decision, required systems, and practical next step.\n\nEither way, a one-word reply is helpful.\n\nBest,\nKPIBoard",
+        "cta": { "label": "Book the free audit", "url": "https://www.kpiboard.io/bi-team/#audit" },
+        "condition": "Final email. Exit non-engaged contacts from active nurture after this send."
+      }
+    ]
+  },
+  "icpColdOutreachLibrary": {
+    "syncToBrevo": false,
+    "sendingDisabled": true,
+    "usage": "Copy library for lawful, individually reviewed B2B outreach where a valid legal basis and provider permission have been confirmed. Never bulk-send through Brevo.",
+    "sharedExitConditions": [
+      "Any reply",
+      "Meeting booked",
+      "Explicit opt-out",
+      "Complaint",
+      "Known customer",
+      "Invalid address"
+    ],
+    "sequences": [
+      {
+        "icp": "ECOMMERCE",
+        "audience": "E-commerce founders, CFOs, COOs, and heads of growth at multi-channel brands.",
+        "painThemes": ["Contribution margin", "Inventory risk", "Blended acquisition cost", "Returns and discounts"],
+        "emails": [
+          {
+            "step": 1,
+            "day": 0,
+            "subjects": ["Different revenue in every system?", "Shopify, ads, ERP—and one profit number", "A question about your margin reporting"],
+            "body": "Hi,\n\nGrowing commerce teams often have the same reporting pattern: Shopify shows sales, Meta and Google show attribution, the ERP shows stock, and Finance has the final margin spreadsheet.\n\nEach system can be correct on its own while leadership still lacks one trusted profit view.\n\nKPIBoard connects those systems into a governed model so teams can see contribution margin, channel economics, and inventory risk without rebuilding reports every week.\n\nIs unified profitability reporting a current priority?\n\nIf this is not relevant, reply “no” and I will close the loop."
+          },
+          {
+            "step": 2,
+            "day": 3,
+            "subjects": ["The ROAS number Finance cannot use", "Revenue is not contribution margin", "Where ad reporting usually breaks"],
+            "body": "Hi,\n\nA campaign can look profitable in an ad platform and still lose money after discounts, returns, payment fees, shipping, and product cost.\n\nThat gap is why we combine acquisition data with order and finance data—not just another marketing dashboard.\n\nThe result is a view of which channels, campaigns, products, and cohorts create real contribution.\n\nWorth comparing this with how your team calculates profitability today?\n\nIf you prefer no follow-up, reply “no.”"
+          },
+          {
+            "step": 3,
+            "day": 7,
+            "subjects": ["Stockouts rarely start in the warehouse", "A better inventory warning system", "Demand, lead time, and cash in one view"],
+            "body": "Hi,\n\nInventory problems are usually visible in several places before they become urgent: changing demand, supplier lead time, purchase orders, campaign plans, and current stock.\n\nThe difficulty is bringing those signals together early enough to act.\n\nKPIBoard builds inventory decision models that surface stockout exposure, overstock, sell-through, and working-capital pressure in one operating view.\n\nWould an inventory-risk audit be useful?\n\nReply “no” if I should stop here."
+          },
+          {
+            "step": 4,
+            "day": 12,
+            "subjects": ["What a fractional commerce data team covers", "Beyond a Shopify dashboard", "The team behind trusted commerce reporting"],
+            "body": "Hi,\n\nThe visible dashboard is only one part of the work.\n\nA reliable commerce model needs source integrations, transformation logic, KPI definitions, access controls, validation, and ongoing improvement.\n\nKPIBoard provides the architect, engineer, BI developer, analyst, and delivery coordination as one subscription—without building an internal department first.\n\nWould a short overview of the delivery model help?\n\nIf not, reply “no” and I will not follow up."
+          },
+          {
+            "step": 5,
+            "day": 18,
+            "subjects": ["Close the loop?", "Keep analytics on the list?", "Should I stop here?"],
+            "body": "Hi,\n\nI reached out because multi-system commerce reporting often becomes a hidden operating cost.\n\nIf unified margin, growth, or inventory reporting is a priority, I can share a practical first-use-case map.\n\nIf it is not a priority, reply “no” and I will close the loop.\n\nEither answer is helpful."
+          }
+        ]
+      },
+      {
+        "icp": "RETAIL",
+        "audience": "Retail owners, finance leaders, and operations leaders managing multiple locations.",
+        "painThemes": ["Store profitability", "Stock allocation", "Sell-through", "Labor and promotion performance"],
+        "emails": [
+          {
+            "step": 1,
+            "day": 0,
+            "subjects": ["Which locations are actually profitable?", "One view across stores, stock, and margin", "A retail reporting question"],
+            "body": "Hi,\n\nMulti-location retailers often know sales by store but wait much longer for the full profitability picture.\n\nRent, labor, discounts, shrinkage, returns, and stock allocation can change the answer substantially.\n\nKPIBoard connects POS, inventory, finance, and workforce data into one operating view for store and category profitability.\n\nIs location-level profitability reporting something your team is improving?\n\nReply “no” if this is not relevant."
+          },
+          {
+            "step": 2,
+            "day": 4,
+            "subjects": ["The stock is available—just in the wrong store", "A retail allocation problem", "Sell-through without spreadsheet consolidation"],
+            "body": "Hi,\n\nA chain can be overstocked and still lose sales to stockouts when inventory sits in the wrong locations.\n\nA useful allocation model combines stock on hand, local demand, transfer options, lead times, and expected sell-through.\n\nWe build that decision layer on top of the systems retailers already use.\n\nWould a stock-allocation use-case map be useful?\n\nIf not, reply “no” and I will close the loop."
+          },
+          {
+            "step": 3,
+            "day": 8,
+            "subjects": ["Promotion lift or margin leak?", "Did the discount create profit?", "A better post-promotion view"],
+            "body": "Hi,\n\nPromotion reporting often stops at revenue lift.\n\nThe more useful question is whether the promotion created incremental margin after discount depth, cannibalization, returns, and stock effects.\n\nKPIBoard combines those inputs into a repeatable promotion performance model.\n\nIs this analysis currently manual for your team?\n\nReply “no” if I should not follow up."
+          },
+          {
+            "step": 4,
+            "day": 13,
+            "subjects": ["A BI team without five retail hires", "The operating model behind the reports", "How KPIBoard delivers retail analytics"],
+            "body": "Hi,\n\nReliable retail reporting crosses data engineering, KPI governance, BI development, and commercial analysis.\n\nKPIBoard provides those capabilities as a focused subscription, working one priority at a time with visible review cycles.\n\nThat can be store profitability first, then allocation, purchasing, promotion, or executive control.\n\nWorth a short conversation about the first priority?\n\nReply “no” to opt out."
+          },
+          {
+            "step": 5,
+            "day": 19,
+            "subjects": ["Should I close this?", "Retail analytics: now or later?", "Last note from me"],
+            "body": "Hi,\n\nI do not want to keep sending notes if retail analytics is not a current priority.\n\nIf store profitability, stock allocation, or promotion measurement is on the roadmap, I can share a short audit framework.\n\nOtherwise, reply “no” and I will close the loop."
+          }
+        ]
+      },
+      {
+        "icp": "MANUFACTURING",
+        "audience": "Manufacturing CEOs, CFOs, plant leaders, and operations teams.",
+        "painThemes": ["OEE", "Production variance", "Procurement", "Quality and downtime"],
+        "emails": [
+          {
+            "step": 1,
+            "day": 0,
+            "subjects": ["Production data without production visibility?", "OEE, cost, and downtime in one model", "A manufacturing reporting question"],
+            "body": "Hi,\n\nManufacturers often have the necessary data across ERP, MES, maintenance, quality, and spreadsheets—but not one trusted operating picture.\n\nThat makes it difficult to connect downtime, yield, material variance, and schedule performance to financial impact.\n\nKPIBoard builds the governed data model and decision views behind production control.\n\nIs production-performance reporting a current initiative?\n\nReply “no” if this is not relevant."
+          },
+          {
+            "step": 2,
+            "day": 4,
+            "subjects": ["OEE alone does not explain the loss", "The cost behind downtime", "From machine event to margin impact"],
+            "body": "Hi,\n\nOEE is useful, but leadership usually needs the next layer: which downtime, line, product, shift, or changeover creates the largest economic loss.\n\nWe combine production events with labor, material, quality, and finance data so teams can prioritize improvements by business impact.\n\nWould that kind of loss model help your operations reviews?\n\nReply “no” if I should stop."
+          },
+          {
+            "step": 3,
+            "day": 9,
+            "subjects": ["Procurement variance before month-end", "Supplier performance beyond on-time delivery", "A better purchasing signal"],
+            "body": "Hi,\n\nProcurement performance is difficult to manage when price variance, lead time, quality, shortages, and production disruption are reported separately.\n\nA unified supplier model makes those trade-offs visible before month-end.\n\nKPIBoard connects the required systems and creates that operating view without replacing the source platforms.\n\nIs supplier performance still assembled manually?\n\nReply “no” to opt out."
+          },
+          {
+            "step": 4,
+            "day": 14,
+            "subjects": ["The data team behind plant visibility", "Why one dashboard developer is not enough", "A fractional manufacturing analytics team"],
+            "body": "Hi,\n\nManufacturing analytics needs more than visualization. It needs source integration, time logic, master-data alignment, KPI governance, validation, and operational interpretation.\n\nKPIBoard provides the architect, engineer, BI developer, analyst, and delivery coordination as one subscription.\n\nWe start with one decision area and build from there.\n\nWorth mapping the first use case?\n\nReply “no” if not."
+          },
+          {
+            "step": 5,
+            "day": 21,
+            "subjects": ["Close the production analytics loop?", "Is this on the plant roadmap?", "Last manufacturing analytics note"],
+            "body": "Hi,\n\nIf production loss, supplier performance, or plant reporting is on the roadmap, I can share the questions we use to scope a first decision model.\n\nIf the timing is wrong, reply “later.” If it is not relevant, reply “no” and I will close the loop."
+          }
+        ]
+      },
+      {
+        "icp": "SAAS",
+        "audience": "SaaS founders, CFOs, revenue leaders, and product leaders.",
+        "painThemes": ["MRR quality", "CAC payback", "Retention", "Product usage and expansion"],
+        "emails": [
+          {
+            "step": 1,
+            "day": 0,
+            "subjects": ["MRR is clear—until Finance asks", "One model for revenue, product, and retention", "A SaaS metrics question"],
+            "body": "Hi,\n\nSaaS teams often report MRR, churn, acquisition, and product usage from separate systems with slightly different customer definitions.\n\nThe numbers look close until leadership needs cohort economics, CAC payback, or a reliable forecast.\n\nKPIBoard aligns billing, CRM, product, support, and finance data in one governed model.\n\nIs metric consistency a current problem for your team?\n\nReply “no” if this is not relevant."
+          },
+          {
+            "step": 2,
+            "day": 3,
+            "subjects": ["Logo churn hides the real retention story", "A better view of revenue retention", "Which customers are actually expanding?"],
+            "body": "Hi,\n\nLogo churn can look stable while revenue quality changes underneath it.\n\nA useful retention model separates contraction, expansion, reactivation, customer segment, plan, cohort, and product usage.\n\nThat helps teams see which customers are growing, which behaviors precede churn, and where intervention is worth the cost.\n\nWould a retention-model outline be useful?\n\nReply “no” if I should stop."
+          },
+          {
+            "step": 3,
+            "day": 7,
+            "subjects": ["CAC without payback is half a metric", "From campaign spend to customer economics", "The acquisition number that matters later"],
+            "body": "Hi,\n\nAcquisition reporting is most useful when it connects spend to the revenue and margin a cohort produces over time.\n\nKPIBoard combines channel, CRM, billing, and product data to show blended CAC, payback, cohort value, and expansion quality.\n\nThat gives Growth and Finance one model instead of competing reports.\n\nIs CAC payback currently trusted across both teams?\n\nReply “no” to opt out."
+          },
+          {
+            "step": 4,
+            "day": 12,
+            "subjects": ["A SaaS analytics function without the hiring queue", "The team behind trusted SaaS metrics", "From data stack to operating model"],
+            "body": "Hi,\n\nReliable SaaS analytics crosses data engineering, revenue modeling, BI development, product analysis, and governance.\n\nKPIBoard supplies those capabilities as one focused team. We work through a prioritized backlog, ship in review cycles, and leave the models and documentation with you.\n\nWould a short walkthrough of the subscription model help?\n\nReply “no” if not."
+          },
+          {
+            "step": 5,
+            "day": 18,
+            "subjects": ["Should I close this?", "SaaS analytics: current priority?", "Last note on the metrics model"],
+            "body": "Hi,\n\nI reached out because inconsistent revenue, retention, and acquisition models slow down SaaS decisions.\n\nIf that is a current priority, I can share a practical first-use-case map.\n\nIf not, reply “no” and I will close the loop."
+          }
+        ]
+      },
+      {
+        "icp": "HEALTHCARE",
+        "audience": "Healthcare operators, clinic groups, finance leaders, and service-line managers.",
+        "painThemes": ["Capacity", "Appointment flow", "Service profitability", "Operational quality"],
+        "emails": [
+          {
+            "step": 1,
+            "day": 0,
+            "subjects": ["Operational visibility across locations?", "Capacity, demand, and service performance", "A healthcare operations reporting question"],
+            "body": "Hi,\n\nMulti-site healthcare operators often have appointment, staffing, finance, and service data in separate systems.\n\nThat makes it difficult to see capacity, utilization, waiting patterns, cancellations, and service-line economics in one trusted view.\n\nKPIBoard connects operational and financial sources while respecting the required access model.\n\nIs operational reporting across locations a current priority?\n\nReply “no” if this is not relevant."
+          },
+          {
+            "step": 2,
+            "day": 4,
+            "subjects": ["The unused capacity hidden in the schedule", "A better appointment-flow view", "Demand and staffing in one model"],
+            "body": "Hi,\n\nAppointment volume alone does not explain capacity.\n\nA useful operating model includes lead time, cancellations, no-shows, provider availability, visit duration, and demand by service and location.\n\nBringing those signals together helps teams adjust schedules before bottlenecks become persistent.\n\nWould a capacity analytics use-case map be useful?\n\nReply “no” to opt out."
+          },
+          {
+            "step": 3,
+            "day": 9,
+            "subjects": ["Service volume is not service profitability", "Which services create sustainable margin?", "Operational and financial data together"],
+            "body": "Hi,\n\nA high-volume service is not always a high-contribution service after staffing, consumables, room time, discounts, and collection patterns.\n\nKPIBoard combines operational activity with finance data to produce a repeatable service-line profitability view.\n\nIs that analysis currently available without manual reconciliation?\n\nReply “no” if I should stop."
+          },
+          {
+            "step": 4,
+            "day": 14,
+            "subjects": ["A healthcare analytics team without multiple hires", "The team behind operational visibility", "How KPIBoard works with healthcare operators"],
+            "body": "Hi,\n\nOperational analytics requires integration, governance, BI development, analysis, and careful access design.\n\nKPIBoard provides those capabilities as a subscription and works one prioritized decision area at a time.\n\nSecurity scope, data minimization, and access controls are agreed before production data is used.\n\nWorth a short fit conversation?\n\nReply “no” if not."
+          },
+          {
+            "step": 5,
+            "day": 20,
+            "subjects": ["Close the loop?", "Healthcare analytics: now or later?", "Last operations note"],
+            "body": "Hi,\n\nIf capacity, location performance, or service-line reporting is a current priority, I can share the first questions we use to map the data and decision.\n\nIf the timing is wrong, reply “later.” If it is not relevant, reply “no” and I will close the loop."
+          }
+        ]
+      },
+      {
+        "icp": "LOGISTICS",
+        "audience": "Logistics owners, CFOs, operations leaders, and network managers.",
+        "painThemes": ["Route profitability", "Fuel", "Warehouse throughput", "Delivery quality"],
+        "emails": [
+          {
+            "step": 1,
+            "day": 0,
+            "subjects": ["Revenue per route is not route profitability", "One view across delivery, fuel, and margin", "A logistics reporting question"],
+            "body": "Hi,\n\nLogistics teams often track revenue, delivery performance, fuel, labor, maintenance, and warehouse activity in separate systems.\n\nThat makes route, customer, and service profitability difficult to trust until the period is closed.\n\nKPIBoard connects those sources into one governed operating model.\n\nIs route or customer profitability a current reporting priority?\n\nReply “no” if this is not relevant."
+          },
+          {
+            "step": 2,
+            "day": 3,
+            "subjects": ["The cost per delivery changes every day", "A better last-mile cost model", "From route activity to contribution"],
+            "body": "Hi,\n\nCost per delivery shifts with distance, density, failed attempts, waiting time, fuel, overtime, and vehicle type.\n\nAverages hide the routes and customers creating the largest losses.\n\nWe build a cost-to-serve model that connects operational events with finance data and makes those differences visible.\n\nWould a first-pass model outline be useful?\n\nReply “no” if I should stop."
+          },
+          {
+            "step": 3,
+            "day": 8,
+            "subjects": ["Warehouse throughput without the blind spots", "Where warehouse time is actually lost", "A better flow view"],
+            "body": "Hi,\n\nWarehouse reporting often shows total volume but not the operational pattern behind missed cutoffs, congestion, rework, and overtime.\n\nCombining order flow, task events, staffing, zones, and carrier deadlines makes those constraints easier to prioritize.\n\nKPIBoard creates that decision layer without replacing the WMS.\n\nIs warehouse flow analysis still manual?\n\nReply “no” to opt out."
+          },
+          {
+            "step": 4,
+            "day": 13,
+            "subjects": ["A logistics BI team without the hiring overhead", "The team behind route and warehouse visibility", "How the analytics subscription works"],
+            "body": "Hi,\n\nLogistics analytics needs engineering, metric governance, BI delivery, operations analysis, and ongoing ownership.\n\nKPIBoard provides that function as one subscription. We work one active priority at a time and review progress in short cycles.\n\nThe first priority can be route margin, customer cost-to-serve, fuel, fleet, warehouse flow, or executive control.\n\nWorth mapping the best starting point?\n\nReply “no” if not."
+          },
+          {
+            "step": 5,
+            "day": 19,
+            "subjects": ["Should I close this?", "Logistics analytics: priority or not?", "Last note from me"],
+            "body": "Hi,\n\nIf route profitability, warehouse flow, or delivery performance is a current priority, I can share a short analytics audit framework.\n\nIf it is not, reply “no” and I will close the loop.\n\nEither answer is useful."
+          }
+        ]
+      }
+    ]
+  },
+  "brevoUiBlueprint": {
+    "lists": [
+      "KPIBoard — Confirmed Website Leads",
+      "KPIBoard — Customers",
+      "KPIBoard — Global Suppression"
+    ],
+    "segments": [
+      {
+        "name": "Nurture — Eligible opt-in leads",
+        "conditions": [
+          "Email is not blocklisted",
+          "LIFECYCLE_STAGE equals OPTED_IN",
+          "CONSENT_SOURCE is not empty"
+        ]
+      },
+      {
+        "name": "Nurture — Converted",
+        "conditions": [
+          "LIFECYCLE_STAGE equals MEETING_BOOKED or OPPORTUNITY or CUSTOMER"
+        ]
+      },
+      {
+        "name": "Nurture — Unengaged review",
+        "conditions": [
+          "Received at least 4 nurture emails",
+          "No click",
+          "No reply",
+          "No meeting"
+        ]
+      }
+    ],
+    "automation": {
+      "name": "KPIBoard — BI Team Opt-in Nurture",
+      "trigger": "Contact added to confirmed website leads after double opt-in",
+      "steps": [
+        "Send nurture-01 immediately",
+        "Wait 3 days",
+        "If converted, exit; otherwise send nurture-02",
+        "Wait 4 days",
+        "If converted, exit; otherwise send nurture-03",
+        "Wait 5 days",
+        "If converted or replied, exit; otherwise send nurture-04",
+        "Wait 6 days",
+        "If converted or replied, exit; otherwise send nurture-05",
+        "Wait 8 days",
+        "If converted or replied, exit; otherwise send nurture-06",
+        "Set nurture status to COMPLETE",
+        "Exit automation"
+      ]
+    }
+  },
+  "measurement": {
+    "primaryMetric": "Booked analytics audits from confirmed opt-in leads",
+    "secondaryMetrics": [
+      "Double opt-in completion rate",
+      "Unique click rate",
+      "Reply rate",
+      "Meeting conversion rate",
+      "Unsubscribe rate",
+      "Complaint rate",
+      "Hard bounce rate"
+    ],
+    "guardrails": {
+      "complaintRateMaximum": 0.001,
+      "hardBounceRateMaximum": 0.02,
+      "unsubscribeReviewThreshold": 0.005
+    },
+    "reviewCadence": "Weekly for the first six weeks, then monthly."
+  }
+}

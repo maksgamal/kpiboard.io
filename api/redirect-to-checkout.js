@@ -1,5 +1,11 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { STRIPE_PRICE_IDS, PRICE_MAP } = require('./stripe-prices');
+const {
+  applyCors,
+  getSafeSiteOrigin,
+  hasDisallowedOrigin,
+  isRateLimited,
+} = require('./_request-security');
 
 // Plan names mapping
 const PLAN_NAMES = {
@@ -17,17 +23,23 @@ const BILLING_CYCLES = {
 };
 
 module.exports = async (req, res) => {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  const origin = applyCors(req, res, ['GET', 'OPTIONS']);
 
   if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+    if (!origin || hasDisallowedOrigin(req)) return res.status(403).end();
+    return res.status(204).end();
   }
 
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  if (hasDisallowedOrigin(req)) {
+    return res.status(403).json({ error: 'This request origin is not allowed' });
+  }
+
+  if (isRateLimited(req, 'redirect-checkout', 10)) {
+    return res.status(429).json({ error: 'Too many checkout attempts. Try again later.' });
   }
 
   const { plan, billingCycle } = req.query;
@@ -98,8 +110,8 @@ module.exports = async (req, res) => {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'subscription',
-      success_url: `${req.headers.origin || 'https://www.kpiboard.io'}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.headers.origin || 'https://www.kpiboard.io'}/#Pricing`,
+      success_url: `${getSafeSiteOrigin(req)}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${getSafeSiteOrigin(req)}/#Pricing`,
       metadata: {
         plan: plan,
         billingCycle: billingCycle,
@@ -109,8 +121,11 @@ module.exports = async (req, res) => {
     // Redirect to Stripe Checkout
     return res.redirect(302, session.url);
   } catch (error) {
-    console.error('Stripe error:', error);
-    return res.status(500).json({ error: error.message });
+    console.error('Stripe redirect checkout error:', {
+      type: error && error.type ? error.type : 'unknown',
+      code: error && error.code ? error.code : 'unknown',
+    });
+    return res.status(500).json({ error: 'Checkout could not be started' });
   }
 };
 

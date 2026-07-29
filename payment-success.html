@@ -9,6 +9,33 @@
 >
   <head>
     <meta charset="utf-8" />
+    <script type="text/javascript">
+      window.__kpiboardConversionReady = (async function () {
+        var url = new URL(window.location.href);
+        var sessionId = url.searchParams.get("session_id");
+        url.searchParams.delete("session_id");
+        url.searchParams.delete("amount");
+        url.searchParams.delete("value");
+        window.history.replaceState({}, document.title, url.pathname + url.search + url.hash);
+
+        if (!sessionId) return null;
+
+        try {
+          var bytes = new TextEncoder().encode(sessionId);
+          var digest = await crypto.subtle.digest("SHA-256", bytes);
+          sessionId = "";
+          return Array.from(new Uint8Array(digest))
+            .map(function (byte) {
+              return byte.toString(16).padStart(2, "0");
+            })
+            .join("")
+            .slice(0, 32);
+        } catch (_) {
+          sessionId = "";
+          return crypto.randomUUID ? crypto.randomUUID() : "payment-" + Date.now();
+        }
+      })();
+    </script>
     <title>Payment successful — KPI BOARD</title>
     <meta content="Payment successful — KPI BOARD" property="og:title" />
     <meta content="Payment successful — KPI BOARD" property="twitter:title" />
@@ -938,25 +965,23 @@ a,
       type="text/javascript"
     ></script>
     <script type="text/javascript">
-      (function () {
-        var params = new URLSearchParams(window.location.search);
-        var sid = params.get("session_id");
-        if (!sid) return;
-        var amountParam = params.get("amount") || params.get("value");
+      (async function () {
+        var conversionId = await window.__kpiboardConversionReady;
+        if (!conversionId) return;
+        var sentKey = "kpiboard_conversion_" + conversionId;
+        if (sessionStorage.getItem(sentKey)) return;
+        sessionStorage.setItem(sentKey, "1");
+
         var purchasePayload = {
-          transaction_id: sid,
+          transaction_id: conversionId,
           currency: "USD",
         };
-        if (amountParam != null && amountParam !== "") {
-          var parsed = parseFloat(amountParam);
-          if (!isNaN(parsed)) purchasePayload.value = parsed;
-        }
         if (typeof gtag === "function") {
           gtag("event", "purchase", purchasePayload);
           gtag("event", "ads_conversion_PURCHASE_1", purchasePayload);
         }
         if (typeof fbq === "function") {
-          fbq("track", "Subscribe", {currency: "USD"});
+          fbq("track", "Subscribe", { currency: "USD" });
         }
         if (window.plausible) {
           plausible("Payment Success");

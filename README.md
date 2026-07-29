@@ -2,6 +2,35 @@
 
 This is the KPI Board website project with all files properly organized and linked.
 
+## BI Team landing and email automation
+
+The new English landing page is available locally at:
+
+```text
+/bi-team
+```
+
+It is isolated from the current production homepage and remains `noindex` until production
+approval.
+
+The lead form uses Brevo Double Opt-In through `api/lead.js`. Configure the variables documented in
+`.env.example`; never place a Brevo API key in browser code.
+
+The English email system lives in `outreach/brevo-automation.json` and includes:
+
+- six consent-based nurture emails that can be created as Brevo drafts;
+- thirty ICP-specific cold-outreach copy drafts with sending and Brevo synchronization disabled;
+- segmentation, exit, suppression, and measurement rules.
+
+Run the local quality checks with:
+
+```powershell
+npm run check
+npm run brevo:dry-run
+```
+
+See `outreach/README.md` for the complete Brevo setup and compliance boundary.
+
 ## Project Structure
 
 ```

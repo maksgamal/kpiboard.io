@@ -11,6 +11,7 @@ import sys
 
 # Paths without .html — same as vercel.json rewrites
 REWRITES = {
+    "/bi-team": "/bi-team/index.html",
     "/payment-success": "/payment-success.html",
     "/thankyou": "/thankyou.html",
     "/blogs": "/blogs.html",

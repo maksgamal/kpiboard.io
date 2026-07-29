@@ -6,7 +6,12 @@
     "dev": "vercel dev",
     "start": "python -m http.server 8080",
     "serve": "python serve.py 8009",
-    "test-api": "echo 'API endpoints work only on Vercel. Use: vercel dev'"
+    "test-api": "echo 'API endpoints work only on Vercel. Use: vercel dev'",
+    "validate": "node scripts/validate-project.mjs",
+    "syntax": "node scripts/check-syntax.mjs",
+    "check": "npm run validate && npm run syntax",
+    "brevo:dry-run": "node --env-file=.env.local scripts/brevo-sync-campaigns.mjs",
+    "brevo:create-drafts": "node --env-file=.env.local scripts/brevo-sync-campaigns.mjs --apply"
   },
   "dependencies": {
     "stripe": "^14.0.0",

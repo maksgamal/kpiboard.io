@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.kpiboard.io/schemas/brevo-automation.schema.json",
+  "title": "KPIBoard Brevo Automation Configuration",
+  "type": "object",
+  "required": [
+    "version",
+    "name",
+    "language",
+    "provider",
+    "compliance",
+    "optInNurture",
+    "icpColdOutreachLibrary"
+  ],
+  "properties": {
+    "version": { "type": "string" },
+    "name": { "type": "string" },
+    "language": { "const": "en" },
+    "provider": { "const": "brevo" },
+    "mode": { "const": "draft_only" },
+    "compliance": {
+      "type": "object",
+      "required": [
+        "requires_explicit_opt_in_for_brevo",
+        "allow_scraped_contacts",
+        "allow_purchased_contacts",
+        "allow_guessed_addresses"
+      ]
+    },
+    "optInNurture": {
+      "type": "object",
+      "required": ["id", "syncToBrevo", "emails"],
+      "properties": {
+        "syncToBrevo": { "const": true },
+        "emails": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "day",
+              "subjectOptions",
+              "previewText",
+              "body",
+              "cta"
+            ]
+          }
+        }
+      }
+    },
+    "icpColdOutreachLibrary": {
+      "type": "object",
+      "required": ["syncToBrevo", "sendingDisabled", "sequences"],
+      "properties": {
+        "syncToBrevo": { "const": false },
+        "sendingDisabled": { "const": true },
+        "sequences": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["icp", "audience", "emails"]
+          }
+        }
+      }
+    }
+  }
+}
